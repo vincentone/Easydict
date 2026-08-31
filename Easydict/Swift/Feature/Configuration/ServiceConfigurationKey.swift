@@ -35,6 +35,26 @@ extension String {
     }
 }
 
+// MARK: - QueryService + Configuration Keys
+
+extension QueryService {
+    func stringDefaultsKey(_ key: ServiceConfigurationKey) -> Defaults.Key<String> {
+        stringDefaultsKey(key, defaultValue: "")
+    }
+
+    func stringDefaultsKey(_ key: ServiceConfigurationKey, defaultValue: String) -> Defaults.Key<String> {
+        serivceConfigurationKey(key, serviceType: serviceType(), id: uuid, defaultValue: defaultValue)
+    }
+
+    func boolDefaultsKey(_ key: ServiceConfigurationKey, defaultValue: Bool) -> Defaults.Key<Bool> {
+        serivceConfigurationKey(key, serviceType: serviceType(), id: uuid, defaultValue: defaultValue)
+    }
+
+    func serviceDefaultsKey<T>(_ key: ServiceConfigurationKey, defaultValue: T) -> Defaults.Key<T> {
+        serivceConfigurationKey(key, serviceType: serviceType(), id: uuid, defaultValue: defaultValue)
+    }
+}
+
 // MARK: - ServiceConfigurationKey
 
 enum ServiceConfigurationKey: String {

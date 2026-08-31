@@ -18,15 +18,12 @@ public enum ServiceAPIKeyRequirement: Equatable {
     case builtIn
     /// API key is required and users must provide their own key to use the service.
     case userProvided
-    /// Service invoked via an AI agent CLI tool (e.g. Claude Code, Codex CLI, Gemini CLI).
-    /// The CLI manages its own credentials; no API key is configured in the app.
-    case agentCLI
 
     // MARK: Internal
 
     /// Whether this service requires an API key for requests.
     var requiresKeyForRequest: Bool {
-        self != .none && self != .agentCLI
+        self != .none
     }
 
     /// Whether this service needs the user to provide an API key.

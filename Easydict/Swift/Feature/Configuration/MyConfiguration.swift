@@ -10,15 +10,6 @@ import Combine
 import Defaults
 import Foundation
 
-// MARK: - LanguageDetectOptimize
-
-@objc
-enum LanguageDetectOptimize: Int {
-    case none = 0
-    case baidu = 1
-    case google = 2
-}
-
 // MARK: - EnglishPronunciation
 
 @objc
@@ -52,7 +43,6 @@ class MyConfiguration: NSObject {
     @DefaultsWrapper(.secondLanguage) var secondLanguage: Language
     @DefaultsWrapper(.queryFromLanguage) var fromLanguage: Language
     @DefaultsWrapper(.queryToLanguage) var toLanguage: Language
-    @DefaultsWrapper(.languageDetectOptimize) var languageDetectOptimize: LanguageDetectOptimize
 
     @DefaultsWrapper(.autoShowQueryIcon) var autoSelectText: Bool
     @DefaultsWrapper(.autoShowQueryIconExcludedLanguage) var autoShowQueryIconExcludedLanguage: Language
@@ -108,7 +98,6 @@ class MyConfiguration: NSObject {
     @DefaultsWrapper(.forceGetSelectedTextType) var forceGetSelectedTextType:
         ForceGetSelectedTextType
 
-    @DefaultsWrapper(.enableAppleOfflineTranslation) var enableAppleOfflineTranslation: Bool
     @DefaultsWrapper(.enableOCRTextNormalization) var enableOCRTextNormalization: Bool
     @DefaultsWrapper(.isScreenshotTipLayerHidden) var isScreenshotTipLayerHidden: Bool
     @DefaultsWrapper(.formerFixedScreenVisibleFrame) var formerFixedScreenVisibleFrame: CGRect
@@ -279,13 +268,6 @@ class MyConfiguration: NSObject {
             .removeDuplicates()
             .sink { [weak self] _ in
                 self?.didSetAutoCopyFirstTranslatedText()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.languageDetectOptimize, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetLanguageDetectOptimize()
             }
             .store(in: &cancellables)
 
@@ -493,10 +475,6 @@ extension MyConfiguration {
 
     fileprivate func didSetAutoCopyFirstTranslatedText() {
         logSettings(["auto_copy_first_translated_text": autoCopyFirstTranslatedText])
-    }
-
-    fileprivate func didSetLanguageDetectOptimize() {
-        logSettings(["detect_optimize": languageDetectOptimize])
     }
 
     fileprivate func didSetDefaultTTSServiceType() {

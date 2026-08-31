@@ -7,42 +7,17 @@
 //
 
 import Testing
-import Translation
 
 @testable import Easydict
 
-/// Tests for Apple translation and language services
+/// Tests for the Apple system-capability service (language detection and OCR)
 @Suite("Apple Services", .tags(.apple, .integration))
 struct AppleServiceTests {
-    @available(macOS 15.0, *)
-    @Test("Apple Service Language Availability", .tags(.apple))
-    func testLanguageAvailability() async {
+    @Test("Apple Language Detection", .tags(.apple, .unit))
+    func testLanguageDetection() {
         let apple = AppleService()
-        await apple.prepareSupportedLanguages()
-    }
 
-    @MainActor
-    @available(macOS 15.0, *)
-    @Test("Apple Offline Translation", .tags(.apple, .integration))
-    func testAppleOfflineTranslation() async throws {
-        let translationService = AppleTranslation(
-            configuration: .init(
-                source: .init(languageCode: .english),
-                target: .init(languageCode: .chinese)
-            )
-        )
-
-        #expect(
-            try await translationService.translate(text: "Hello, world!").targetText == "你好，世界！"
-        )
-        #expect(try await translationService.translate(text: "good").targetText == "利益")
-
-        let response = try await translationService.translate(
-            text: "你好",
-            sourceLanguage: .init(languageCode: .chinese),
-            targetLanguage: .init(languageCode: .english)
-        )
-        print(response)
-        #expect(response.targetText == "Hello")
+        #expect(apple.detectTextSync("Hello, world!") == .english)
+        #expect(apple.detectTextSync("这是简体中文测试") == .simplifiedChinese)
     }
 }

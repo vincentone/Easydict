@@ -31,7 +31,7 @@ final class QueryServiceConfiguration: NSObject, Codable {
     /// - Parameter decoder: Decoder providing stored values.
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let decodedType = try container.decodeIfPresent(String.self, forKey: .type) ?? ServiceType.appleDictionary
+        let decodedType = try container.decodeIfPresent(String.self, forKey: .type) ?? ServiceType.youdao
             .rawValue
         let decodedUUID = try container.decodeIfPresent(String.self, forKey: .uuid) ?? ""
         let windowTypeValue = try container.decodeIfPresent(Int.self, forKey: .windowType) ?? EZWindowType.main.rawValue

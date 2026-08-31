@@ -11,35 +11,8 @@
 #import "OrderedDictionary+Variadic.h"
 
 #pragma mark - EZServiceType
-NSString *const EZServiceTypeGoogle = @"Google";
-NSString *const EZServiceTypeBaidu = @"Baidu";
 NSString *const EZServiceTypeYoudao = @"Youdao";
 NSString *const EZServiceTypeApple = @"Apple";
-NSString *const EZServiceTypeDeepL = @"DeepL";
-NSString *const EZServiceTypeVolcano = @"Volcano";
-NSString *const EZServiceTypeOpenAI = @"OpenAI";
-NSString *const EZServiceTypeCustomOpenAI = @"CustomOpenAI";
-NSString *const EZServiceTypeBuiltInAI = @"BuiltInAI";
-NSString *const EZServiceTypeBing = @"Bing";
-NSString *const EZServiceTypeNiuTrans = @"NiuTrans";
-NSString *const EZServiceTypeCaiyun = @"Caiyun";
-NSString *const EZServiceTypeTencent = @"Tencent";
-NSString *const EZServiceTypeAlibaba = @"Alibaba";
-NSString *const EZServiceTypeGemini = @"Gemini";
-NSString *const EZServiceTypeOllama = @"Ollama";
-NSString *const EZServiceTypePolishing = @"Polishing";
-NSString *const EZServiceTypeSummary = @"Summary";
-NSString *const EZServiceTypeDeepSeek = @"DeepSeek";
-NSString *const EZServiceTypeAppleDictionary = @"AppleDictionary";
-NSString *const EZServiceTypeGroq = @"Groq";
-NSString *const EZServiceTypeZhipu = @"Zhipu";
-NSString *const EZServiceTypeMiniMax = @"MiniMax";
-NSString *const EZServiceTypeGitHub = @"GitHub";
-NSString *const EZServiceTypeDoubao = @"Doubao";
-NSString *const EZServiceTypeClaudeCode = @"ClaudeCode";
-NSString *const EZServiceTypeClaude = @"Claude";
-NSString *const EZServiceTypeCodexCLI = @"CodexCLI";
-NSString *const EZServiceTypeMDict = @"MDict";
 
 NSString *const EZQueryTextTypeKey = @"QueryTextType";
 NSString *const EZIntelligentQueryTextTypeKey = @"IntelligentQueryTextType";
@@ -55,8 +28,6 @@ NSString *const EZActionTypeScreenshotOCR = @"silent_screenshot_ocr";
 NSString *const EZActionTypeInvokeQuery = @"invoke_query";
 NSString *const EZActionTypePasteboardOCR = @"pasteboard_ocr";
 NSString *const EZActionTypePasteboardTranslate = @"pasteboard_translate";
-NSString *const EZActionTypeTranslateAndReplace = @"translate_and_replace";
-NSString *const EZActionTypePolishAndReplace = @"polish_and_replace";
 
 #pragma mark - EZSelectTextType
 NSString *const EZSelectTextTypeAccessibility = @"accessibility_select_text";

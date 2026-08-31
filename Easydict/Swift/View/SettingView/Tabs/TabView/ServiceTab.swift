@@ -136,7 +136,6 @@ class ServiceTabViewModel: ObservableObject {
 
     func addServices(_ items: [ServiceListItem]) {
         var addedTypeIds: [String] = []
-        var addedItems: [ServiceListItem] = []
 
         for item in items {
             let serviceTypeId = item.createsNewInstance
@@ -149,13 +148,11 @@ class ServiceTabViewModel: ObservableObject {
                 continue
             }
             addedTypeIds.append(serviceTypeId)
-            addedItems.append(item)
         }
 
         guard let selectedTypeId = addedTypeIds.last else { return }
         setSelection([.service(selectedTypeId)])
         postUpdateServiceNotification()
-        reloadLLMSubscribersIfNeeded(for: addedItems)
         updateServices()
     }
 
@@ -174,7 +171,6 @@ class ServiceTabViewModel: ObservableObject {
 
         setSelection([.windowConfiguration])
         postUpdateServiceNotification()
-        reloadLLMSubscribersIfNeeded(for: selectedItems)
         updateServices()
     }
 
@@ -208,7 +204,6 @@ class ServiceTabViewModel: ObservableObject {
         }
 
         postUpdateServiceNotification()
-        reloadLLMSubscribersIfNeeded(for: [item])
         updateServices()
     }
 
@@ -259,12 +254,9 @@ class ServiceTabViewModel: ObservableObject {
             return ServiceListItem(
                 id: typeId,
                 type: metadata.serviceType,
-                name: createsNewInstance
-                    ? NSLocalizedString("custom_openai", comment: "")
-                    : metadata.title,
+                name: metadata.title,
                 enabled: info?.enabled == true,
                 requirement: metadata.apiKeyRequirement,
-                isStream: metadata.isStream,
                 createsNewInstance: createsNewInstance
             )
         }
@@ -307,13 +299,6 @@ class ServiceTabViewModel: ObservableObject {
         } ?? orderedSelection(in: selection)
         updateSelectedService()
     }
-
-    private func reloadLLMSubscribersIfNeeded(for items: [ServiceListItem]) {
-        // Stream configuration observers cover all window memberships, so any
-        // window can add or remove a service that changes the observed union.
-        guard items.contains(where: { $0.isStream }) else { return }
-        GlobalContext.shared.reloadLLMServicesSubscribers()
-    }
 }
 
 // MARK: - ServiceListItem
@@ -324,7 +309,6 @@ struct ServiceListItem: Identifiable {
     let name: String
     let enabled: Bool
     let requirement: ServiceAPIKeyRequirement
-    let isStream: Bool
     let createsNewInstance: Bool
 }
 

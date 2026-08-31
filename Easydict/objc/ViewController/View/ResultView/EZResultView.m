@@ -277,28 +277,13 @@
     self.serviceNameLabel.attributedStringValue = [NSAttributedString mm_attributedStringWithString:serviceName font:[NSFont systemFontOfSize:13]];
     
     mm_weakify(self);
-    
-    if ([self isLLLStreamService:service]) {
-        EZStreamService *streamService = (EZStreamService *)service;
-        NSString *model = streamService.model;
-        self.serviceModelButton.title = model;
-        // hoverTitle may be different from normalTitle, fix https://github.com/tisfeng/Easydict/pull/516#issuecomment-2064164503
-        self.serviceModelButton.hoverTitle = model;
-        self.serviceModelButton.highlightTitle = model;
-        self.serviceModelButton.toolTip = model;
 
-        [self.serviceModelButton setClickBlock:^(EZButton *_Nonnull button) {
-            mm_strongify(self);
-            [self showModelSelectionMenu:button];
-        }];
-    } else {
-        self.serviceModelButton.title = @"";
-        self.serviceModelButton.hoverTitle = @"";
-        self.serviceModelButton.highlightTitle = @"";
-        self.serviceModelButton.toolTip = nil;
-        self.serviceModelButton.clickBlock = nil;
-    }
-    
+    self.serviceModelButton.title = @"";
+    self.serviceModelButton.hoverTitle = @"";
+    self.serviceModelButton.highlightTitle = @"";
+    self.serviceModelButton.toolTip = nil;
+    self.serviceModelButton.clickBlock = nil;
+
     self.wordResultView.service = service;
     [self.wordResultView refreshWithResult:result];
     
@@ -332,17 +317,10 @@
         make.width.mas_lessThanOrEqualTo(127 * [self windowWidthRatio]);
     }];
     
-    CGFloat modelButtonWidth = 0;
-    if ([self isLLLStreamService:self.service]) {
-        [self.serviceModelButton sizeToFit];
-        // 120 is fit for model name `llama-3.1-70b-versatile`
-        modelButtonWidth = MIN(self.serviceModelButton.width, 120 * [self windowWidthRatio]);
-    }
-
     [self.serviceModelButton mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(modelButtonWidth);
+        make.width.mas_equalTo(0);
     }];
-    
+
     [super updateConstraints];
 }
 
@@ -430,12 +408,9 @@
 }
 
 - (void)updateStopButton {
+    // Streaming sources were removed; there is no stop button anymore.
     BOOL showStopButton = NO;
-    
-    if (self.service.isStream) {
-        showStopButton = self.result.hasTranslatedResult && !self.result.isStreamFinished;
-    }
-    
+
     self.stopButton.hidden = !showStopButton;
     self.stopButton.toolTip = NSLocalizedString(@"stop", nil);
 }
@@ -443,39 +418,6 @@
 - (void)updateArrowButton {
     self.arrowButton.toolTip = self.result.isShowing ? NSLocalizedString(@"hide", nil) : NSLocalizedString(@"show", nil);
     [self updateArrowButtonImage];
-}
-
-- (BOOL)isLLLStreamService:(EZQueryService *)service {
-    return [service isKindOfClass:[EZStreamService class]];
-}
-
-- (void)showModelSelectionMenu:(EZButton *)sender {
-    EZStreamService *service = (EZStreamService *)self.service;
-    if (![self isLLLStreamService:service]) {
-        return;
-    }
-
-    NSMenu *menu = [[NSMenu alloc] initWithTitle:@"Menu"];
-    for (NSString *model in service.validModels) {
-        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:model action:@selector(modelDidSelected:) keyEquivalent:@""];
-        item.target = self;
-        [menu addItem:item];
-    }
-    [menu popUpBelowView:sender];
-}
-
-- (void)modelDidSelected:(NSMenuItem *)sender {
-    EZStreamService *service = (EZStreamService *)self.service;
-    if (![self isLLLStreamService:service]) {
-        return;
-    }
-
-    if (![service.model isEqualToString:sender.title]) {
-        service.model = sender.title;
-        self.serviceModelButton.title = service.model;
-        self.serviceModelButton.hoverTitle = service.model;
-        self.serviceModelButton.highlightTitle = service.model;
-    }
 }
 
 #pragma mark - Animation

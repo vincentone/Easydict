@@ -287,8 +287,8 @@ typedef NS_ENUM(NSInteger, EZTitlebarButtonType) {
 
 - (EZOpenLinkButton *)appleDictionaryButton {
     if (!_appleDictionaryButton) {
-        _appleDictionaryButton = [self createButtonWithLink:EZAppleDictionaryAppURLScheme 
-                                                  imageName:EZServiceTypeAppleDictionary
+        _appleDictionaryButton = [self createButtonWithLink:EZAppleDictionaryAppURLScheme
+                                                  imageName:@"AppleDictionary"
                                                  buttonType:EZTitlebarButtonTypeAppleDic];
     }
     return _appleDictionaryButton;

@@ -217,7 +217,7 @@ static NSString *const kCommentSymbolPrefixPattern = @"^\\s*(//+|#+|\\*+)";
     NSString *queryText = self;
     if ([queryText isSingleWord]) {
         // If text is an English word, like LaTeX, we don't split it.
-        BOOL isEnglishWord = [EZAppleDictionary.shared queryDictionaryForText:queryText language:EZLanguageEnglish];
+        BOOL isEnglishWord = [SystemDictionary containsWord:queryText language:EZLanguageEnglish];
         if (!isEnglishWord) {
             // If text has quotes, like 'UIKit', we don't split it.
             if ([queryText hasQuotesPair]) {

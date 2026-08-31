@@ -44,15 +44,6 @@ struct GeneralTab: View {
         Form {
             Section {
                 FirstAndSecondLanguageSettingView()
-                Picker(
-                    "setting.general.language.language_detect_optimize",
-                    selection: $languageDetectOptimize
-                ) {
-                    ForEach(LanguageDetectOptimize.allCases, id: \.rawValue) { option in
-                        Text(option.localizedStringResource)
-                            .tag(option)
-                    }
-                }
             } header: {
                 Text("setting.general.query_language.header")
             }
@@ -276,9 +267,6 @@ struct GeneralTab: View {
     @StateObject private var checkUpdaterViewModel = CheckUpdaterViewModel()
 
     @State private var lastestVersion: String?
-
-    // Query language
-    @Default(.languageDetectOptimize) private var languageDetectOptimize
 
     // Input textfield
     @Default(.clearQueryWhenInputTranslate) private var clearInput

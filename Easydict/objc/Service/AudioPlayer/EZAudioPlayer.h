@@ -22,9 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL enableDownload;
 
-/// use system tts when play failed
-@property (nonatomic, assign) BOOL useSystemTTSWhenPlayFailed;  // default is YES
-
 
 // If not sepecify service, it will be defaultTTSService.
 @property (nonatomic, weak) EZQueryService *service;

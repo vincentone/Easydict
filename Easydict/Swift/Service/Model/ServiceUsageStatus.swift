@@ -8,13 +8,6 @@
 
 import Defaults
 import Foundation
-import SwiftUI
-
-// MARK: - EnumLocalizedStringConvertible
-
-protocol EnumLocalizedStringConvertible {
-    var title: LocalizedStringKey { get }
-}
 
 // MARK: - ServiceUsageStatus
 
@@ -56,29 +49,6 @@ extension EZServiceUsageStatus {
     /// Returns the Swift `ServiceUsageStatus` counterpart for the Objective-C enum.
     var swiftValue: ServiceUsageStatus {
         ServiceUsageStatus(ezStatus: self)
-    }
-}
-
-// MARK: - ServiceUsageStatus + EnumLocalizedStringConvertible
-
-extension ServiceUsageStatus: EnumLocalizedStringConvertible {
-    var title: LocalizedStringKey {
-        switch self {
-        case .default:
-            "service.configuration.openai.usage_status_default.title"
-        case .alwaysOff:
-            "service.configuration.openai.usage_status_always_off.title"
-        case .alwaysOn:
-            "service.configuration.openai.usage_status_always_on.title"
-        }
-    }
-}
-
-// MARK: - String + EnumLocalizedStringConvertible
-
-extension String: EnumLocalizedStringConvertible {
-    var title: LocalizedStringKey {
-        LocalizedStringKey(self)
     }
 }
 

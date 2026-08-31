@@ -19,14 +19,12 @@ struct TranslationRequest: Content {
         sourceLanguage: String? = nil,
         targetLanguage: String,
         serviceType: String,
-        appleDictionaryNames: [String]? = nil,
         queryType: EZQueryTextType = []
     ) {
         self.text = text
         self.sourceLanguage = sourceLanguage
         self.targetLanguage = targetLanguage
         self.serviceType = serviceType
-        self.appleDictionaryNames = appleDictionaryNames
         self.queryType = queryType
     }
 
@@ -37,9 +35,6 @@ struct TranslationRequest: Content {
         self.sourceLanguage = try container.decodeIfPresent(String.self, forKey: .sourceLanguage)
         self.targetLanguage = try container.decode(String.self, forKey: .targetLanguage)
         self.serviceType = try container.decode(String.self, forKey: .serviceType)
-        self.appleDictionaryNames = try container.decodeIfPresent(
-            [String].self, forKey: .appleDictionaryNames
-        )
         self.queryType = try container.decodeIfPresent(EZQueryTextType.self, forKey: .queryType) ?? []
     }
 
@@ -49,7 +44,6 @@ struct TranslationRequest: Content {
     var sourceLanguage: String? // BCP-47 language code. If sourceLanguage is nil, it will be auto detected.
     var targetLanguage: String
     var serviceType: String
-    var appleDictionaryNames: [String]?
     var queryType: EZQueryTextType // [] means auto detect query type.
 
     // MARK: - Custom encode method to handle optional fields properly
@@ -60,7 +54,6 @@ struct TranslationRequest: Content {
         try container.encodeIfPresent(sourceLanguage, forKey: .sourceLanguage)
         try container.encode(targetLanguage, forKey: .targetLanguage)
         try container.encode(serviceType, forKey: .serviceType)
-        try container.encodeIfPresent(appleDictionaryNames, forKey: .appleDictionaryNames)
         try container.encode(queryType, forKey: .queryType)
     }
 
@@ -68,7 +61,7 @@ struct TranslationRequest: Content {
 
     // Custom Codable implementation to handle optional queryType in JSON
     private enum CodingKeys: String, CodingKey {
-        case text, sourceLanguage, targetLanguage, serviceType, appleDictionaryNames, queryType
+        case text, sourceLanguage, targetLanguage, serviceType, queryType
     }
 }
 
@@ -77,7 +70,6 @@ struct TranslationRequest: Content {
 struct TranslationResponse: Content {
     var translatedText: String
     var sourceLanguage: String
-    var HTMLStrings: [String]?
     var dictionaryEntry: DictionaryEntry?
 }
 

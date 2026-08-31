@@ -6,56 +6,7 @@
 //  Copyright © 2024 izual. All rights reserved.
 //
 
-import Defaults
 import Foundation
-
-// MARK: - APIKey
-
-extension BuiltInAIService {
-    var builtInAIAPIKey: String {
-        APIKey.builtInAIAPIKey.stringValue
-    }
-
-    var builtInAIEndpoint: String {
-        APIKey.builtInAIEndpoint.stringValue
-    }
-}
-
-extension CaiyunService {
-    var caiyunToken: String {
-        APIKey.caiyunToken.stringValue
-    }
-}
-
-extension NiuTransService {
-    @objc var niutransAPIKey: String {
-        APIKey.niutransAPIKey.stringValue
-    }
-}
-
-// MARK: - APIKey
-
-enum APIKey: String {
-    /**
-     For convenience, we provide a default key for users to try out the service.
-     Please do not abuse it, otherwise it may be revoked.
-     */
-
-    case openAIAPIKey
-    case openAIEndpoint
-    case geminiAPIKey
-    case caiyunToken
-    case niutransAPIKey
-    case builtInAIAPIKey
-    case builtInAIEndpoint
-    case builtInAIModel
-
-    // MARK: Internal
-
-    var stringValue: String {
-        SecretKeyManager.keyValues[rawValue] ?? ""
-    }
-}
 
 // MARK: - SecretKeyManager
 

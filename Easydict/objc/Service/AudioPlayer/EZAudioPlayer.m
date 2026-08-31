@@ -16,10 +16,8 @@ static NSString *const kFileExtendedAttributes = @"NSFileExtendedAttributes";
 // kMDItemWhereFroms
 static NSString *const kItemWhereFroms = @"com.apple.metadata:kMDItemWhereFroms";
 
-@interface EZAudioPlayer () <NSSpeechSynthesizerDelegate>
+@interface EZAudioPlayer ()
 
-@property (nonatomic, strong) EZAppleService *appleService;
-@property (nonatomic, strong) NSSpeechSynthesizer *synthesizer;
 @property (nonatomic, strong) AVPlayer *player;
 @property (nonatomic, strong) AVPlayerItem *playerItem;
 
@@ -58,8 +56,6 @@ static NSString *const kItemWhereFroms = @"com.apple.metadata:kMDItemWhereFroms"
 }
 
 - (void)setup {
-    self.useSystemTTSWhenPlayFailed = YES;
-
     // KVO timeControlStatus is not a good choice
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -97,13 +93,6 @@ static NSString *const kItemWhereFroms = @"com.apple.metadata:kMDItemWhereFroms"
 
 #pragma mark - Getter
 
-- (EZAppleService *)appleService {
-    if (!_appleService) {
-        _appleService = [[EZAppleService alloc] init];
-    }
-    return _appleService;
-}
-
 - (AVPlayer *)player {
     if (!_player) {
         _player = [[AVPlayer alloc] init];
@@ -126,10 +115,6 @@ static NSString *const kItemWhereFroms = @"com.apple.metadata:kMDItemWhereFroms"
         EZQueryService *defaultTTSService = [QueryServiceFactory.shared serviceWithTypeId:defaultTTSServiceType];
         _defaultTTSService = defaultTTSService;
         _defaultTTSService.audioPlayer = self;
-
-        if (defaultTTSServiceType == EZServiceTypeApple) {
-            self.appleService = (EZAppleService *)defaultTTSService;
-        }
     }
     return _defaultTTSService;
 }
@@ -210,15 +195,9 @@ static NSString *const kItemWhereFroms = @"com.apple.metadata:kMDItemWhereFroms"
         return;
     }
 
-    // 2. if service type is Apple, use system speech.
-    if (self.serviceType == EZServiceTypeApple) {
-        [self playSystemTextAudio:text language:language];
-        return;
-    }
-
+    // 2. get service text audio URL, and play.
     EZQueryService *service = designatedService ?: self.service;
 
-    // 3. get service text audio URL, and play.
     [service textToAudio:text fromLanguage:language accent:accent completionHandler:^(NSString *_Nullable url, NSError *_Nullable error) {
         self.currentServiceType = service.serviceType;
 
@@ -245,29 +224,11 @@ static NSString *const kItemWhereFroms = @"com.apple.metadata:kMDItemWhereFroms"
     // !!!: This method won't post play end notification.
     [_player pause];
 
-    // It wiil call delegate.
-    [_synthesizer stopSpeaking];
-
-    self.isPlaying = NO;
-}
-
-
-#pragma mark - NSSpeechSynthesizerDelegate
-
-- (void)speechSynthesizer:(NSSpeechSynthesizer *)sender didFinishSpeaking:(BOOL)finishedSpeaking {
     self.isPlaying = NO;
 }
 
 
 #pragma mark -
-
-/// Play system text audio.
-- (void)playSystemTextAudio:(NSString *)text language:(EZLanguage)language {
-    NSSpeechSynthesizer *synthesizer = [self.appleService playTextAudio:text textLanguage:language];
-    synthesizer.delegate = self;
-    self.synthesizer = synthesizer;
-    self.isPlaying = YES;
-}
 
 /// Play audio URL.
 - (void)playAudioURL:(NSString *)audioURLString
@@ -513,10 +474,6 @@ static NSString *const kItemWhereFroms = @"com.apple.metadata:kMDItemWhereFroms"
                                       accent:self.accent
                                     audioURL:nil
                            designatedService:defaultTTSAudioPlayer.defaultTTSService];
-    } else {
-        if (self.useSystemTTSWhenPlayFailed) {
-            [self playSystemTextAudio:self.text language:self.language];
-        }
     }
 }
 

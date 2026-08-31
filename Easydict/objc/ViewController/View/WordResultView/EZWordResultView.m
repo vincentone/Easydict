@@ -209,11 +209,6 @@ static NSString *const kMDictEntryURIScheme = @"mdict-entry";
                 resultLabel.font = [NSFont systemFontOfSize:14 * self.fontSizeRatio];
                 [self addSubview:resultLabel];
 
-                // OpenAI result text has its own paragraph style.
-                if ([result.serviceTypeWithUniqueIdentifier isEqualToString:EZServiceTypeOpenAI]) {
-                    resultLabel.paragraphSpacing = 0;
-                }
-
                 resultLabel.text = text;
                 resultLabel.delegate = self;
 
@@ -826,9 +821,6 @@ static NSString *const kMDictEntryURIScheme = @"mdict-entry";
 
         // For some special case, copied text language is not the queryTargetLanguage, like 龘, Youdao translate.
         EZLanguage language = [EZAppleService.shared detectTextSync:text];
-        if ([result.serviceTypeWithUniqueIdentifier isEqualToString:EZServiceTypeOpenAI]) {
-            language = result.to;
-        }
 
         EZServiceType defaultTTSServiceType = MyConfiguration.shared.defaultTTSServiceType;
         EZQueryService *defaultTTSService = [QueryServiceFactory.shared serviceWithTypeId:defaultTTSServiceType];
@@ -898,9 +890,6 @@ static NSString *const kMDictEntryURIScheme = @"mdict-entry";
     linkButton.image = linkImage;
 
     NSString *toolTip = NSLocalizedString(@"open_web_link", nil);
-    if (result.serviceTypeWithUniqueIdentifier == EZServiceTypeAppleDictionary) {
-        toolTip = NSLocalizedString(@"open_in_apple_dictionary", nil);
-    }
     linkButton.toolTip = toolTip;
 
     linkButton.link = [self.service wordLink:result.queryModel];

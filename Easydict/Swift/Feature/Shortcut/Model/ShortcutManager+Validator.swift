@@ -46,8 +46,8 @@ extension ShortcutManager {
                 return nil
             }
             guard let key = Sauce.shared.key(for: Int(carbonKeyCode)) else { return nil }
-            guard let keyCombo = KeyCombo(key: key, carbonModifiers: carbonModifiers) else { return nil }
-            return keyCombo
+            // KeyCombo(key:carbonModifiers:) is non-failable since Magnet 3.x.
+            return KeyCombo(key: key, carbonModifiers: carbonModifiers)
         }
     }
 }

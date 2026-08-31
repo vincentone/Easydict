@@ -29,35 +29,8 @@ typedef NS_ENUM(NSUInteger, EZShowWindowPosition) {
 };
 
 typedef NSString *EZServiceType NS_STRING_ENUM NS_SWIFT_NAME(ServiceType);
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeGoogle;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeBaidu;
 FOUNDATION_EXPORT EZServiceType const EZServiceTypeYoudao;
 FOUNDATION_EXPORT EZServiceType const EZServiceTypeApple;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeDeepL;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeVolcano;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeOpenAI;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeCustomOpenAI;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeBuiltInAI;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeAppleDictionary;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeBing;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeNiuTrans;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeCaiyun;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeTencent;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeAlibaba;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeGemini;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeOllama;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypePolishing;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeSummary;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeDeepSeek;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeGroq;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeZhipu;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeMiniMax;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeGitHub;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeDoubao;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeClaudeCode;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeClaude;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeCodexCLI;
-FOUNDATION_EXPORT EZServiceType const EZServiceTypeMDict;
 
 FOUNDATION_EXPORT NSString *const EZQueryTextTypeKey;
 FOUNDATION_EXPORT NSString *const EZIntelligentQueryTextTypeKey;
@@ -86,8 +59,6 @@ FOUNDATION_EXPORT EZActionType const EZActionTypeScreenshotOCR;
 FOUNDATION_EXPORT EZActionType const EZActionTypeInvokeQuery;
 FOUNDATION_EXPORT EZActionType const EZActionTypePasteboardOCR;
 FOUNDATION_EXPORT EZActionType const EZActionTypePasteboardTranslate;
-FOUNDATION_EXPORT EZActionType const EZActionTypeTranslateAndReplace;
-FOUNDATION_EXPORT EZActionType const EZActionTypePolishAndReplace;
 
 
 typedef NSString *EZSelectTextType NS_STRING_ENUM;

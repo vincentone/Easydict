@@ -63,6 +63,5 @@ extension QueryService: ServiceConfigRemovable {
             )
             NotificationCenter.default.postServiceUpdateNotification(windowType: winType)
         }
-        GlobalContext.shared.reloadLLMServicesSubscribers()
     }
 }

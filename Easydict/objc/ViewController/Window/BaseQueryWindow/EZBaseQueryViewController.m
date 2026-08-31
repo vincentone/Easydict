@@ -1307,11 +1307,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
                 return;
             }
 
-            // For some strange reason, the old service can not be deallocated, this will cause a memory leak, and we also need to cancel old services subscribers.
-            if ([service isKindOfClass:EZStreamService.class]) {
-                [((EZStreamService *)service) cancelSubscribers];
-            }
-
             NSInteger index = [self.serviceTypeIds indexOfObject:serviceTypeWithUniqueIdentifier];
             newServices[index] = updatedService;
             self.services = newServices.copy;
@@ -1584,50 +1579,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     resultCell.service = service;
     resultCell.result = result;
     [self setupResultCell:resultCell];
-
-    WKWebView *webView = nil;
-    if ([service.serviceType isEqualToString:EZServiceTypeAppleDictionary]) {
-        EZWebViewManager *webViewManager = result.webViewManager;
-        BOOL shouldRenderHTML = EZResultShouldRenderDictionaryHTML(result);
-        BOOL htmlChanged = ![webViewManager.loadedHTMLString isEqualToString:result.htmlString];
-        BOOL needLoadHTML = shouldRenderHTML && (!webViewManager.isLoaded || htmlChanged);
-        BOOL needUpdateIframe = shouldRenderHTML && webViewManager.needUpdateIframeHeight && webViewManager.isLoaded;
-        if (needLoadHTML || needUpdateIframe) {
-            webView = webViewManager.webView;
-            resultCell.wordResultView.webView = webView;
-        }
-
-        if (needLoadHTML) {
-            NSUInteger renderGeneration = [webViewManager beginRenderingHTML];
-            webViewManager.isLoaded = YES;
-            webViewManager.loadedHTMLString = result.htmlString;
-            WKNavigation *navigation = [webView loadHTMLString:result.htmlString baseURL:nil];
-            [webViewManager trackRenderingNavigation:navigation renderGeneration:renderGeneration];
-        } else if (needUpdateIframe) {
-            [webViewManager updateAllIframe];
-        }
-    } else if ([service.serviceType isEqualToString:EZServiceTypeMDict]) {
-        EZWebViewManager *webViewManager = result.webViewManager;
-        BOOL shouldRenderHTML = EZResultShouldRenderDictionaryHTML(result);
-        BOOL htmlChanged = ![webViewManager.loadedHTMLString isEqualToString:result.htmlString];
-        BOOL needLoadHTML = shouldRenderHTML && (!webViewManager.isLoaded || htmlChanged);
-        BOOL needUpdateIframe = shouldRenderHTML && webViewManager.needUpdateIframeHeight && webViewManager.isLoaded;
-        if (needLoadHTML || needUpdateIframe) {
-            webView = webViewManager.webView;
-            webView.appearance = nil;
-            resultCell.wordResultView.webView = webView;
-        }
-
-        if (needLoadHTML) {
-            NSUInteger renderGeneration = [webViewManager beginRenderingHTML];
-            webViewManager.isLoaded = YES;
-            webViewManager.loadedHTMLString = result.htmlString;
-            WKNavigation *navigation = [webView loadHTMLString:result.htmlString baseURL:nil];
-            [webViewManager trackRenderingNavigation:navigation renderGeneration:renderGeneration];
-        } else if (needUpdateIframe) {
-            [webViewManager updateAllIframe];
-        }
-    }
 
     return resultCell;
 }
