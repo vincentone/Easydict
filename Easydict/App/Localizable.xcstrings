@@ -282,40 +282,6 @@
         }
       }
     },
-    "Export Log": {
-      "localizations": {
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Exportar registro"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ログをエクスポート"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Exportovať záznam"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "导出日志"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "匯出記錄"
-          }
-        }
-      }
-    },
     "Failed to allocate memory": {
       "comment": "Error reason",
       "localizations": {
@@ -351,46 +317,6 @@
         }
       }
     },
-    "Feedback": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Feedback"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Comentarios"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "フィードバック"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Spätná väzba"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "反馈问题"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "意見回饋"
-          }
-        }
-      }
-    },
     "Function not implemented for the current algorithm": {
       "comment": "Error reason",
       "localizations": {
@@ -422,40 +348,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "目前演算法未實作此功能"
-          }
-        }
-      }
-    },
-    "Help": {
-      "localizations": {
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ayuda"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ヘルプ"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pomocník"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "帮助"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "說明"
           }
         }
       }
@@ -596,40 +488,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "為指定操作提供的緩衝區不足"
-          }
-        }
-      }
-    },
-    "Log Directory": {
-      "localizations": {
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Directorio de registros"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ログディレクトリ"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Priečinok so záznamom"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "日志目录"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "記錄目錄"
           }
         }
       }
@@ -2448,6 +2306,7 @@
     },
     "doubao.error.http_error": {
       "comment": "HTTP error with status code",
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2489,6 +2348,7 @@
     },
     "doubao.error.invalid_response": {
       "comment": "Invalid response error",
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2530,6 +2390,7 @@
     },
     "doubao.error.missing_api_key": {
       "comment": "Missing Doubao API Key error message",
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2570,6 +2431,7 @@
       }
     },
     "error.content_type.html": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2610,6 +2472,7 @@
       }
     },
     "error.content_type.html.suggestion": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2650,6 +2513,7 @@
       }
     },
     "error.content_type.json": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2690,6 +2554,7 @@
       }
     },
     "error.content_type.json.suggestion": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2730,6 +2595,7 @@
       }
     },
     "error.content_type.unknown": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2770,6 +2636,7 @@
       }
     },
     "error.content_type.unknown.suggestion": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -5869,46 +5736,6 @@
         }
       }
     },
-    "quit": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quit"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Salir"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "終了"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ukončiť"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "退出"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "結束"
-          }
-        }
-      }
-    },
     "refuse_hide_menu_bar_icon_msg": {
       "extractionState": "manual",
       "localizations": {
@@ -6356,6 +6183,7 @@
       }
     },
     "service.reasoning_effort.high": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -6396,6 +6224,7 @@
       }
     },
     "service.reasoning_effort.max": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -6436,6 +6265,7 @@
       }
     },
     "service.reasoning_effort.off": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -8394,86 +8224,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "關閉後，英語單字發音將使用預設 TTS 服務"
-          }
-        }
-      }
-    },
-    "setting.advance.show_ocr_menu_items": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show OCR Menu Items"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostrar elementos del menú OCR"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR メニュー項目を表示"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zobraziť položky OCR menu"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "显示 OCR 菜单项"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "顯示 OCR 選單項目"
-          }
-        }
-      }
-    },
-    "setting.advance.show_ocr_menu_items_desc": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show OCR-related menu items (Screenshot OCR, Pasteboard OCR, OCR Window) in the menu bar."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostrar los elementos del menú relacionados con OCR (OCR de captura de pantalla, OCR del portapapeles, Ventana OCR) en la barra de menús."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR 関連のメニュー項目（スクリーンショット OCR、クリップボード OCR、OCR ウィンドウ）をメニューバーに表示します。"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zobrazovať položky súvisiace s OCR (Snímka OCR, Schránka OCR, OCR okno) v menu lište."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "在菜单栏中显示 OCR 相关的菜单项（截图 OCR、剪贴板 OCR、OCR 窗口）。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "在選單列中顯示 OCR 相關的選單項目（截圖 OCR、剪貼簿 OCR、OCR 視窗）。"
           }
         }
       }

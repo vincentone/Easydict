@@ -44,6 +44,7 @@
 		031760F42E07FB2800CE8FD7 /* AppleLanguageDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031760EF2E07FB2800CE8FD7 /* AppleLanguageDetector.swift */; };
 		031C66DB2EDA14E90025D190 /* String+Split.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031C66D92EDA14E90025D190 /* String+Split.swift */; };
 		031C66DF2EDA1A400025D190 /* String+HandleInputText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031C66DE2EDA1A400025D190 /* String+HandleInputText.swift */; };
+		A1B2C3D4E5F60718293A4B5F /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5E /* StatusBarController.swift */; };
 		A1B2C3D4E5F60718293A4B5D /* SystemDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5C /* SystemDictionary.swift */; };
 		031DBD792AE01E130071CF85 /* easydict in Resources */ = {isa = PBXBuildFile; fileRef = 031DBD782AE01E130071CF85 /* easydict */; };
 		0320411A2E43BEB50065A05B /* ocr-en-text-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 032041192E43BEB50065A05B /* ocr-en-text-4.png */; };
@@ -206,7 +207,6 @@
 		038A9BC92E59A77900D08B57 /* ocr-en-text-list-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 038A9BC82E59A77900D08B57 /* ocr-en-text-list-2.png */; };
 		038A9BCB2E59B4EC00D08B57 /* ocr-en-poetry-8.png in Resources */ = {isa = PBXBuildFile; fileRef = 038A9BCA2E59B4EC00D08B57 /* ocr-en-poetry-8.png */; };
 		038A9BCD2E59B62C00D08B57 /* ocr-en-text-list-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 038A9BCC2E59B62C00D08B57 /* ocr-en-text-list-3.png */; };
-		038EA1AA2B41169C008A6DD1 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 038EA1A92B41169C008A6DD1 /* ZipArchive */; };
 		038EA1AD2B41282F008A6DD1 /* MJExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 038EA1AC2B41282F008A6DD1 /* MJExtension */; };
 		038F1F8F2BAD838F00CD2F65 /* NSMenu+PopUpBelowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038F1F8E2BAD838F00CD2F65 /* NSMenu+PopUpBelowView.swift */; };
 		03916D712E68154F007E50D7 /* Task+Sleep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03916D702E68154F007E50D7 /* Task+Sleep.swift */; };
@@ -424,7 +424,6 @@
 		278540342B3DE04F004E9488 /* GeneralTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278540332B3DE04F004E9488 /* GeneralTab.swift */; };
 		27FE95272B3DC55F000AD654 /* EasydictApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FE95262B3DC55F000AD654 /* EasydictApp.swift */; };
 		27FE98092B3DD536000AD654 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FE98082B3DD536000AD654 /* SettingView.swift */; };
-		27FE980B2B3DD5D1000AD654 /* MenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FE980A2B3DD5D1000AD654 /* MenuItemView.swift */; };
 		4D4D6D6F0000000000000004 /* darkreader.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 4D4D6D6F0000000000000014 /* darkreader.min.js */; };
 		4D4D6D6F0000000000000005 /* DarkReader-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4D4D6D6F0000000000000015 /* DarkReader-LICENSE.txt */; };
 		59F60C73B7C74FC8820E138E /* SystemUtilitiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C170F2954D79899C1339 /* SystemUtilitiesTests.swift */; };
@@ -553,6 +552,7 @@
 		031760EF2E07FB2800CE8FD7 /* AppleLanguageDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLanguageDetector.swift; sourceTree = "<group>"; };
 		031C66D92EDA14E90025D190 /* String+Split.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Split.swift"; sourceTree = "<group>"; };
 		031C66DE2EDA1A400025D190 /* String+HandleInputText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+HandleInputText.swift"; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B5E /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60718293A4B5C /* SystemDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemDictionary.swift; sourceTree = "<group>"; };
 		031DBD782AE01E130071CF85 /* easydict */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = easydict; sourceTree = "<group>"; };
 		032041192E43BEB50065A05B /* ocr-en-text-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ocr-en-text-4.png"; sourceTree = "<group>"; };
@@ -1027,7 +1027,6 @@
 		27FE95262B3DC55F000AD654 /* EasydictApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasydictApp.swift; sourceTree = "<group>"; };
 		27FE95282B3DC666000AD654 /* entry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = entry.h; sourceTree = "<group>"; };
 		27FE98082B3DD536000AD654 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
-		27FE980A2B3DD5D1000AD654 /* MenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemView.swift; sourceTree = "<group>"; };
 		357E179B303EF855EF4561FB /* Pods-EasydictTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EasydictTests.release.xcconfig"; path = "Target Support Files/Pods-EasydictTests/Pods-EasydictTests.release.xcconfig"; sourceTree = "<group>"; };
 		378E73A7EA8FC8FB9C975A63 /* Pods_EasydictTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EasydictTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E9448196CAA4B98A453AA5C /* QueryServiceFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryServiceFactory.swift; sourceTree = "<group>"; };
@@ -1127,7 +1126,6 @@
 				03B63ABF2A86967800E155ED /* CoreServices.framework in Frameworks */,
 				04D7C0A22F00000100D1C7A1 /* libz.tbd in Frameworks */,
 				038030972B4106800009230C /* CocoaLumberjackSwift in Frameworks */,
-				038EA1AA2B41169C008A6DD1 /* ZipArchive in Frameworks */,
 				03E534BC2CE0D38C00B37264 /* AcknowList in Frameworks */,
 				860409132DDD5F090095781D /* FirebaseAnalytics in Frameworks */,
 				5C5B3D6F80CB486E9D615E07 /* Sentry in Frameworks */,
@@ -1634,6 +1632,7 @@
 		0376AB59294F5EEC00E2E2A4 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				A1B2C3D4E5F60718293A4B5E /* StatusBarController.swift */,
 				27FE95262B3DC55F000AD654 /* EasydictApp.swift */,
 				031DBD782AE01E130071CF85 /* easydict */,
 				03D1C8772952B1CD00F2C7BD /* GoogleService-Info.plist */,
@@ -2789,7 +2788,6 @@
 				03FEF15F2D45D06E002D5F28 /* Window */,
 				030D61262CD9BA0F000DF298 /* AcknowListView */,
 				9643D93E2B6FC405000FBEA6 /* MenuView */,
-				27FE980A2B3DD5D1000AD654 /* MenuItemView.swift */,
 				0AC11B212B4D16A500F07198 /* WindowAccessor.swift */,
 				0AC11B232B4E46B300F07198 /* TapHandlerView.swift */,
 				C490BF712BE910B70021E40A /* AdvancedTabItemView.swift */,
@@ -3173,7 +3171,6 @@
 				03A8308C2B405F8E00112834 /* Sparkle */,
 				038030942B4106800009230C /* CocoaLumberjack */,
 				038030962B4106800009230C /* CocoaLumberjackSwift */,
-				038EA1A92B41169C008A6DD1 /* ZipArchive */,
 				038EA1AC2B41282F008A6DD1 /* MJExtension */,
 				EA3B81FB2B52555C004C0E8B /* Defaults */,
 				967712E92B5B913600105E0F /* KeyHolder */,
@@ -3236,7 +3233,6 @@
 				03A8308B2B405F8E00112834 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				03A830932B4076FC00112834 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				038030932B4106800009230C /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
-				038EA1A82B41169C008A6DD1 /* XCRemoteSwiftPackageReference "ZipArchive" */,
 				038EA1AB2B41282F008A6DD1 /* XCRemoteSwiftPackageReference "MJExtension" */,
 				EA3B81FA2B52555C004C0E8B /* XCRemoteSwiftPackageReference "Defaults" */,
 				967712E82B5B913600105E0F /* XCRemoteSwiftPackageReference "KeyHolder" */,
@@ -3588,6 +3584,7 @@
 				03B0233629231FA6001C7E63 /* MMEventMonitor.m in Sources */,
 				03E75A002ED75F6D00E1741E /* NSView+ObjCCompat.swift in Sources */,
 				031C66DF2EDA1A400025D190 /* String+HandleInputText.swift in Sources */,
+				A1B2C3D4E5F60718293A4B5F /* StatusBarController.swift in Sources */,
 				A1B2C3D4E5F60718293A4B5D /* SystemDictionary.swift in Sources */,
 				03B0233729231FA6001C7E63 /* MMMake.m in Sources */,
 				03D5C4C82D9D1EE70054D0D4 /* TextAnalysis.swift in Sources */,
@@ -3670,7 +3667,6 @@
 				0311A5AC2E150522007AB02B /* OCRTextNormalizer.swift in Sources */,
 				0337D3CE2E66AC3F00B08437 /* SystemUtility+AppleScript.swift in Sources */,
 				035451032E3C60D600BAA8E5 /* OCRConstants.swift in Sources */,
-				27FE980B2B3DD5D1000AD654 /* MenuItemView.swift in Sources */,
 				9643D9392B6F49E0000FBEA6 /* AppShortcutSettingView.swift in Sources */,
 				96099AE22B5D40330055C4DD /* ShortcutTab.swift in Sources */,
 				03BB2DEB29F57DC000447EDD /* NSImage+EZSymbolmage.m in Sources */,
@@ -4282,14 +4278,6 @@
 				minimumVersion = 3.7.1;
 			};
 		};
-		038EA1A82B41169C008A6DD1 /* XCRemoteSwiftPackageReference "ZipArchive" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ZipArchive/ZipArchive.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.5.5;
-			};
-		};
 		038EA1AB2B41282F008A6DD1 /* XCRemoteSwiftPackageReference "MJExtension" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CoderMJLee/MJExtension";
@@ -4441,11 +4429,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 038030932B4106800009230C /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
 			productName = CocoaLumberjackSwift;
-		};
-		038EA1A92B41169C008A6DD1 /* ZipArchive */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 038EA1A82B41169C008A6DD1 /* XCRemoteSwiftPackageReference "ZipArchive" */;
-			productName = ZipArchive;
 		};
 		038EA1AC2B41282F008A6DD1 /* MJExtension */ = {
 			isa = XCSwiftPackageProductDependency;

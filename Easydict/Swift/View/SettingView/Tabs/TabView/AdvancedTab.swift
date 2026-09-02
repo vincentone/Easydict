@@ -268,15 +268,6 @@ struct AdvancedTab: View {
                     )
                 }
 
-                Toggle(isOn: $showOCRMenuItems) {
-                    AdvancedTabItemView(
-                        color: .orange,
-                        icon: .textAndCommandMacwindow,
-                        labelText: "setting.advance.show_ocr_menu_items",
-                        subtitleText: "setting.advance.show_ocr_menu_items_desc"
-                    )
-                }
-
                 Toggle(isOn: $isScreenshotTipLayerHidden) {
                     AdvancedTabItemView(
                         color: .purple,
@@ -433,7 +424,6 @@ struct AdvancedTab: View {
     @Default(.enableCompatibilityReplace) private var enableCompatibilityReplace
     @Default(.minClassicalChineseTextDetectLength) private var minClassicalChineseTextDetectLength
     @Default(.enableOCRTextNormalization) private var enableOCRTextNormalization
-    @Default(.showOCRMenuItems) private var showOCRMenuItems
     @Default(.isScreenshotTipLayerHidden) private var isScreenshotTipLayerHidden
     @Default(.autoSelectAllTextFieldText) private var autoSelectAllTextFieldText
     @Default(.preferAppleScriptAPI) private var preferAppleScriptAPI
