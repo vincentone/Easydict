@@ -89,130 +89,6 @@ struct AdvancedTab: View {
                 Text("setting.advance.header.general_settings")
             }
 
-            // Mouse query icon
-            Section {
-                let minLengthBinding = Binding<Double>(
-                    get: {
-                        Double(min(50, max(0, autoShowQueryIconMinTextLength)))
-                    },
-                    set: { newValue in
-                        autoShowQueryIconMinTextLength = min(50, max(0, Int(newValue)))
-                    }
-                )
-
-                Toggle(isOn: $autoShowQueryIcon) {
-                    AdvancedTabItemView(
-                        color: .blue,
-                        icon: .cursorarrowRays,
-                        labelText: "setting.advance.auto_show_query_icon"
-                    )
-                }
-
-                Group {
-                    LabeledContent {
-                        Picker(selection: $autoShowQueryIconExcludedLanguage) {
-                            ForEach(Language.allAvailableOptions, id: \.rawValue) { option in
-                                Text(verbatim: "\(option.flagEmoji) \(option.localizedName)")
-                                    .tag(option)
-                            }
-                        } label: {
-                            EmptyView()
-                        }
-                        .labelsHidden()
-                    } label: {
-                        Text("setting.advance.auto_show_query_icon.condition.language")
-                    }
-
-                    LabeledContent {
-                        HStack(spacing: 8) {
-                            Slider(value: minLengthBinding, in: 0 ... 50, step: 10)
-                            Text("\(autoShowQueryIconMinTextLength)")
-                                .frame(width: 32, alignment: .trailing)
-                                .monospacedDigit()
-                        }
-                    } label: {
-                        Text("setting.advance.auto_show_query_icon.condition.min_length")
-                    }
-
-                    Text("setting.advance.auto_show_query_icon.condition.desc")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                }
-                .padding(.leading, 28)
-                .disabled(!autoShowQueryIcon)
-                .opacity(autoShowQueryIcon ? 1 : 0.6)
-
-                Toggle(isOn: $clickQuery) {
-                    AdvancedTabItemView(
-                        color: .green,
-                        icon: .cursorarrowClick,
-                        labelText: "setting.advance.click_icon_query_info"
-                    )
-                }
-            } header: {
-                Text("setting.advance.mouse_select_query.header")
-            }
-
-            // Force get selected text and replace text
-            Section {
-                Toggle(isOn: $enableForceGetSelectedText) {
-                    AdvancedTabItemView(
-                        color: .blue,
-                        icon: .characterCursorIbeam,
-                        labelText: "setting.advance.enable_force_get_selected_text",
-                        subtitleText: "setting.advance.enable_force_get_selected_text_desc"
-                    )
-                }
-
-                Picker(
-                    selection: $forceGetSelectedTextType,
-                    label: AdvancedTabItemView(
-                        color: .green,
-                        icon: .highlighter,
-                        labelText: "setting.advance.force_get_selected_text_type"
-                    )
-                ) {
-                    ForEach(ForceGetSelectedTextType.allCases, id: \.rawValue) { option in
-                        Text(option.localizedStringResource)
-                            .tag(option)
-                    }
-                }
-
-                Toggle(isOn: $preferAppleScriptAPI) {
-                    AdvancedTabItemView(
-                        color: .orange,
-                        icon: .applescript,
-                        labelText: "setting.advance.prefer_applescript_api",
-                        subtitleText: "setting.advance.prefer_applescript_api_desc"
-                    )
-                }
-                Toggle(isOn: $enableCompatibilityReplace) {
-                    AdvancedTabItemView(
-                        color: .purple,
-                        icon: .arrowForwardSquare,
-                        labelText: "setting.advance.enable_compatibility_replace",
-                        subtitleText: "setting.advance.enable_compatibility_replace_desc"
-                    )
-                }
-                Toggle(isOn: $autoSelectAllTextFieldText) {
-                    AdvancedTabItemView(
-                        color: .red,
-                        icon: .checkmarkSquare,
-                        labelText: "setting.advance.auto_select_all_text_field_text",
-                        subtitleText: "setting.advance.auto_select_all_text_field_text_desc"
-                    )
-                }
-                Toggle(isOn: $enableRemoveBooksExcerptInfo) {
-                    AdvancedTabItemView(
-                        color: .mint,
-                        icon: .book,
-                        labelText: "setting.advance.enable_remove_books_excerpt_info"
-                    )
-                }
-            } header: {
-                Text("setting.advance.header.text_selection_and_replacement")
-            }
-
             // Query text processing
             Section {
                 Toggle(isOn: $replaceNewlineWithSpace) {
@@ -282,20 +158,6 @@ struct AdvancedTab: View {
 
             // Windows management
             Section {
-                Picker(
-                    selection: $mouseSelectTranslateWindowType,
-                    label: AdvancedTabItemView(
-                        color: .blue,
-                        icon: .cursorarrowRays,
-                        labelText: "setting.advance.window.mouse_select_translate_window_type"
-                    )
-                ) {
-                    ForEach(EZWindowType.availableOptions, id: \.rawValue) { option in
-                        Text(option.localizedStringResource)
-                            .tag(option)
-                    }
-                }
-
                 Picker(
                     selection: $shortcutSelectTranslateWindowType,
                     label: AdvancedTabItemView(
@@ -421,30 +283,13 @@ struct AdvancedTab: View {
     @Default(.preferYoudaoTTSForEnglishWord) private var preferYoudaoTTSForEnglishWord
     @Default(.disableTipsView) private var disableTipsView
     @Default(.enableYoudaoOCR) private var enableYoudaoOCR
-    @Default(.enableCompatibilityReplace) private var enableCompatibilityReplace
     @Default(.minClassicalChineseTextDetectLength) private var minClassicalChineseTextDetectLength
     @Default(.enableOCRTextNormalization) private var enableOCRTextNormalization
     @Default(.isScreenshotTipLayerHidden) private var isScreenshotTipLayerHidden
-    @Default(.autoSelectAllTextFieldText) private var autoSelectAllTextFieldText
-    @Default(.preferAppleScriptAPI) private var preferAppleScriptAPI
-
-    // Force get selected text
-    @Default(.enableForceGetSelectedText) private var enableForceGetSelectedText
-    @Default(.forceGetSelectedTextType) private var forceGetSelectedTextType
-
-    // mouse select from Books.app
-    @Default(.enableRemoveBooksExcerptInfo) private var enableRemoveBooksExcerptInfo
-
-    // Mouse select query
-    @Default(.autoShowQueryIcon) private var autoShowQueryIcon
-    @Default(.autoShowQueryIconExcludedLanguage) private var autoShowQueryIconExcludedLanguage
-    @Default(.autoShowQueryIconMinTextLength) private var autoShowQueryIconMinTextLength
-    @Default(.clickQuery) private var clickQuery
 
     // Windows management
     @Default(.fixedWindowPosition) private var fixedWindowPosition
     @Default(.miniWindowPosition) private var miniWindowPosition
-    @Default(.mouseSelectTranslateWindowType) private var mouseSelectTranslateWindowType
     @Default(.shortcutSelectTranslateWindowType) private var shortcutSelectTranslateWindowType
     @Default(.pinWindowWhenDisplayed) private var pinWindowWhenDisplayed
     @Default(.hideMainWindow) private var hideMainWindow

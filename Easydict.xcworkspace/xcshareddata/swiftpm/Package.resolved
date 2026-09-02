@@ -1,5 +1,5 @@
 {
-  "originHash" : "3ac1469a12ad376c7f238fa355f53deddd339d0ce9d9bb9a3b8f1c5917e3be43",
+  "originHash" : "1cb3069df62bff27d5b6f5550e89850d08ae4bc4d9f273e69104862d6d99a3cb",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -52,15 +52,6 @@
       "state" : {
         "revision" : "6bbb83cbf9d886623a967a965c8fb1b73e6566f9",
         "version" : "1.22.0"
-      }
-    },
-    {
-      "identity" : "axswift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tisfeng/AXSwift.git",
-      "state" : {
-        "revision" : "d737b605c99f6e0f6a21448d0836110bd15b7710",
-        "version" : "0.3.7"
       }
     },
     {
@@ -289,15 +280,6 @@
       }
     },
     {
-      "identity" : "selectedtextkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tisfeng/SelectedTextKit.git",
-      "state" : {
-        "revision" : "8914f64a3616b548ddbe05cd3227c57d704af8cf",
-        "version" : "2.6.6"
-      }
-    },
-    {
       "identity" : "sentry-cocoa",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa/",
@@ -331,15 +313,6 @@
       "state" : {
         "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
         "version" : "5.7.1"
-      }
-    },
-    {
-      "identity" : "sparkle",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sparkle-project/Sparkle",
-      "state" : {
-        "revision" : "ac2def288cbff5cfc7df3ffef6abdf45b72bcb0a",
-        "version" : "2.9.6"
       }
     },
     {

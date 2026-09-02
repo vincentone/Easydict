@@ -6,7 +6,6 @@
 //  Copyright © 2025 izual. All rights reserved.
 //
 
-import SelectedTextKit
 import Testing
 
 @testable import Easydict
@@ -14,8 +13,6 @@ import Testing
 /// Tests for system utilities and macOS integrations
 @Suite("System Utilities", .tags(.system, .integration))
 struct SystemUtilitiesTests {
-    let systemUtility = SystemUtility.shared
-
     @Test("Alert Volume Control", .tags(.system))
     func testAlertVolume() async throws {
         let originalVolume = try await AppleScriptTask.alertVolume()
@@ -29,38 +26,5 @@ struct SystemUtilitiesTests {
 
         try await AppleScriptTask.setAlertVolume(originalVolume)
         #expect(true, "Alert volume test completed")
-    }
-
-    @Test(
-        "Get Selected Text",
-        .tags(.system, .performance),
-        .disabled("Only run manually")
-    )
-    func testGetSelectedText() async {
-        // Run thousands of times to test crash.
-        for i in 0 ..< 2000 {
-            print("test index: \(i)")
-            let selectedText = await systemUtility.getSelectedText() ?? ""
-            print("\(i) selectedText: \(selectedText)")
-        }
-        #expect(true, "Test getSelectedText completed without crash")
-    }
-
-    @Test(
-        "Concurrent Get Selected Text",
-        .tags(.system, .performance),
-        .disabled("Only run manually")
-    )
-    func testConcurrentGetSelectedText() async {
-        await withTaskGroup(of: Void.self) { group in
-            for i in 0 ..< 2000 {
-                group.addTask {
-                    print("test index: \(i)")
-                    let selectedText = await systemUtility.getSelectedText() ?? ""
-                    print("\(i) selectedText: \(selectedText)")
-                }
-            }
-        }
-        #expect(true, "Concurrent test getSelectedText completed without crash")
     }
 }

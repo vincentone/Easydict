@@ -99,12 +99,6 @@ struct DetectResponse: Content {
     var sourceLanguage: String // BCP-47 language code
 }
 
-// MARK: - GetSelectedTextResponse
-
-struct GetSelectedTextResponse: Content {
-    var selectedText: String?
-}
-
 // MARK: - EZQueryTextType + Codable
 
 extension EZQueryTextType: Codable {

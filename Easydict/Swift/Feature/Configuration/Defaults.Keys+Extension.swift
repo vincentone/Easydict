@@ -32,16 +32,6 @@ extension Defaults.Keys {
         default: EZLanguageManager.shared().systemPreferredTwoLanguages[1]
     )
 
-    static let autoShowQueryIcon = Key<Bool>("EZConfiguration_kAutoSelectTextKey", default: true)
-    static let autoShowQueryIconExcludedLanguage = Key<Language>(
-        "EZConfiguration_kAutoShowQueryIconExcludedLanguageKey",
-        default: Defaults[.firstLanguage]
-    )
-    static let autoShowQueryIconMinTextLength = Key<Int>(
-        "EZConfiguration_kAutoShowQueryIconMinTextLengthKey",
-        default: 0
-    )
-    static let clickQuery = Key<Bool>("EZConfiguration_kClickQueryKey", default: false)
     static let autoPlayAudio = Key<Bool>("EZConfiguration_kAutoPlayAudioKey", default: false)
     static let pronunciation = Key<EnglishPronunciation>(
         "EZConfiguration_kPronunciationKey",
@@ -49,9 +39,6 @@ extension Defaults.Keys {
     )
     static let hideMainWindow = Key<Bool>("EZConfiguration_kHideMainWindowKey", default: true)
     static let autoQueryOCRText = Key<Bool>("EZConfiguration_kAutoQueryOCTTextKey", default: true)
-    static let autoQuerySelectedText = Key<Bool>(
-        "EZConfiguration_kAutoQuerySelectedTextKey", default: true
-    )
     static let autoQueryPastedText = Key<Bool>(
         "EZConfiguration_kAutoQueryPastedTextKey", default: false
     )
@@ -59,9 +46,6 @@ extension Defaults.Keys {
         "EZConfiguration_kAutoQueryWhenTextChangedKey", default: false
     )
     static let autoCopyOCRText = Key<Bool>("EZConfiguration_kAutoCopyOCRTextKey", default: false)
-    static let autoCopySelectedText = Key<Bool>(
-        "EZConfiguration_kAutoCopySelectedTextKey", default: false
-    )
     static let autoCopyFirstTranslatedText = Key<Bool>(
         "EZConfiguration_kAutoCopyFirstTranslatedTextKey",
         default: false
@@ -78,7 +62,6 @@ extension Defaults.Keys {
         default: true
     )
     static let hideMenuBarIcon = Key<Bool>("EZConfiguration_kHideMenuBarIconKey", default: false)
-    static let includeBetaUpdates = Key<Bool>("EZConfiguration_kIncludeBetaUpdatesKey", default: false)
     static let fixedWindowPosition = Key<EZShowWindowPosition>(
         "EZConfiguration_kShowFixedWindowPositionKey",
         default: .right
@@ -86,10 +69,6 @@ extension Defaults.Keys {
     static let miniWindowPosition = Key<EZShowWindowPosition>(
         "EZConfiguration_kShowMiniWindowPositionKey",
         default: .mouse
-    )
-    static let mouseSelectTranslateWindowType = Key<EZWindowType>(
-        "EZConfiguration_kMouseSelectTranslateWindowTypeKey",
-        default: .fixed
     )
     static let shortcutSelectTranslateWindowType = Key<EZWindowType>(
         "EZConfiguration_kShortcutSelectTranslateWindowTypeKey",
@@ -104,10 +83,6 @@ extension Defaults.Keys {
 
     static let clearQueryWhenInputTranslate = Key<Bool>(
         "EZConfiguration_kClearInputKey", default: false
-    )
-    static let keepPrevResultWhenSelectTranslateTextIsEmpty = Key<Bool>(
-        "EZConfiguration_kKeepPrevResultKey",
-        default: true
     )
     static let selectQueryTextWhenWindowActivate = Key<Bool>(
         "EZConfiguration_kSelectQueryTextWhenWindowActivate",
@@ -138,10 +113,6 @@ extension Defaults.Keys {
     static let enableBetaFeature = Key<Bool>("EZBetaFeatureKey", default: false)
     static var disableTipsView = Key<Bool>("disableTipsViewKey", default: false)
     static var enableYoudaoOCR = Key<Bool>("enableYoudaoOCR", default: false)
-    static var enableCompatibilityReplace = Key<Bool>(
-        "replaceWithTranslationInCompatibilityMode",
-        default: false
-    )
     static var enableHTTPServer = Key<Bool>("enableHTTPServer", default: false)
     static var httpPort = Key<String>("httpPort", default: "8080")
 
@@ -156,38 +127,6 @@ extension Defaults.Keys {
     static var minClassicalChineseTextDetectLength = Key<String>(
         "minClassicalChineseTextDetectLength",
         default: "\(SharedConstants.minClassicalChineseLength)"
-    )
-
-    static let enableForceGetSelectedText = Key<Bool>(
-        "EZConfiguration_kForceAutoGetSelectedText",
-        default: true
-    )
-    static var forceGetSelectedTextType = Key<ForceGetSelectedTextType>(
-        "EZConfiguration_kForceGetSelectedTextTypeKey",
-        default: .menuBarActionCopy
-    )
-
-    static let enableRemoveBooksExcerptInfo = Key<Bool>(
-        "EZConfiguration_kEnableRemoveBooksExcerptInfo",
-        default: true
-    )
-
-    /// Whether AI/streaming service results should render Markdown formatting
-    /// (headings, bold, lists, blockquotes, code) in the result label.
-    /// Plain-text services (Google, Bing, DeepL, etc.) ignore this setting.
-    static let enableMarkdownRendering = Key<Bool>(
-        "EZConfiguration_kEnableMarkdownRendering",
-        default: true
-    )
-
-    static let autoSelectAllTextFieldText = Key<Bool>(
-        "EZConfiguration_kAutoSelectAllTextFieldText",
-        default: true
-    )
-
-    static let preferAppleScriptAPI = Key<Bool>(
-        "EZConfiguration_kPreferAppleScriptAPI",
-        default: true
     )
 
     /// Cannot use NSScreen, so we use CGRect to record the screen visible frame for EZShowWindowPositionFormer
@@ -324,10 +263,6 @@ class ShortcutWrapper<T: KeyCombo> {
 /// shortcut
 extension Defaults.Keys {
     // Global
-    static let selectionShortcut = Key<KeyCombo?>("EZSelectionShortcutKey_keyHolder")
-    static let toggleAutoSelectTextShortcut = Key<KeyCombo?>(
-        "EZToggleAutoSelectTextShortcutKey_keyHolder"
-    )
     static let snipShortcut = Key<KeyCombo?>("EZSnipShortcutKey_keyHolder")
     static let inputShortcut = Key<KeyCombo?>("EZInputShortcutKey_keyHolder")
     // Note: This key value is not suitable for renaming, because it is used in old versions.

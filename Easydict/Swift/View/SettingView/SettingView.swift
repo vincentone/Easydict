@@ -13,7 +13,6 @@ import SwiftUI
 enum SettingTab: Int {
     case general
     case service
-    case disabled
     case advanced
     case shortcut
     case privacy
@@ -39,10 +38,6 @@ struct SettingView: View {
             FavoritesTab()
                 .tabItem { Label("favorites.tab", systemImage: "star") }
                 .tag(SettingTab.favorites)
-
-            DisabledAppTab()
-                .tabItem { Label("disabled_app_list", systemImage: "nosign") }
-                .tag(SettingTab.disabled)
 
             ShortcutTab()
                 .tabItem { Label("shortcut", systemImage: "command.square") }
@@ -80,8 +75,6 @@ struct SettingView: View {
         // Keep the settings page Windows all the same width to avoid strange animations.
         let maxWidth: Double = 900
         let height: Double = switch selection {
-        case .disabled:
-            500
         case .privacy:
             340
         case .about:

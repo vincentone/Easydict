@@ -44,14 +44,6 @@ class MyConfiguration: NSObject {
     @DefaultsWrapper(.queryFromLanguage) var fromLanguage: Language
     @DefaultsWrapper(.queryToLanguage) var toLanguage: Language
 
-    @DefaultsWrapper(.autoShowQueryIcon) var autoSelectText: Bool
-    @DefaultsWrapper(.autoShowQueryIconExcludedLanguage) var autoShowQueryIconExcludedLanguage: Language
-    @DefaultsWrapper(.autoShowQueryIconMinTextLength) var autoShowQueryIconMinTextLength: Int
-    @DefaultsWrapper(.enableForceGetSelectedText) var enableForceGetSelectedText: Bool
-    @DefaultsWrapper(.clickQuery) var clickQuery: Bool
-
-    @DefaultsWrapper(.mouseSelectTranslateWindowType) var mouseSelectTranslateWindowType:
-        EZWindowType
     @DefaultsWrapper(.shortcutSelectTranslateWindowType) var shortcutSelectTranslateWindowType:
         EZWindowType
     @DefaultsWrapper(.fixedWindowPosition) var fixedWindowPosition: EZShowWindowPosition
@@ -60,45 +52,34 @@ class MyConfiguration: NSObject {
     @DefaultsWrapper(.hideMainWindow) var hideMainWindow: Bool
 
     @DefaultsWrapper(.clearQueryWhenInputTranslate) var clearInput: Bool
-    @DefaultsWrapper(.keepPrevResultWhenSelectTranslateTextIsEmpty) var keepPrevResultWhenEmpty:
-        Bool
     @DefaultsWrapper(.selectQueryTextWhenWindowActivate) var selectQueryTextWhenWindowActivate: Bool
     @DefaultsWrapper(.automaticallyRemoveCodeCommentSymbols) var automaticallyRemoveCodeCommentSymbols: Bool
     @DefaultsWrapper(.automaticWordSegmentation) var automaticWordSegmentation: Bool
     @DefaultsWrapper(.replaceNewlineWithSpace) var replaceNewlineWithSpace: Bool
-    @DefaultsWrapper(.enableRemoveBooksExcerptInfo) var enableRemoveBooksExcerptInfo: Bool
 
     @DefaultsWrapper(.autoQueryOCRText) var autoQueryOCRText: Bool
-    @DefaultsWrapper(.autoQuerySelectedText) var autoQuerySelectedText: Bool
     @DefaultsWrapper(.autoQueryPastedText) var autoQueryPastedText: Bool
     @DefaultsWrapper(.autoQueryWhenTextChanged) var autoQueryWhenTextChanged: Bool
     @DefaultsWrapper(.autoPlayAudio) var autoPlayAudio: Bool
     @DefaultsWrapper(.pronunciation) var pronunciation: EnglishPronunciation
     @DefaultsWrapper(.preferYoudaoTTSForEnglishWord) var preferYoudaoTTSForEnglishWord: Bool
 
-    @DefaultsWrapper(.autoCopySelectedText) var autoCopySelectedText: Bool
     @DefaultsWrapper(.autoCopyOCRText) var autoCopyOCRText: Bool
     @DefaultsWrapper(.autoCopyFirstTranslatedText) var autoCopyFirstTranslatedText: Bool
 
     @DefaultsWrapper(.appearanceType) var appearance: AppearanceType
     @DefaultsWrapper(.hideMenuBarIcon) var hideMenuBarIcon: Bool
     @DefaultsWrapper(.fontSizeOptionIndex) var fontSizeIndex: UInt
-    @DefaultsWrapper(.enableMarkdownRendering) var enableMarkdownRendering: Bool
 
     // Advanced Tab
     @DefaultsWrapper(.disableTipsView) var disableTipsView: Bool
     @DefaultsWrapper(.enableBetaFeature) private(set) var beta: Bool
     @DefaultsWrapper(.enableYoudaoOCR) var enableYoudaoOCR: Bool
-    @DefaultsWrapper(.enableCompatibilityReplace) var enableCompatibilityReplace: Bool
-    @DefaultsWrapper(.forceGetSelectedTextType) var forceGetSelectedTextType:
-        ForceGetSelectedTextType
 
     @DefaultsWrapper(.enableOCRTextNormalization) var enableOCRTextNormalization: Bool
     @DefaultsWrapper(.isScreenshotTipLayerHidden) var isScreenshotTipLayerHidden: Bool
     @DefaultsWrapper(.formerFixedScreenVisibleFrame) var formerFixedScreenVisibleFrame: CGRect
     @DefaultsWrapper(.formerMiniScreenVisibleFrame) var formerMiniScreenVisibleFrame: CGRect
-
-    @DefaultsWrapper(.preferAppleScriptAPI) var preferAppleScriptAPI: Bool
 
     // Max window height percentage, e.g., 80 means 80% of the screen height
     @DefaultsWrapper(.maxWindowHeightPercentage) var maxWindowHeightPercentage: Int
@@ -108,7 +89,6 @@ class MyConfiguration: NSObject {
 
     @ShortcutWrapper(.pinShortcut) var pinShortcutString: String
 
-    let updater = GlobalContext.shared.updaterController.updater
     let fontSizes: [CGFloat] = [1, 1.1, 1.2, 1.3, 1.4]
     var disabledAutoSelect: Bool = false
     var isRecordingSelectTextShortcutKey: Bool = false
@@ -117,16 +97,6 @@ class MyConfiguration: NSObject {
     var fontSizeRatio: CGFloat {
         let safeIndex = max(0, min(Int(fontSizeIndex), fontSizes.count - 1))
         return fontSizes[safeIndex]
-    }
-
-    var automaticallyChecksForUpdates: Bool {
-        get {
-            updater.automaticallyChecksForUpdates
-        }
-        set {
-            updater.automaticallyChecksForUpdates = newValue
-            logSettings(["automatically_checks_for_updates": newValue])
-        }
     }
 
     var defaultTTSServiceType: ServiceType {
@@ -165,41 +135,6 @@ class MyConfiguration: NSObject {
             }
             .store(in: &cancellables)
 
-        Defaults.publisher(.autoShowQueryIcon, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetAutoSelectText()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.autoShowQueryIconExcludedLanguage, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetAutoShowQueryIconExcludedLanguage()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.autoShowQueryIconMinTextLength, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetAutoShowQueryIconMinTextLength()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.enableForceGetSelectedText, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetForceAutoGetSelectedText()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.clickQuery, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetClickQuery()
-            }
-            .store(in: &cancellables)
-
         Defaults.publisher(.hideMainWindow, options: [])
             .removeDuplicates()
             .sink { [weak self] _ in
@@ -211,13 +146,6 @@ class MyConfiguration: NSObject {
             .removeDuplicates()
             .sink { [weak self] _ in
                 self?.didSetAutoQueryOCRText()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.autoQuerySelectedText, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetAutoQuerySelectedText()
             }
             .store(in: &cancellables)
 
@@ -239,13 +167,6 @@ class MyConfiguration: NSObject {
             .removeDuplicates()
             .sink { [weak self] _ in
                 self?.didSetPronunciation()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.autoCopySelectedText, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetAutoCopySelectedText()
             }
             .store(in: &cancellables)
 
@@ -281,13 +202,6 @@ class MyConfiguration: NSObject {
             .removeDuplicates()
             .sink { [weak self] _ in
                 self?.didSetFixedWindowPosition()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.mouseSelectTranslateWindowType, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetMouseSelectTranslateWindowType()
             }
             .store(in: &cancellables)
 
@@ -367,38 +281,9 @@ extension MyConfiguration {
         logSettings(["second_language": secondLanguage])
     }
 
-    fileprivate func didSetAutoSelectText() {
-        EventMonitor.shared.addBothMonitor(autoSelectText)
-        logSettings(["auto_select_sext": autoSelectText])
-    }
-
-    fileprivate func didSetAutoShowQueryIconExcludedLanguage() {
-        logSettings(["auto_show_query_icon_excluded_language": autoShowQueryIconExcludedLanguage])
-    }
-
-    fileprivate func didSetAutoShowQueryIconMinTextLength() {
-        logSettings(["auto_show_query_icon_min_text_length": autoShowQueryIconMinTextLength])
-    }
-
-    fileprivate func didSetForceAutoGetSelectedText() {
-        logSettings(["force_get_selected_text": enableForceGetSelectedText])
-    }
-
-    fileprivate func didSetClickQuery() {
-        EZWindowManager.shared().updatePopButtonQueryAction()
-
-        logSettings(["click_query": clickQuery])
-    }
-
-    fileprivate func didSetAutomaticallyChecksForUpdates() {
-        logSettings(["automatically_checks_for_updates": automaticallyChecksForUpdates])
-    }
-
     fileprivate func didSetHideMainWindow() {
-        let windowManger = EZWindowManager.shared()
-        windowManger.updatePopButtonQueryAction()
         if hideMainWindow {
-            windowManger.destroyMainWindow()
+            EZWindowManager.shared().destroyMainWindow()
         }
 
         logSettings(["hide_main_window": hideMainWindow])
@@ -406,10 +291,6 @@ extension MyConfiguration {
 
     fileprivate func didSetAutoQueryOCRText() {
         logSettings(["auto_query_ocr_text": autoQueryOCRText])
-    }
-
-    fileprivate func didSetAutoQuerySelectedText() {
-        logSettings(["auto_query_selected_text": autoQuerySelectedText])
     }
 
     fileprivate func didSetAutoQueryPastedText() {
@@ -422,10 +303,6 @@ extension MyConfiguration {
 
     fileprivate func didSetPronunciation() {
         logSettings(["english_pronunciation": pronunciation])
-    }
-
-    fileprivate func didSetAutoCopySelectedText() {
-        logSettings(["auto_copy_selected_text": autoCopySelectedText])
     }
 
     fileprivate func didSetAutoCopyOCRText() {
@@ -447,10 +324,6 @@ extension MyConfiguration {
 
     fileprivate func didSetFixedWindowPosition() {
         logSettings(["show_fixed_window_position": fixedWindowPosition])
-    }
-
-    fileprivate func didSetMouseSelectTranslateWindowType() {
-        logSettings(["show_mouse_window_type": mouseSelectTranslateWindowType])
     }
 
     fileprivate func didSetShortcutSelectTranslateWindowType() {

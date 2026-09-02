@@ -24,7 +24,6 @@
 #import "NSImage+EZSymbolmage.h"
 #import "TTTDictionary.h"
 #import "EZEnumTypes.h"
-#import "EZReplaceTextButton.h"
 #import "EZWrapView.h"
 #import "NSObject+EZDarkMode.h"
 #import "EZWebViewManager.h"
@@ -41,7 +40,6 @@ static NSString *const kMDictEntryURIScheme = @"mdict-entry";
 @interface EZWordResultView () <NSTextViewDelegate>
 
 @property (nonatomic, strong) EZQueryResult *result;
-@property (nonatomic, strong) NSButton *replaceTextButton;
 
 @property (nonatomic, assign) CGFloat bottomViewHeight;
 
@@ -198,14 +196,7 @@ static NSString *const kMDictEntryURIScheme = @"mdict-entry";
 
             if (text) {
                 EZLabel *resultLabel;
-                BOOL serviceIsStreaming = [self.service isStream];
-                if (serviceIsStreaming && errorMessage.length == 0) {
-                    EDMarkdownLabel *markdownLabel = [[EDMarkdownLabel alloc] init];
-                    markdownLabel.markdownEnabled = result.isMarkdownRenderingEnabled;
-                    resultLabel = markdownLabel;
-                } else {
-                    resultLabel = [[EZLabel alloc] init];
-                }
+                resultLabel = [[EZLabel alloc] init];
                 resultLabel.font = [NSFont systemFontOfSize:14 * self.fontSizeRatio];
                 [self addSubview:resultLabel];
 
@@ -905,60 +896,6 @@ static NSString *const kMDictEntryURIScheme = @"mdict-entry";
         make.left.equalTo(textCopyButton.mas_right).offset(buttonPadding);
         make.width.height.bottom.equalTo(audioButton);
     }];
-
-    EZReplaceTextButton *replaceTextButton = [[EZReplaceTextButton alloc] init];
-    [self addSubview:replaceTextButton];
-    replaceTextButton.hidden = !result.showReplaceButton;
-    replaceTextButton.enabled = hasTranslatedText;
-    self.replaceTextButton = replaceTextButton;
-
-    [replaceTextButton setClickBlock:^(EZButton *button) {
-        NSString *replacedText = result.copiedText;
-        EZReplaceTextButton *replaceTextButton = (EZReplaceTextButton *)button;
-        [replaceTextButton replaceSelectedText:replacedText];
-
-        EZBaseQueryViewController *queryViewController = EZWindowManager.shared.floatingWindow.queryViewController;
-        [queryViewController disableReplaceTextButton];
-    }];
-    replaceTextButton.mas_key = @"replaceTextButton";
-
-    [replaceTextButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(linkButton.mas_right).offset(buttonPadding);
-        make.width.height.bottom.equalTo(audioButton);
-    }];
-
-    // Markdown rendering toggle, only on streaming (AI/LLM) services.
-    if ([self.service isStream]) {
-        EDMarkdownToggleButton *markdownToggleButton = [[EDMarkdownToggleButton alloc] init];
-        [self addSubview:markdownToggleButton];
-        markdownToggleButton.markdownEnabled = result.isMarkdownRenderingEnabled;
-        markdownToggleButton.enabled = hasTranslatedText;
-        markdownToggleButton.mas_key = @"result_markdownToggleButton";
-
-        mm_weakify(self);
-        markdownToggleButton.clickAction = ^{
-            mm_strongify(self);
-            [result toggleMarkdownRendering];
-
-            // Cross-fade the content swap so toggling Markdown does not flash.
-            self.wantsLayer = YES;
-            CATransition *fade = [CATransition animation];
-            fade.type = kCATransitionFade;
-            fade.duration = 0.2;
-            fade.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-            [self.layer addAnimation:fade forKey:@"EDMarkdownToggleFade"];
-
-            EZBaseQueryViewController *queryViewController =
-                EZWindowManager.shared.floatingWindow.queryViewController;
-            [queryViewController updateCellWithResult:result reloadData:YES];
-        };
-
-        [markdownToggleButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            NSView *leftAnchor = result.showReplaceButton ? (NSView *)replaceTextButton : (NSView *)linkButton;
-            make.left.equalTo(leftAnchor.mas_right).offset(buttonPadding);
-            make.width.height.bottom.equalTo(audioButton);
-        }];
-    }
 
     // webView height need time to calculate, and the value will be called back later.
     if (EZResultNeedsDictionaryHTMLHeight(result)) {

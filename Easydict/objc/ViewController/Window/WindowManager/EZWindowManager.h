@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "EZPopButtonWindow.h"
 #import "EZFixedQueryWindow.h"
 #import "EZMainQueryWindow.h"
 #import "EZMiniQueryWindow.h"
@@ -18,7 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface EZWindowManager : NSObject
 
 @property (nonatomic, strong, nullable) EZMainQueryWindow *mainWindow;
-@property (nonatomic, strong) EZPopButtonWindow *popButtonWindow;
 @property (nonatomic, strong, nullable) EZFixedQueryWindow *fixedWindow;
 @property (nonatomic, strong, nullable) EZMiniQueryWindow *miniWindow;
 
@@ -43,7 +41,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Menu Actions, Global Shorcut
 
 - (void)inputTranslate;
-- (void)selectTextTranslate;
 - (void)showMiniFloatingWindow;
 - (void)snipTranslate;
 - (void)silentScreenshotOCR;
@@ -97,8 +94,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)showMainWindowIfNeeded;
 
 - (void)activeLastFrontmostApplication;
-
-- (void)updatePopButtonQueryAction;
 
 - (void)updateFloatingWindowType:(EZWindowType)floatingWindowType isShowing:(BOOL)isShowing;
 

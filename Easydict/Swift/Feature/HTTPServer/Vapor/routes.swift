@@ -7,7 +7,6 @@
 //
 
 import MJExtension
-import SelectedTextKit
 import Vapor
 
 func routes(_ app: Application) throws {
@@ -74,11 +73,5 @@ func routes(_ app: Application) throws {
         let queryModel = try await DetectManager().detectText(request.text)
 
         return DetectResponse(sourceLanguage: queryModel.detectedLanguage.code)
-    }
-
-    /// Get selected text
-    app.get("selectedText") { _ async throws -> GetSelectedTextResponse in
-        let selectedText = try await SelectedTextManager.shared.getSelectedText(strategy: .auto)
-        return GetSelectedTextResponse(selectedText: selectedText)
     }
 }

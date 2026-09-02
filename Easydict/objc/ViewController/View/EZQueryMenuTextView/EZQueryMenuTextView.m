@@ -52,10 +52,10 @@
     EZWindowManager *windowManager = [EZWindowManager shared];
     EZWindowType floatingWindowType = windowManager.floatingWindowType;
 
-    if (MyConfiguration.shared.mouseSelectTranslateWindowType == floatingWindowType) {
-        anotherWindowType = MyConfiguration.shared.shortcutSelectTranslateWindowType;
+    if (MyConfiguration.shared.shortcutSelectTranslateWindowType == floatingWindowType) {
+        anotherWindowType = EZWindowTypeMini;
     } else {
-        anotherWindowType = MyConfiguration.shared.mouseSelectTranslateWindowType;
+        anotherWindowType = MyConfiguration.shared.shortcutSelectTranslateWindowType;
     }
 
     if (anotherWindowType != floatingWindowType) {

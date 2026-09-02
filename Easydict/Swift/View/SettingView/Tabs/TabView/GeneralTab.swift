@@ -16,28 +16,6 @@ import SwiftUI
 struct GeneralTab: View {
     // MARK: Internal
 
-    class CheckUpdaterViewModel: ObservableObject {
-        // MARK: Lifecycle
-
-        init() {
-            updater
-                .publisher(for: \.automaticallyChecksForUpdates)
-                .assign(to: &$autoChecksForUpdates)
-        }
-
-        // MARK: Internal
-
-        @Published var autoChecksForUpdates = true {
-            didSet {
-                updater.automaticallyChecksForUpdates = autoChecksForUpdates
-            }
-        }
-
-        // MARK: Private
-
-        private let updater = MyConfiguration.shared.updater
-    }
-
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
@@ -51,9 +29,6 @@ struct GeneralTab: View {
             Section {
                 Toggle("clear_input_when_translating", isOn: $clearInput)
                 Toggle(
-                    "keep_prev_result_when_selected_text_is_empty", isOn: $keepPrevResultWhenEmpty
-                )
-                Toggle(
                     "select_query_text_when_window_activate",
                     isOn: $selectQueryTextWhenWindowActivate
                 )
@@ -62,7 +37,6 @@ struct GeneralTab: View {
             }
 
             Section {
-                Toggle("auto_query_selected_text", isOn: $autoQuerySelectedText)
                 Toggle("auto_query_ocr_text", isOn: $autoQueryOCRText)
                 Toggle("auto_query_pasted_text", isOn: $autoQueryPastedText)
                 Toggle("auto_query_when_text_changed", isOn: $autoQueryWhenTextChanged)
@@ -81,25 +55,10 @@ struct GeneralTab: View {
             }
 
             Section {
-                Toggle("auto_copy_selected_text", isOn: $autoCopySelectedText)
                 Toggle("auto_copy_ocr_text", isOn: $autoCopyOCRText)
                 Toggle("auto_copy_first_translated_text", isOn: $autoCopyFirstTranslatedText)
             } header: {
                 Text("setting.general.auto_copy.header")
-            }
-
-            Section {
-                Toggle(isOn: $enableMarkdownRendering) {
-                    Label(
-                        "setting.general.display.enable_markdown_rendering",
-                        systemSymbol: .docRichtext
-                    )
-                }
-            } header: {
-                Text("setting.general.display.header")
-            } footer: {
-                Text("setting.general.display.enable_markdown_rendering.description")
-                    .font(.footnote)
             }
 
             Section {
@@ -118,45 +77,6 @@ struct GeneralTab: View {
                     }
                 }
 
-                // Check for updates
-                HStack {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("check_for_updates")
-                        Text("lastest_version \(lastestVersion ?? version)")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    Spacer()
-                    Button("check_now") {
-                        MyConfiguration.shared.updater.checkForUpdates()
-                    }
-                }
-
-                Toggle(isOn: $checkUpdaterViewModel.autoChecksForUpdates) {
-                    Text("auto_check_update ")
-                }
-
-                HStack {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("setting.general.startup_and_update.include_beta")
-                        Text("setting.general.startup_and_update.include_beta.description")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    Spacer()
-                    Toggle(
-                        isOn: $includeBetaUpdates.didSet(execute: { state in
-                            logSettings(["include_beta_updates": state])
-                            if state {
-                                MyConfiguration.shared.updater.checkForUpdates()
-                            }
-                        })
-                    ) {
-                        EmptyView()
-                    }
-                    .labelsHidden()
-                }
-
                 LaunchAtLogin.Toggle {
                     Text("launch_at_startup")
                 }
@@ -167,7 +87,7 @@ struct GeneralTab: View {
                 Toggle(
                     isOn: $hideMenuBarIcon.didSet(execute: { state in
                         if state {
-                            // user is not set input shortcut and selection shortcut not allow hide menu bar
+                            // user is not set input shortcut not allow hide menu bar
                             if !shortcutsHaveSetuped {
                                 Defaults[.hideMenuBarIcon] = false
                                 showRefuseAlert = true
@@ -224,9 +144,6 @@ struct GeneralTab: View {
             }
         }
         .formStyle(.grouped)
-        .task {
-            lastestVersion = await fetchRepoLatestVersion(EZGithubRepoEasydict)
-        }
         .alert("hide_menu_bar_icon", isPresented: $showRefuseAlert) {
             Button("ok") {
                 showRefuseAlert = false
@@ -255,18 +172,12 @@ struct GeneralTab: View {
     @State private var showRefuseAlert = false
     @State private var showHideMenuBarIconAlert = false
 
-    @StateObject private var checkUpdaterViewModel = CheckUpdaterViewModel()
-
-    @State private var lastestVersion: String?
-
     // Input textfield
     @Default(.clearQueryWhenInputTranslate) private var clearInput
-    @Default(.keepPrevResultWhenSelectTranslateTextIsEmpty) private var keepPrevResultWhenEmpty
     @Default(.selectQueryTextWhenWindowActivate) private var selectQueryTextWhenWindowActivate
 
     // Auto query
     @Default(.autoQueryOCRText) private var autoQueryOCRText
-    @Default(.autoQuerySelectedText) private var autoQuerySelectedText
     @Default(.autoQueryPastedText) private var autoQueryPastedText
     @Default(.autoQueryWhenTextChanged) private var autoQueryWhenTextChanged
     @Default(.autoPlayAudio) private var autoPlayAudio
@@ -274,23 +185,15 @@ struct GeneralTab: View {
 
     // Auto copy
     @Default(.autoCopyOCRText) private var autoCopyOCRText
-    @Default(.autoCopySelectedText) private var autoCopySelectedText
     @Default(.autoCopyFirstTranslatedText) private var autoCopyFirstTranslatedText
 
     @Default(.appearanceType) private var appearanceType
     @Default(.hideMenuBarIcon) private var hideMenuBarIcon
     @Default(.selectedMenuBarIcon) private var selectedMenuBarIcon
     @Default(.fontSizeOptionIndex) private var fontSizeOptionIndex
-    @Default(.enableMarkdownRendering) private var enableMarkdownRendering
-
-    @Default(.includeBetaUpdates) private var includeBetaUpdates
-
-    private var version: String {
-        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-    }
 
     private var shortcutsHaveSetuped: Bool {
-        Defaults[.inputShortcut] != nil || Defaults[.selectionShortcut] != nil
+        Defaults[.inputShortcut] != nil
     }
 
     private func logSettings(_ parameters: [String: Any]) {

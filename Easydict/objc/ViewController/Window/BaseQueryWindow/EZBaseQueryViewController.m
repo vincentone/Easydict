@@ -1440,15 +1440,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     }
 }
 
-- (void)disableReplaceTextButton {
-    for (EZQueryService *service in self.services) {
-        service.result.showReplaceButton = NO;
-
-        EZResultView *resultView = [self resultCellOfResult:service.result];
-        resultView.wordResultView.replaceTextButton.enabled = NO;
-    }
-}
-
 
 #pragma mark - Set up cell view
 

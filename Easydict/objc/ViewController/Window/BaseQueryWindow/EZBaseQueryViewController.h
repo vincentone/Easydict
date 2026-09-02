@@ -74,8 +74,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateCellWithResult:(EZQueryResult *)result reloadData:(BOOL)reloadData;
 
-- (void)disableReplaceTextButton;
-
 - (void)updateActionType:(EZActionType)actionType;
 
 /// Discard cached dictionary WebViews when the query window has been idle.

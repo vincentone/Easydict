@@ -18,8 +18,6 @@ public enum ShortcutAction: String, Identifiable, CaseIterable {
     // Global shortcuts
     case inputTranslate
     case snipTranslate
-    case selectTranslate
-    case toggleAutoSelectText
     case showMiniWindow
     case pasteboardTranslate
     case silentScreenshotOCR
@@ -53,8 +51,6 @@ extension ShortcutAction {
     static let globalActions: [ShortcutAction] = [
         .inputTranslate,
         .snipTranslate,
-        .selectTranslate,
-        .toggleAutoSelectText,
         .showMiniWindow,
         .pasteboardTranslate,
         .silentScreenshotOCR,
@@ -125,28 +121,6 @@ extension ShortcutAction {
                 icon: .cameraViewfinder,
                 defaultsKey: .snipShortcut,
                 action: { windowManager.snipTranslate() }
-            ),
-            .selectTranslate: .init(
-                titleKey: "menu_selectWord_Translate",
-                icon: .highlighter,
-                defaultsKey: .selectionShortcut,
-                action: { windowManager.selectTextTranslate() }
-            ),
-            .toggleAutoSelectText: .init(
-                titleKey: "shortcut_toggle_auto_select_text",
-                icon: .cursorarrowRays,
-                defaultsKey: .toggleAutoSelectTextShortcut,
-                action: {
-                    let isOn = !Defaults[.autoShowQueryIcon]
-                    Defaults[.autoShowQueryIcon] = isOn
-                    let message = NSLocalizedString(
-                        isOn
-                            ? "shortcut_auto_select_text.on"
-                            : "shortcut_auto_select_text.off",
-                        comment: ""
-                    )
-                    EZToast.showText(message)
-                }
             ),
             .silentScreenshotOCR: .init(
                 titleKey: "menu_silent_screenshot_OCR",

@@ -24,25 +24,6 @@ final class LocalStorage: NSObject {
 
     // MARK: Public API
 
-    /// Disabled app trigger configurations for select-text.
-    var selectTextTypeAppModelList: [AppTriggerConfig] {
-        get {
-            let storedArray = userDefaults.array(forKey: Constants.appModelTriggerListKey) as? [NSDictionary]
-            let appModels = AppTriggerConfig.appModels(from: storedArray ?? [])
-
-            if storedArray == nil {
-                let keychainApp = AppTriggerConfig(appBundleID: "com.apple.keychainaccess", triggerType: [])
-                return [keychainApp]
-            }
-
-            return appModels
-        }
-        set {
-            let dictArray = AppTriggerConfig.dictionaryArray(from: newValue)
-            userDefaults.set(dictArray, forKey: Constants.appModelTriggerListKey)
-        }
-    }
-
     /// Total query character count.
 
     var queryCharacterCount: Int {
@@ -701,7 +682,6 @@ private enum Constants {
     static let allServiceTypesKey = "kAllServiceTypesKey"
     static let queryCountKey = "kQueryCountKey"
     static let queryCharacterCountKey = "kQueryCharacterCountKey"
-    static let appModelTriggerListKey = "kAppModelTriggerListKey"
     static let queryServiceRecordKey = "kQueryServiceRecordKey"
     static let totalUserCount = 1000
 }

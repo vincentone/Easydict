@@ -17,12 +17,6 @@ static NSTimeInterval const EZFloatingWindowIdleWebViewDiscardDelay = 60.0;
 
 @property (nonatomic, strong) NSRunningApplication *lastFrontmostApplication;
 
-@property (nonatomic, strong) EZEventMonitor *eventMonitor;
-@property (nonatomic, copy, nullable) NSString *selectedText;
-
-@property (nonatomic, assign) CGPoint startPoint;
-@property (nonatomic, assign) CGPoint endPoint;
-
 @property (nonatomic, copy) EZActionType actionType;
 
 /// The screen that the last mouse clicked on.
@@ -73,9 +67,6 @@ static EZWindowManager *_instance;
     self.actionType = EZActionTypeNone;
     self.screenVisibleFrame = NSScreen.mainScreen.visibleFrame;
 
-    self.eventMonitor = [EZEventMonitor shared];
-    [self setupEventMonitor];
-
     NSNotificationCenter *sharedWorkspaceNotificationCenter = NSWorkspace.sharedWorkspace.notificationCenter;
     [sharedWorkspaceNotificationCenter addObserver:self
                                           selector:@selector(didActivateApplication:)
@@ -84,121 +75,12 @@ static EZWindowManager *_instance;
 }
 
 - (void)didActivateApplication:(NSNotification *)notification {
-    //    MMLogInfo(@"did activate application: %@", notification);
-
     /**
      Fix https://github.com/tisfeng/Easydict/issues/858
 
      When switching applications by workspace, we need to update the lastFrontmostApplication, avoid restoring it to the  wrong last application.
      */
     [self saveFrontmostApplication];
-}
-
-- (void)setupEventMonitor {
-    [self.eventMonitor startMonitor];
-
-    mm_weakify(self);
-    [self.eventMonitor setSelectedTextBlock:^(NSString *_Nonnull selectedText) {
-        mm_strongify(self);
-
-        //        MMLogInfo(@"auto get selected text successfully: %@", selectedText.truncated);
-
-        self.selectedText = selectedText ?: @"";
-        self.actionType = self.eventMonitor.actionType;
-
-        // !!!: Record current selected start and end point, eventMonitor's startPoint will change every valid event.
-        self.startPoint = self.eventMonitor.startPoint;
-        self.endPoint = self.eventMonitor.endPoint;
-
-        CGPoint point = [self getPopButtonWindowLocation]; // This is top-left point
-        CGPoint bottomLeftPoint = CGPointMake(point.x, point.y - self.popButtonWindow.height);
-        CGPoint safePoint = [EZCoordinateUtils getFrameSafePoint:self.popButtonWindow.frame
-                                                     moveToPoint:bottomLeftPoint
-                                            inScreenVisibleFrame:self.screen.visibleFrame];
-
-        safePoint = [self getSafePointForPopButtonWindow:safePoint];
-
-        [self.popButtonWindow setFrameOrigin:safePoint];
-
-        [self.popButtonWindow orderFrontRegardless];
-        // Set a high level to make sure it's always on top of other windows, such as PopClip.
-        self.popButtonWindow.level = kCGScreenSaverWindowLevel;
-    }];
-
-    [self updatePopButtonQueryAction];
-
-    [self.eventMonitor setLeftMouseDownBlock:^(CGPoint clickPoint) {
-        mm_strongify(self);
-        self.startPoint = clickPoint;
-        self.lastPoint = clickPoint;
-    }];
-
-    [self.eventMonitor setRightMouseDownBlock:^(CGPoint clickPoint) {
-        mm_strongify(self);
-        self.lastPoint = clickPoint;
-    }];
-
-    [self.eventMonitor setDismissPopButtonBlock:^{
-        mm_strongify(self);
-        [self.popButtonWindow close];
-    }];
-
-    [self.eventMonitor setDismissAllNotPinndFloatingWindowBlock:^{
-        mm_strongify(self);
-        if (self->_miniWindow) {
-            [self closeFloatingWindowIfNotPinnedOrMain:EZWindowTypeMini];
-        }
-        if (self->_fixedWindow) {
-            [self closeFloatingWindowIfNotPinnedOrMain:EZWindowTypeFixed];
-        }
-    }];
-
-    [self.eventMonitor setDoubleCommandBlock:^{
-        NSLog(@"double command block");
-    }];
-}
-
-
-/// Update pop button query action.
-- (void)updatePopButtonQueryAction {
-    mm_weakify(self);
-
-    EZButton *popButton = self.popButtonWindow.popButton;
-    MyConfiguration *config = [MyConfiguration shared];
-
-    if (config.hideMainWindow) {
-        // FIXME: Click pop button will also show preferences window.
-        [popButton setClickBlock:^(EZButton *button) {
-            mm_strongify(self);
-            [self popButtonWindowClicked];
-        }];
-
-        if (config.clickQuery) {
-            popButton.mouseEnterBlock = nil;
-        } else {
-            [popButton setMouseEnterBlock:^(EZButton *button) {
-                mm_strongify(self);
-                [self popButtonWindowClicked];
-            }];
-        }
-    } else {
-        popButton.clickBlock = nil;
-
-        [popButton setMouseEnterBlock:^(EZButton *button) {
-            mm_strongify(self);
-            [self popButtonWindowClicked];
-        }];
-    }
-}
-
-- (void)popButtonWindowClicked {
-    // Close pop button window first, and show floating window.
-    [self.eventMonitor consumePopButtonActivation];
-    [self.popButtonWindow close];
-    
-    EZWindowType windowType = MyConfiguration.shared.mouseSelectTranslateWindowType;
-    self.actionType = EZActionTypeAutoSelectQuery;
-    [self showFloatingWindowType:windowType queryText:self.selectedText];
 }
 
 #pragma mark - Getter && Setter
@@ -225,13 +107,6 @@ static EZWindowManager *_instance;
         _miniWindow.releasedWhenClosed = NO;
     }
     return _miniWindow;
-}
-
-- (EZPopButtonWindow *)popButtonWindow {
-    if (!_popButtonWindow) {
-        _popButtonWindow = [EZPopButtonWindow shared];
-    }
-    return _popButtonWindow;
 }
 
 - (nullable EZBaseQueryWindow *)floatingWindow {
@@ -298,9 +173,10 @@ static EZWindowManager *_instance;
 }
 
 - (void)showFloatingWindowType:(EZWindowType)windowType
-                     queryText:(nullable NSString *)queryText
-                    actionType:(EZActionType)actionType {
-    BOOL autoQuery = [MyConfiguration.shared autoQuerySelectedText];
+                      queryText:(nullable NSString *)queryText
+                     actionType:(EZActionType)actionType {
+    // Auto query invoked text, e.g. opened via URL Scheme by PopClip.
+    BOOL autoQuery = (actionType == EZActionTypeInvokeQuery) && queryText.length > 0;
     [self showFloatingWindowType:windowType queryText:queryText autoQuery:autoQuery actionType:actionType];
 }
 
@@ -314,11 +190,12 @@ static EZWindowManager *_instance;
 }
 
 - (void)showFloatingWindowType:(EZWindowType)windowType
-                     queryText:(nullable NSString *)queryText
-                    actionType:(EZActionType)actionType
-                       atPoint:(CGPoint)point
-             completionHandler:(nullable void (^)(void))completionHandler {
-    BOOL autoQuery = [MyConfiguration.shared autoQuerySelectedText];
+                      queryText:(nullable NSString *)queryText
+                     actionType:(EZActionType)actionType
+                        atPoint:(CGPoint)point
+              completionHandler:(nullable void (^)(void))completionHandler {
+    // Auto query invoked text, e.g. open URL Scheme by PopClip.
+    BOOL autoQuery = (actionType == EZActionTypeInvokeQuery) && queryText.length > 0;
     [self showFloatingWindowType:windowType queryText:queryText autoQuery:autoQuery actionType:actionType atPoint:point completionHandler:completionHandler];
 }
 
@@ -330,28 +207,16 @@ static EZWindowManager *_instance;
              completionHandler:(nullable void (^)(void))completionHandler {
     
     /**
-     Clear query if text is nil and user don't want to keep the last result.
-
-     !!!: text may be @"" when no selected text in Chrome, so we need to handle it.
+     Clear query text if it is empty.
      */
     queryText = [[queryText ns_removeInvisibleChar] ns_trim];
     if (queryText.length == 0) {
-        queryText = MyConfiguration.shared.keepPrevResultWhenEmpty ? nil : @"";
+        queryText = @"";
     }
-    // Remove the excerpt info of the books only when the frontmost app is Books.app
-    else {
-        queryText = [queryText removeBooksExcerptInfo];
-    }
-        
-    self.selectedText = queryText;
+
     self.actionType = actionType;
 
     MMLogInfo(@"show floating windowType: %ld, queryText: %@, autoQuery: %d, actionType: %@, atPoint: %@", windowType, queryText.truncated, autoQuery, actionType, @(point));
-
-    // Update isTextEditable value when using invoke query, such as open URL Scheme by PopClip.
-    if (actionType == EZActionTypeInvokeQuery) {
-        [self.eventMonitor updateSelectedTextEditableState];
-    }
 
     EZBaseQueryWindow *window = [self windowWithType:windowType];
 
@@ -362,17 +227,8 @@ static EZWindowManager *_instance;
 
     EZBaseQueryViewController *queryViewController = window.queryViewController;
 
-    // If text is nil, means we don't need to query anything, just show the window.
-    if (!queryText) {
-        /**
-         In some applications, in extreme cases, using shortcut to get the text fails causing text is nil, in which case we display a tips view.
-
-         https://github.com/tisfeng/Easydict/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%9C%A8%E6%9F%90%E4%BA%9B%E5%BA%94%E7%94%A8%E4%B8%AD%E5%8F%96%E8%AF%8D%E6%96%87%E6%9C%AC%E4%B8%BA%E7%A9%BA
-         */
-        if (!MyConfiguration.shared.disableTipsView && !MyConfiguration.shared.keepPrevResultWhenEmpty && actionType == EZActionTypeShortcutQuery) {
-            [queryViewController showTipsView:YES];
-        }
-
+    // If text is empty, just show the empty window.
+    if (queryText.length == 0) {
         // !!!: location is top-left point, so we need to change it to bottom-left point.
         CGPoint newPoint = CGPointMake(point.x, point.y - window.height);
         [self showFloatingWindow:window atPoint:newPoint];
@@ -383,9 +239,6 @@ static EZWindowManager *_instance;
 
         return;
     }
-
-    // Log selected text when querying.
-    [self logSelectedTextEvent];
 
     void (^updateQueryTextAndStartQueryBlock)(BOOL) = ^(BOOL needFocus) {
         // Update input text and detect.
@@ -399,11 +252,6 @@ static EZWindowManager *_instance;
 
         if (autoQuery) {
             [queryViewController startQueryText:queryText actionType:self.actionType];
-        }
-
-        // TODO: Maybe we should remove this option, it seems useless.
-        if ([MyConfiguration.shared autoCopySelectedText]) {
-            [queryText copyToPasteboard];
         }
 
         if (completionHandler) {
@@ -491,9 +339,6 @@ static EZWindowManager *_instance;
 - (void)showFloatingWindow:(EZBaseQueryWindow *)window atPoint:(CGPoint)point {
     //    MMLogInfo(@"show floating window: %@, %@", window, @(point));
 
-    // Close pop button window when showing floating window.
-    [EZPopButtonWindow.shared close];
-    
     [self saveFrontmostApplication];
 
     if (Screenshot.shared.isTakingScreenshot) {
@@ -559,64 +404,6 @@ static EZWindowManager *_instance;
     [_fixedWindow.titleBar updateShortcutButtonsToolTip];
 }
 
-/// TODO: need to optimize.
-- (CGPoint)getPopButtonWindowLocation {
-    NSPoint location = [NSEvent mouseLocation];
-    //    MMLogInfo(@"mouseLocation: (%.1f, %.1f)", location.x, location.y);
-
-    if (CGPointEqualToPoint(location, CGPointZero)) {
-        return CGPointZero;
-    }
-
-    NSPoint startLocation = self.startPoint;
-    NSPoint endLocation = self.endPoint;
-
-    // Direction from left to right.
-    BOOL isDirectionRight = endLocation.x >= startLocation.x;
-    // Direction from top to bottom.
-    BOOL isDirectionDown = YES;
-
-    CGFloat minLineHeight = 20;
-
-    CGFloat deltaY = endLocation.y - startLocation.y;
-    // Direction up.
-    if (deltaY > minLineHeight / 2) {
-        isDirectionDown = NO;
-        isDirectionRight = NO;
-    }
-
-    CGFloat x = location.x;
-    CGFloat y = location.y;
-
-    // self.offsetPoint is (15, -15)
-
-    x += self.offsetPoint.x;
-    y += self.offsetPoint.y;
-
-    // FIXME: If adjust y when Direction is Up, it will cause some UI bugs 😢
-    // TODO: This codo is too ugly, need to optimize.
-
-
-    //    if (isDirectionDown) {
-    //        x += self.offsetPoint.x;
-    //        y += self.offsetPoint.y;
-    //    } else {
-    //        x += self.offsetPoint.x;
-    //        // Direction up, show pop button window above the selected text.
-    //        y = location.y - self.offsetPoint.y + self.popButtonWindow.height + 5;
-    //    }
-
-    //    CGRect selectedTextFrame = self.eventMonitor.selectedTextFrame;
-    //    MMLogInfo(@"selected text frame: %@", NSStringFromRect(selectedTextFrame));
-    //    MMLogInfo(@"start point: %@", NSStringFromPoint(startLocation));
-    //    MMLogInfo(@"end   point: %@", NSStringFromPoint(endLocation));
-
-    NSPoint popLocation = CGPointMake(x, y);
-    //    MMLogInfo(@"popLocation: %@", NSStringFromPoint(popLocation));
-
-    return popLocation;
-}
-
 - (CGPoint)getMiniWindowLocation {
     CGPoint position = [self getShowingMouseLocation];
 
@@ -630,30 +417,16 @@ static EZWindowManager *_instance;
 }
 
 - (CGPoint)getShowingMouseLocation {
-    BOOL offsetFlag = self.popButtonWindow.isVisible;
-    return [self getMouseLocation:offsetFlag];
+    return [self getMouseLocation:NO];
 }
 
 - (CGPoint)getMouseLocation:(BOOL)offsetFlag {
-    NSPoint popButtonLocation = [self getPopButtonWindowLocation];
-    if (CGPointEqualToPoint(popButtonLocation, CGPointZero)) {
-        return CGPointZero;
-    }
-
     CGPoint mouseLocation = NSEvent.mouseLocation;
     CGPoint showingPosition = mouseLocation;
 
     if (offsetFlag) {
-        CGFloat x = popButtonLocation.x + 5; // Move slightly to the right to avoid covering the cursor.
-
-
-        // if pop button is left to selected text, we need to move showing mouse location to a bit right, to show query window properly.
-        if (mouseLocation.x > popButtonLocation.x) {
-            x = NSEvent.mouseLocation.x + 5;
-        }
-
-        CGFloat y = popButtonLocation.y + 0;
-
+        CGFloat x = mouseLocation.x + 5; // Move slightly to the right to avoid covering the cursor.
+        CGFloat y = mouseLocation.y + 0;
         showingPosition = CGPointMake(x, y);
     }
 
@@ -763,61 +536,7 @@ static EZWindowManager *_instance;
     }
 }
 
-/**
- Get a safe point for the pop button window.
-
- In order to avoid the pop button being hovered automatically when showing, we need to ensure that the pop button window is not too close to the screen edge.
-
- if safePoint.x is less than minX, we need to move it to minX + safeOffsetX
- if safePoint.x is greater than maxX, we need to move it to maxX - safeOffsetX
- */
-- (NSPoint)getSafePointForPopButtonWindow:(NSPoint)point {
-    CGFloat safeOffsetX = 50;
-    NSRect screenRect = self.screen.visibleFrame;
-
-    CGFloat minX = CGRectGetMinX(screenRect);
-    CGFloat maxX = CGRectGetMaxX(screenRect) - self.popButtonWindow.width;
-
-    NSPoint safePoint = point;
-
-    if (safePoint.x <= minX) {
-        safePoint.x = minX + safeOffsetX;
-    }
-    if (safePoint.x >= maxX) {
-        safePoint.x = maxX - safeOffsetX;
-    }
-
-    return safePoint;
-}
-
 #pragma mark - Menu Actions, Global Shortcut
-
-- (void)selectTextTranslate {
-    MMLogInfo(@"selectTextTranslate");
-
-    if (![self.eventMonitor isAccessibilityEnabled]) {
-        MMLogWarn(@"App is not trusted");
-        return;
-    }
-
-    [self saveFrontmostApplication];
-    if (Screenshot.shared.isTakingScreenshot) {
-        return;
-    }
-
-    EZWindowType windowType = MyConfiguration.shared.shortcutSelectTranslateWindowType;
-    MMLogInfo(@"selectTextTranslate windowType: %@", @(windowType));
-    self.eventMonitor.actionType = EZActionTypeShortcutQuery;
-    [self.eventMonitor getSelectedTextWithCompletion:^(NSString *_Nullable text) {
-        self.actionType = self.eventMonitor.actionType;
-        self.selectedText = text;
-
-        // Run it on main thread to avoid some UI bugs.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showFloatingWindowType:windowType queryText:self.selectedText];
-        });
-    }];
-}
 
 - (void)inputTranslate {
     MMLogInfo(@"inputTranslate");
@@ -847,7 +566,7 @@ static EZWindowManager *_instance;
 - (void)showMiniFloatingWindow {
     MMLogInfo(@"showMiniFloatingWindow");
 
-    EZWindowType windowType = MyConfiguration.shared.mouseSelectTranslateWindowType;
+    EZWindowType windowType = MyConfiguration.shared.shortcutSelectTranslateWindowType;
 
     if (self.floatingWindowType == windowType && self.floatingWindow.isVisible) {
         [self closeFloatingWindow];
@@ -1087,7 +806,7 @@ static EZWindowManager *_instance;
 }
 
 - (void)discardDictionaryWebViewsIfIdleForWindow:(EZBaseQueryWindow *)window {
-    if (window.isVisible || window.isPin || MyConfiguration.shared.keepPrevResultWhenEmpty) {
+    if (window.isVisible || window.isPin) {
         return;
     }
 
@@ -1124,38 +843,6 @@ static EZWindowManager *_instance;
         }
     }
     return NO;
-}
-
-- (void)logSelectedTextEvent {
-    NSString *text = self.selectedText;
-
-    if (!text) {
-        return;
-    }
-
-    NSRunningApplication *application = self.eventMonitor.frontmostApplication;
-    NSString *appName = application.localizedName ?: @"";
-    NSString *bundleID = application.bundleIdentifier ?: @"";
-    NSString *textLength = [EZAnalyticsService textLengthRange:text];
-    NSString *triggerType = [EZEnumTypes stringValueOfTriggerType:self.eventMonitor.triggerType];
-
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-        @"actionType" : self.actionType,
-        @"selectTextType" : self.eventMonitor.selectTextType,
-        @"triggerType" : triggerType,
-        @"textLength" : textLength,
-        @"appName" : appName,
-        @"bundleID" : bundleID,
-    }];
-
-    NSString *browserTabURLString = self.eventMonitor.browserTabURLString;
-    if (browserTabURLString.length) {
-        NSURL *tabURL = [NSURL URLWithString:browserTabURLString];
-        NSString *host = tabURL.host ?: browserTabURLString;
-        dict[@"host"] = host;
-    }
-
-    [EZAnalyticsService logEventWithName:@"getSelectedText" parameters:dict];
 }
 
 @end

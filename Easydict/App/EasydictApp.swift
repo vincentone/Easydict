@@ -7,7 +7,6 @@
 //
 
 import Defaults
-import Sparkle
 import SwiftUI
 
 // MARK: - EasydictCmpatibilityEntry

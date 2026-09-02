@@ -190,19 +190,6 @@ open class QueryService: NSObject {
         resultGeneration += 1
         currentResult.reset()
 
-        let enabledReplaceTypes: [ActionType] = [
-            ActionType.autoSelectQuery,
-            ActionType.shortcutQuery,
-            ActionType.invokeQuery,
-        ]
-
-        let actionType = queryModel.actionType
-        if enabledReplaceTypes.contains(actionType) {
-            currentResult.showReplaceButton = EventMonitor.shared.isSelectedTextEditable
-        } else {
-            currentResult.showReplaceButton = false
-        }
-
         result = currentResult
         return currentResult
     }

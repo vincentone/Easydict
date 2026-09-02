@@ -11,9 +11,6 @@ import Foundation
 // MARK: - SharedConstants
 
 enum SharedConstants {
-    // Easydict translate shortcut name.
-    static let easydictTranslateShortcutName = "Easydict-Translate-V1.2.0"
-
     /// Minimum length for classical Chinese text detection, default is 20
     static let minClassicalChineseLength = 20
 }
