@@ -15,7 +15,6 @@ extension Notification.Name {
     static let languagePreferenceChanged = Notification.Name(
         I18nHelper.languagePreferenceChangedNotification
     )
-    static let linkButtonUpdated = Notification.Name(EZQuickLinkButtonUpdateNotification)
     static let didChangeFontSize = Notification.Name("didChangeFontSize")
     static let didChangeWindowConfiguration = Notification.Name("didChangeWindowConfiguration")
 
@@ -34,7 +33,6 @@ extension NSNotification {
     static let serviceHasUpdated = Notification.Name.serviceHasUpdated
     static let openSettings = Notification.Name.openSettings
     static let languagePreferenceChanged = Notification.Name.languagePreferenceChanged
-    static let linkButtonUpdated = Notification.Name.linkButtonUpdated
     static let didChangeFontSize = Notification.Name.didChangeFontSize
     static let didChangeWindowConfiguration = Notification.Name.didChangeWindowConfiguration
     static let maxWindowHeightSettingsChanged = Notification.Name.maxWindowHeightSettingsChanged

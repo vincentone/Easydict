@@ -42,9 +42,6 @@ public enum ShortcutAction: String, Identifiable, CaseIterable {
     case hide
     case increaseFontSize
     case decreaseFontSize
-    case google
-    case eudic
-    case appleDic
 
     // MARK: Public
 
@@ -269,33 +266,6 @@ extension ShortcutAction {
                     if MyConfiguration.shared.fontSizeIndex > 0 {
                         MyConfiguration.shared.fontSizeIndex -= 1
                     }
-                }
-            ),
-            .google: .init(
-                titleKey: "open_in_google",
-                icon: .magnifyingglass,
-                defaultsKey: .googleShortcut,
-                action: {
-                    let window = windowManager.floatingWindow
-                    window?.titleBar.googleButton.openLink()
-                }
-            ),
-            .eudic: .init(
-                titleKey: "open_in_eudic",
-                icon: .bookClosed,
-                defaultsKey: .eudicShortcut,
-                action: {
-                    let window = windowManager.floatingWindow
-                    window?.titleBar.eudicButton.openLink()
-                }
-            ),
-            .appleDic: .init(
-                titleKey: "open_in_apple_dictionary",
-                icon: .book,
-                defaultsKey: .appleDictionaryShortcut,
-                action: {
-                    let window = windowManager.floatingWindow
-                    window?.titleBar.appleDictionaryButton.openLink()
                 }
             ),
         ]

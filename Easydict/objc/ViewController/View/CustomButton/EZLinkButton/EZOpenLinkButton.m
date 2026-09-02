@@ -85,15 +85,7 @@ static NSString *const EZQueryKey = @"{Query}";
      dict://when the cat is away, the mice will play
      */
     NSURL *URL = [urlString ns_detectLink] ?: [NSURL URLWithString:urlString];
-    
-    // If link is EZGoogleWebSearchURL and queryText is a URL, we should open URL directly.
-    if ([self.link isEqualToString:EZGoogleWebSearchURL]) {
-        NSURL *detectURL = [queryText ns_detectLink];
-        if (detectURL) {
-            URL = detectURL;
-        }
-    }
-    
+
     MMLogInfo(@"open url: %@", URL);
 
     // !!!: when using openURL, URL must has scheme, like https://

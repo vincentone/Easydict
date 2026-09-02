@@ -807,24 +807,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     [self.queryView scrollToEndOfTextView];
 }
 
-- (void)receiveTitlebarAction:(EZTitlebarQuickAction)action {
-    switch (action) {
-        case EZTitlebarQuickActionWordsSegmentation: {
-            self.inputText = [self.inputText segmentWords];
-            break;
-        }
-        case EZTitlebarQuickActionRemoveCommentBlockSymbols: {
-            self.inputText = [self.inputText removeCommentBlockSymbols];
-            break;
-        }
-        case EZTitlebarQuickActionReplaceNewlineWithSpace: {
-            self.inputText = [self.inputText replacingNewlinesWithWhitespace];
-        }
-        default:
-            break;
-    }
-}
-
 #pragma mark - Query Methods
 
 - (void)startQueryText {

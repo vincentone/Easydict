@@ -80,11 +80,6 @@ class MyConfiguration: NSObject {
     @DefaultsWrapper(.autoCopyOCRText) var autoCopyOCRText: Bool
     @DefaultsWrapper(.autoCopyFirstTranslatedText) var autoCopyFirstTranslatedText: Bool
 
-    @DefaultsWrapper(.showGoogleQuickLink) var showGoogleQuickLink: Bool
-    @DefaultsWrapper(.showEudicQuickLink) var showEudicQuickLink: Bool
-    @DefaultsWrapper(.showAppleDictionaryQuickLink) var showAppleDictionaryQuickLink: Bool
-    @DefaultsWrapper(.showQuickActionButton) var showQuickActionButton: Bool
-
     @DefaultsWrapper(.appearanceType) var appearance: AppearanceType
     @DefaultsWrapper(.hideMenuBarIcon) var hideMenuBarIcon: Bool
     @DefaultsWrapper(.fontSizeOptionIndex) var fontSizeIndex: UInt
@@ -112,9 +107,6 @@ class MyConfiguration: NSObject {
     @DefaultsWrapper(.allowAnalytics) var allowAnalytics: Bool
 
     @ShortcutWrapper(.pinShortcut) var pinShortcutString: String
-    @ShortcutWrapper(.googleShortcut) var googleShortcutString: String
-    @ShortcutWrapper(.appleDictionaryShortcut) var appleDictShortcutString: String
-    @ShortcutWrapper(.eudicShortcut) var eudicDictShortcutString: String
 
     let updater = GlobalContext.shared.updaterController.updater
     let fontSizes: [CGFloat] = [1, 1.1, 1.2, 1.3, 1.4]
@@ -278,34 +270,6 @@ class MyConfiguration: NSObject {
             }
             .store(in: &cancellables)
 
-        Defaults.publisher(.showGoogleQuickLink, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetShowGoogleQuickLink()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.showEudicQuickLink, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetShowEudicQuickLink()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.showAppleDictionaryQuickLink, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetShowAppleDictionaryQuickLink()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.showQuickActionButton, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetShowSettingQuickLink()
-            }
-            .store(in: &cancellables)
-
         Defaults.publisher(.hideMenuBarIcon, options: [])
             .removeDuplicates()
             .sink { [weak self] _ in
@@ -371,12 +335,7 @@ class MyConfiguration: NSObject {
             .store(in: &cancellables)
 
         Defaults.publisher(
-            keys: [
-                .pinShortcut,
-                .appleDictionaryShortcut,
-                .googleShortcut,
-                .eudicShortcut,
-            ],
+            keys: [.pinShortcut],
             options: []
         )
         .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
@@ -482,27 +441,6 @@ extension MyConfiguration {
         logSettings(["tts": value])
     }
 
-    fileprivate func didSetShowGoogleQuickLink() {
-        postUpdateQuickLinkButtonNotification()
-        logSettings(["show_google_link": showGoogleQuickLink])
-    }
-
-    fileprivate func didSetShowEudicQuickLink() {
-        postUpdateQuickLinkButtonNotification()
-        logSettings(["show_eudic_link": showEudicQuickLink])
-    }
-
-    fileprivate func didSetShowAppleDictionaryQuickLink() {
-        postUpdateQuickLinkButtonNotification()
-        logSettings(["show_apple_dictionary_link": showAppleDictionaryQuickLink])
-    }
-
-    func didSetShowSettingQuickLink() {
-        postUpdateQuickLinkButtonNotification()
-
-        logSettings(["showSettingQuickLink": showQuickActionButton])
-    }
-
     fileprivate func didSetHideMenuBarIcon() {
         logSettings(["hide_menu_bar_icon": hideMenuBarIcon])
     }
@@ -542,11 +480,6 @@ extension MyConfiguration {
 }
 
 extension MyConfiguration {
-    fileprivate func postUpdateQuickLinkButtonNotification() {
-        let notification = Notification(name: Notification.Name.linkButtonUpdated, object: nil)
-        NotificationCenter.default.post(notification)
-    }
-
     fileprivate func logSettings(_ parameters: [String: Any]) {
         AnalyticsService.logEvent(withName: "settings", parameters: parameters)
     }

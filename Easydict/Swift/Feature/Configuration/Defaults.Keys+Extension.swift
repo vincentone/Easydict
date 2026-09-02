@@ -77,14 +77,6 @@ extension Defaults.Keys {
         "EZConfiguration_kPreferYoudaoTTSForEnglishWordKey",
         default: true
     )
-    static let showGoogleQuickLink = Key<Bool>("EZConfiguration_kShowGoogleLinkKey", default: true)
-    static let showEudicQuickLink = Key<Bool>("EZConfiguration_kShowEudicLinkKey", default: true)
-    static let showAppleDictionaryQuickLink = Key<Bool>(
-        "EZConfiguration_kShowAppleDictionaryLinkKey", default: true
-    )
-    static let showQuickActionButton = Key<Bool>(
-        "EZConfiguration_kShowSettingQuickLink", default: true
-    )
     static let hideMenuBarIcon = Key<Bool>("EZConfiguration_kHideMenuBarIconKey", default: false)
     static let includeBetaUpdates = Key<Bool>("EZConfiguration_kIncludeBetaUpdatesKey", default: false)
     static let fixedWindowPosition = Key<EZShowWindowPosition>(
@@ -362,7 +354,4 @@ extension Defaults.Keys {
     static let hideShortcut = Key<KeyCombo?>("EZHideShortcutKey_keyHolder")
     static let increaseFontSize = Key<KeyCombo?>("EZIncreaseFontSizeShortcutKey_keyHolder")
     static let decreaseFontSize = Key<KeyCombo?>("EZDecreaseFontSizeShortcutKey_keyHolder")
-    static let googleShortcut = Key<KeyCombo?>("EZGoogleShortcutKey_keyHolder")
-    static let eudicShortcut = Key<KeyCombo?>("EZEudicShortcutKey_keyHolder")
-    static let appleDictionaryShortcut = Key<KeyCombo?>("EZAppleDictionaryShortcutKey_keyHolder")
 }

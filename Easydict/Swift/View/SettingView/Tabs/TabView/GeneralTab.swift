@@ -89,15 +89,6 @@ struct GeneralTab: View {
             }
 
             Section {
-                Toggle("show_google_quick_link", isOn: $showGoogleQuickLink)
-                Toggle("show_eudic_quick_link", isOn: $showEudicQuickLink)
-                Toggle("show_apple_dictionary_quick_link", isOn: $showAppleDictionaryQuickLink)
-                Toggle("show_setting_quick_link", isOn: $showQuickActionButton)
-            } header: {
-                Text("setting.general.quick_link.header")
-            }
-
-            Section {
                 Toggle(isOn: $enableMarkdownRendering) {
                     Label(
                         "setting.general.display.enable_markdown_rendering",
@@ -285,12 +276,6 @@ struct GeneralTab: View {
     @Default(.autoCopyOCRText) private var autoCopyOCRText
     @Default(.autoCopySelectedText) private var autoCopySelectedText
     @Default(.autoCopyFirstTranslatedText) private var autoCopyFirstTranslatedText
-
-    // Quick link
-    @Default(.showGoogleQuickLink) private var showGoogleQuickLink
-    @Default(.showEudicQuickLink) private var showEudicQuickLink
-    @Default(.showAppleDictionaryQuickLink) private var showAppleDictionaryQuickLink
-    @Default(.showQuickActionButton) private var showQuickActionButton
 
     @Default(.appearanceType) private var appearanceType
     @Default(.hideMenuBarIcon) private var hideMenuBarIcon

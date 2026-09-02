@@ -76,8 +76,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)disableReplaceTextButton;
 
-- (void)receiveTitlebarAction:(EZTitlebarQuickAction)action;
-
 - (void)updateActionType:(EZActionType)actionType;
 
 /// Discard cached dictionary WebViews when the query window has been idle.

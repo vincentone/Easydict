@@ -11,27 +11,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger, EZTitlebarQuickAction) {
-    EZTitlebarQuickActionRemoveCommentBlockSymbols,
-    EZTitlebarQuickActionWordsSegmentation,
-    EZTitlebarQuickActionReplaceNewlineWithSpace,
-};
-
-typedef void(^EZTitlebarQuickActionBlock)(EZTitlebarQuickAction);
-
 @interface EZTitlebar : NSView
 
 @property (nonatomic, assign) BOOL pin;
 
 @property (nonatomic, strong) EZOpenLinkButton *pinButton;
-
-@property (nonatomic, strong) EZOpenLinkButton *eudicButton;
-@property (nonatomic, strong) EZOpenLinkButton *googleButton;
-@property (nonatomic, strong) EZOpenLinkButton *appleDictionaryButton;
-
-@property (nonatomic, strong) EZOpenLinkButton *quickActionButton;
-
-@property (nonatomic, copy) EZTitlebarQuickActionBlock menuActionBlock;
 
 - (void)updateShortcutButtonsToolTip;
 
