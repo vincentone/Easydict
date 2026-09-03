@@ -59,6 +59,39 @@ struct GeneralTab: View {
                 Text("setting.general.auto_copy.header")
             }
 
+            // Window management (moved from Advanced tab)
+            Section {
+                Picker(
+                    selection: $fixedWindowPosition,
+                    label: Text("setting.advance.window.fixed_window_position")
+                ) {
+                    ForEach(EZShowWindowPosition.allCases, id: \.rawValue) { option in
+                        Text(option.localizedStringResource)
+                            .tag(option)
+                    }
+                }
+
+                Toggle("setting.advance.pin_window_when_showing", isOn: $pinWindowWhenDisplayed)
+
+                Picker(
+                    "setting.advance.window.max_height_percentage",
+                    selection: $maxWindowHeightPercentageValue
+                ) {
+                    ForEach(MaxWindowHeightPercentageOption.allCases) { option in
+                        Text(option.title)
+                            .tag(option)
+                    }
+                    .onChange(of: maxWindowHeightPercentageValue) { _ in
+                        // Post notification when max window height percentage changes
+                        NotificationCenter.default.post(
+                            name: .maxWindowHeightSettingsChanged, object: nil
+                        )
+                    }
+                }
+            } header: {
+                Text("setting.advance.window_management.header")
+            }
+
             Section {
                 Picker("setting.general.language", selection: $languageState.language) {
                     ForEach(LanguageState.LanguageType.allCases, id: \.rawValue) { language in
@@ -77,9 +110,6 @@ struct GeneralTab: View {
 
                 LaunchAtLogin.Toggle {
                     Text("launch_at_startup")
-                }
-                .onChange(of: LaunchAtLogin.isEnabled) { newValue in
-                    logSettings(["launch_at_startup": newValue])
                 }
 
                 Toggle(
@@ -190,10 +220,6 @@ struct GeneralTab: View {
 
     private var shortcutsHaveSetuped: Bool {
         Defaults[.inputShortcut] != nil
-    }
-
-    private func logSettings(_ parameters: [String: Any]) {
-        AnalyticsService.logEvent(withName: "settings", parameters: parameters)
     }
 }
 

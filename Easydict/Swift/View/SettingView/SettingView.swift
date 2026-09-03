@@ -12,12 +12,8 @@ import SwiftUI
 
 enum SettingTab: Int {
     case general
-    case service
-    case advanced
-    case shortcut
-    case privacy
     case favorites
-    case about
+    case shortcut
 }
 
 // MARK: - SettingView
@@ -31,10 +27,6 @@ struct SettingView: View {
                 .tabItem { Label("setting_general", systemImage: "gear") }
                 .tag(SettingTab.general)
 
-            ServiceTab()
-                .tabItem { Label("service", systemImage: "briefcase") }
-                .tag(SettingTab.service)
-
             FavoritesTab()
                 .tabItem { Label("favorites.tab", systemImage: "star") }
                 .tag(SettingTab.favorites)
@@ -42,18 +34,6 @@ struct SettingView: View {
             ShortcutTab()
                 .tabItem { Label("shortcut", systemImage: "command.square") }
                 .tag(SettingTab.shortcut)
-
-            AdvancedTab()
-                .tabItem { Label("advanced", systemImage: "gearshape.2") }
-                .tag(SettingTab.advanced)
-
-            PrivacyTab()
-                .tabItem { Label("privacy", systemImage: "hand.raised.square") }
-                .tag(SettingTab.privacy)
-
-            AboutTab()
-                .tabItem { Label("setting.about", systemImage: "info.bubble") }
-                .tag(SettingTab.about)
         }
         .background(
             WindowAccessor(window: $window.didSet(execute: { _ in
@@ -75,10 +55,6 @@ struct SettingView: View {
         // Keep the settings page Windows all the same width to avoid strange animations.
         let maxWidth: Double = 900
         let height: Double = switch selection {
-        case .privacy:
-            340
-        case .about:
-            300
         case .favorites:
             640
         default:

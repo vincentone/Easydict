@@ -103,15 +103,7 @@
         NSString *value = keyValues[key];
         handled = [self enabledReadWriteKey:key];
         if (handled) {
-            MyConfiguration *config = [MyConfiguration shared];
-            BOOL isBeta = config.beta;
-            
             [[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
-            
-            // If enabling beta feature, setup beta features.
-            if (!isBeta && config.beta) {
-                [MyConfiguration.shared enableBetaFeaturesIfNeeded];
-            }
         }
     }
     return handled;
@@ -132,12 +124,11 @@
         handled = YES;
     }
     
-    NSArray *allServiceTypes = [QueryServiceFactory.shared allServiceTypes];
-    // easydict://writeKeyValue?Google-IntelligentQueryTextType=0
+    // easydict://writeKeyValue?Youdao-IntelligentQueryTextType=0
     NSArray *arr = [key componentsSeparatedByString:@"-"];
     if (arr.count) {
         NSString *keyString = arr.firstObject;
-        if ([allServiceTypes containsObject:keyString] || [self.allowedReadWriteKeys containsObject:keyString]) {
+        if ([keyString isEqualToString:EZServiceTypeYoudao] || [self.allowedReadWriteKeys containsObject:keyString]) {
             handled = YES;
         }
     }
@@ -175,8 +166,6 @@
      */
 
     NSArray *readWriteKeys = @[
-        EZBetaFeatureKey,
-
         EZIntelligentQueryModeKey,
     ];
 

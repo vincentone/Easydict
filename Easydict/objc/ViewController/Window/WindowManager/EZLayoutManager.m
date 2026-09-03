@@ -159,7 +159,8 @@ static EZLayoutManager *_instance;
 }
 
 - (BOOL)showInputTextField:(EZWindowType)windowType {
-    return [MyConfiguration.shared showInputTextFieldWithKey:WindowConfigurationKeyInputFieldCellVisible windowType:windowType];
+    // Input field is always visible in this build.
+    return YES;
 }
 
 - (void)updateScreen:(NSScreen *)screen {

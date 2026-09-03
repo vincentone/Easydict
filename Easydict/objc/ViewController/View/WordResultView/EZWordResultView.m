@@ -813,8 +813,7 @@ static NSString *const kMDictEntryURIScheme = @"mdict-entry";
         // For some special case, copied text language is not the queryTargetLanguage, like 龘, Youdao translate.
         EZLanguage language = [EZAppleService.shared detectTextSync:text];
 
-        EZServiceType defaultTTSServiceType = MyConfiguration.shared.defaultTTSServiceType;
-        EZQueryService *defaultTTSService = [QueryServiceFactory.shared serviceWithTypeId:defaultTTSServiceType];
+        EZQueryService *defaultTTSService = [[YoudaoService alloc] init];
 
         // Determine accent based on user preference if language is English
         NSString *accentToUse = nil;

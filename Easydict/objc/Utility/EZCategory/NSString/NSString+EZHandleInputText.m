@@ -238,32 +238,7 @@ static NSString *const kCommentSymbolPrefixPattern = @"^\\s*(//+|#+|\\*+)";
         return self;
     }
 
-    NSString *queryText = self;
-    
-    /**
-     Split camel and snake case text.
-     https://github.com/tisfeng/Easydict/issues/135#issuecomment-1750498120
-     
-     _anchoredDraggable_State --> anchored Draggable State
-     */
-    if (Configuration.shared.automaticWordSegmentation) {
-        queryText = [queryText segmentWords];
-    }
-    
-    if (Configuration.shared.automaticallyRemoveCodeCommentSymbols) {
-        // Remove prefix [//,#,*,] and join texts.
-        queryText = [queryText removeCommentBlockSymbols];
-    }
-    
-    /**
-    Replace newlines with whitespace.
-    https://github.com/tisfeng/Easydict/issues/639
-     */
-    if (Configuration.shared.replaceNewlineWithSpace) {
-        queryText = [queryText replacingNewlinesWithWhitespace];
-    }
-
-    return [queryText trim];
+    return [self trim];
 }
 
 @end

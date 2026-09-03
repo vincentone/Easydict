@@ -88,22 +88,6 @@ extension Defaults.Keys {
         "EZConfiguration_kSelectedMenuBarIconKey", default: .square
     )
 
-    static let automaticWordSegmentation = Key<Bool>(
-        "EZConfiguration_kAutomaticWordSegmentation", default: true
-    )
-    static let automaticallyRemoveCodeCommentSymbols = Key<Bool>(
-        "EZConfiguration_kAutomaticallyRemoveCodeCommentSymbols",
-        default: true
-    )
-    static let replaceNewlineWithSpace = Key<Bool>(
-        "EZConfiguration_kReplaceNewlineWithSpace", default: false
-    )
-
-    static let enableBetaFeature = Key<Bool>("EZBetaFeatureKey", default: false)
-    static var disableTipsView = Key<Bool>("disableTipsViewKey", default: false)
-    static var enableHTTPServer = Key<Bool>("enableHTTPServer", default: false)
-    static var httpPort = Key<String>("httpPort", default: "8080")
-
     /// Controls whether the screenshot tip layer is hidden during capture.
 
     static var minClassicalChineseTextDetectLength = Key<String>(

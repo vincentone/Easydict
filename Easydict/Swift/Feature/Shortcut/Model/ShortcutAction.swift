@@ -17,21 +17,6 @@ import SFSafeSymbols
 public enum ShortcutAction: String, Identifiable, CaseIterable {
     // Global shortcuts
     case inputTranslate
-    case pasteboardTranslate
-
-    // In App shortcuts
-    case clearInput
-    case clearAll
-    case copy
-    case copyFirstResult
-    case focus
-    case play
-    case retry
-    case toggle
-    case pin
-    case hide
-    case increaseFontSize
-    case decreaseFontSize
 
     // MARK: Public
 
@@ -42,7 +27,6 @@ extension ShortcutAction {
     /// All global shortcut actions (system-wide hotkeys)
     static let globalActions: [ShortcutAction] = [
         .inputTranslate,
-        .pasteboardTranslate,
     ]
 
     /// All app-specific shortcut actions (only active when app is focused)
@@ -101,94 +85,6 @@ extension ShortcutAction {
                 icon: .keyboard,
                 defaultsKey: .inputShortcut,
                 action: { windowManager.inputTranslate() }
-            ),
-            .pasteboardTranslate: .init(
-                titleKey: "menu_pasteboard_translate",
-                icon: .docOnClipboard,
-                defaultsKey: .pasteboardTranslateShortcut,
-                action: { windowManager.pasteboardTranslate(.fixed) }
-            ),
-
-            // In App shortcuts
-            .clearInput: .init(
-                titleKey: "shortcut_clear_input",
-                icon: .deleteBackward,
-                defaultsKey: .clearInputShortcut,
-                action: { windowManager.clearInput() }
-            ),
-            .clearAll: .init(
-                titleKey: "shortcut_clear_all",
-                icon: .clearFill,
-                defaultsKey: .clearAllShortcut,
-                action: { windowManager.clearAll() }
-            ),
-            .copy: .init(
-                titleKey: "shortcut_copy",
-                icon: .docOnDoc,
-                defaultsKey: .copyShortcut,
-                action: { windowManager.copyQueryText() }
-            ),
-            .copyFirstResult: .init(
-                titleKey: "shortcut_copy_first_translated_text",
-                icon: .docOnClipboard,
-                defaultsKey: .copyFirstResultShortcut,
-                action: { windowManager.copyFirstTranslatedText() }
-            ),
-            .focus: .init(
-                titleKey: "shortcut_focus",
-                icon: .cursorarrowRays,
-                defaultsKey: .focusShortcut,
-                action: { windowManager.focusInputTextView() }
-            ),
-            .play: .init(
-                titleKey: "shortcut_play",
-                icon: .playFill,
-                defaultsKey: .playShortcut,
-                action: { windowManager.playOrStopQueryTextAudio() }
-            ),
-            .retry: .init(
-                titleKey: "retry",
-                icon: .arrowClockwise,
-                defaultsKey: .retryShortcut,
-                action: { windowManager.rerty() }
-            ),
-            .toggle: .init(
-                titleKey: "toggle_languages",
-                icon: .arrowLeftArrowRight,
-                defaultsKey: .toggleShortcut,
-                action: { windowManager.toggleTranslationLanguages() }
-            ),
-            .pin: .init(
-                titleKey: "pin",
-                icon: .pin,
-                defaultsKey: .pinShortcut,
-                action: { windowManager.pin() }
-            ),
-            .hide: .init(
-                titleKey: "hide",
-                icon: .eyeSlash,
-                defaultsKey: .hideShortcut,
-                action: { windowManager.closeWindowOrExitSreenshot() }
-            ),
-            .increaseFontSize: .init(
-                titleKey: "shortcut_increase_font",
-                icon: .textformatAlt,
-                defaultsKey: .increaseFontSize,
-                action: {
-                    if MyConfiguration.shared.fontSizeIndex < MyConfiguration.shared.fontSizes.count - 1 {
-                        MyConfiguration.shared.fontSizeIndex += 1
-                    }
-                }
-            ),
-            .decreaseFontSize: .init(
-                titleKey: "shortcut_decrease_font",
-                icon: .textformatAlt,
-                defaultsKey: .decreaseFontSize,
-                action: {
-                    if MyConfiguration.shared.fontSizeIndex > 0 {
-                        MyConfiguration.shared.fontSizeIndex -= 1
-                    }
-                }
             ),
         ]
     }()

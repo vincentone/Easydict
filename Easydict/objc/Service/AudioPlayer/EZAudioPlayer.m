@@ -108,12 +108,9 @@ static NSString *const kItemWhereFroms = @"com.apple.metadata:kMDItemWhereFroms"
     }
 }
 
-// Note that user may change it when using, so we need to read it every time.
 - (EZQueryService *)defaultTTSService {
-    EZServiceType defaultTTSServiceType = MyConfiguration.shared.defaultTTSServiceType;
-    if (![_defaultTTSService.serviceType isEqualToString:defaultTTSServiceType]) {
-        EZQueryService *defaultTTSService = [QueryServiceFactory.shared serviceWithTypeId:defaultTTSServiceType];
-        _defaultTTSService = defaultTTSService;
+    if (!_defaultTTSService) {
+        _defaultTTSService = [[YoudaoService alloc] init];
         _defaultTTSService.audioPlayer = self;
     }
     return _defaultTTSService;

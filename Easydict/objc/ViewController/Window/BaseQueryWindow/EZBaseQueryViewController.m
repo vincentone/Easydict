@@ -132,7 +132,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 - (void)viewWillAppear {
     [super viewWillAppear];
 
-    [EZAnalyticsService logWindowAppear:self.windowType];
 }
 
 
@@ -185,11 +184,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
 
     [defaultCenter addObserver:self
-                      selector:@selector(handleServiceUpdate:)
-                          name:NSNotification.serviceHasUpdated
-                        object:nil];
-
-    [defaultCenter addObserver:self
                       selector:@selector(boundsDidChangeNotification:)
                           name:NSViewBoundsDidChangeNotification
                         object:[self.scrollView contentView]];
@@ -228,35 +222,14 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 }
 
 - (void)updateWindowConfiguration:(NSNotification *)notification {
-    UpdateNotificationInfo *info = notification.object;
-    if (info && info.windowType != self.windowType) {
-        return;
-    }
+    // Input field and language bar are always visible in this build.
+    self.isInputFieldCellVisible = YES;
+    self.isSelectLanguageCellVisible = YES;
+    self.inputFieldCellIndex = 0;
+    self.selectLanguageCellIndex = 1;
+    self.tipsCellIndex = 2;
 
     self.queryModel.queryViewHeight = [self miniQueryViewHeight];
-
-    self.isInputFieldCellVisible = [self.config showInputTextFieldWithKey:WindowConfigurationKeyInputFieldCellVisible
-                                                               windowType:self.windowType];
-    self.isSelectLanguageCellVisible = [self.config showInputTextFieldWithKey:WindowConfigurationKeySelectLanguageCellVisible
-                                                                   windowType:self.windowType];
-
-    self.inputFieldCellIndex = 0;
-
-    if (self.isInputFieldCellVisible) {
-        if (self.isSelectLanguageCellVisible) {
-            self.selectLanguageCellIndex = 1;
-            self.tipsCellIndex = 2;
-        } else {
-            self.tipsCellIndex = 1;
-        }
-    } else {
-        if (self.isSelectLanguageCellVisible) {
-            self.selectLanguageCellIndex = 0;
-            self.tipsCellIndex = 1;
-        } else {
-            self.tipsCellIndex = 0;
-        }
-    }
 
     [self reloadTableViewData:nil];
 }
@@ -271,32 +244,21 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 
     self.youdaoService = nil;
     _defaultTTSService = nil;
-    EZServiceType defaultTTSServiceType = self.config.defaultTTSServiceType;
 
     for (EZQueryService *service in allServices) {
-        if (service.enabled) {
-            [self resetService:service];
+        [self resetService:service];
 
-            [services addObject:service];
-            [serviceTypeIds addObject:service.serviceTypeWithUniqueIdentifier];
-        }
+        [services addObject:service];
+        [serviceTypeIds addObject:service.serviceTypeWithUniqueIdentifier];
 
-        EZServiceType serviceType = service.serviceType;
-        if ([serviceType isEqualToString:EZServiceTypeYoudao]) {
+        if ([service.serviceType isEqualToString:EZServiceTypeYoudao]) {
             self.youdaoService = service;
-        }
-
-        if ([serviceType isEqualToString:defaultTTSServiceType]) {
-            _defaultTTSService = service;
         }
     }
     self.services = services;
     self.serviceTypeIds = serviceTypeIds;
 
     self.audioPlayer = [[EZAudioPlayer alloc] init];
-    if (!self.youdaoService) {
-        self.youdaoService = [EZLocalStorage.shared service:EZServiceTypeYoudao windowType:self.windowType];
-    }
 }
 
 - (void)dealloc {
@@ -312,28 +274,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
 
 - (void)activeDictionariesChanged:(NSNotification *)notification {
     MMLogInfo(@"Active dictionaries changed: %@", notification);
-}
-
-- (void)handleServiceUpdate:(NSNotification *)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    EZWindowType windowType = [userInfo[UserInfoKey.windowType] integerValue];
-    NSString *serviceType = userInfo[UserInfoKey.serviceType];
-    BOOL autoQuery = [userInfo[UserInfoKey.autoQuery] boolValue];
-
-    MMLogInfo(@"handle service update notification: %@, userInfo: %@", serviceType, userInfo);
-
-    if ([serviceType length] != 0) {
-        [self updateService:serviceType autoQuery:autoQuery];
-        return;
-    }
-
-    if (!userInfo || windowType == self.windowType || windowType == EZWindowTypeNone) {
-        [self resetAllCellWithServices:[self latestServices] completion:^{
-            if (autoQuery) {
-                [self queryCurrentModel];
-            }
-        }];
-    }
 }
 
 - (void)boundsDidChangeNotification:(NSNotification *)notification {
@@ -506,12 +446,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
         }
 
         [self clearInput];
-
-        // If write, need to update.
-        if (actionKey && [self.schemeParser isWriteActionKey:actionKey]) {
-            // Besides current window, other pages need to be notified, such as the settings service page.
-            [NSNotificationCenter.defaultCenter postServiceUpdateNotification];
-        }
     }];
 
     return YES;
@@ -830,8 +764,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     [self updateResultLoadingAnimation:result];
 
     [service startQueryStream:queryModel completionHandler:completion];
-
-    [EZLocalStorage.shared increaseQueryService:service];
 }
 
 - (void)updateResultLoadingAnimation:(EZQueryResult *)result {
@@ -1164,41 +1096,12 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     service.windowType = self.windowType;
 }
 
-- (void)updateService:(NSString *)serviceTypeWithUniqueIdentifier autoQuery:(BOOL)autoQuery {
-    NSMutableArray *newServices = [self.services mutableCopy];
-    for (EZQueryService *service in self.services) {
-        if ([service.serviceTypeWithUniqueIdentifier isEqualToString:serviceTypeWithUniqueIdentifier]) {
-            if (!autoQuery) {
-                [self updateCellWithResult:service.result reloadData:YES completionHandler:nil];
-                return;
-            }
-
-            EZQueryService *updatedService = [EZLocalStorage.shared service:serviceTypeWithUniqueIdentifier windowType:self.windowType];
-            if (!updatedService) {
-                return;
-            }
-
-            NSInteger index = [self.serviceTypeIds indexOfObject:serviceTypeWithUniqueIdentifier];
-            newServices[index] = updatedService;
-            self.services = newServices.copy;
-
-            [self resetCellWithService:updatedService autoQuery:autoQuery];
-
-            return;
-        }
-    }
-}
-
-- (void)resetAllCellWithServices:(NSArray *)allServices completion:(void (^)(void))completion {
-    [self setupServices:allServices];
-    [self reloadTableViewData:completion];
-}
-
-/// Get latest services from local storage.
+/// Get query services: only Youdao is available in this build.
 - (NSArray<EZQueryService *> *)latestServices {
-    return [EZLocalStorage.shared enabledServices:self.windowType];
+    YoudaoService *service = [[YoudaoService alloc] init];
+    [self resetService:service];
+    return @[ service ];
 }
-
 
 #pragma mark - Update Data.
 
@@ -1416,12 +1319,6 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
             [self retryQueryWithLanguage:language];
 
             [self updateSelectLanguageCell];
-
-            NSDictionary *dict = @{
-                @"autoDetect" : detectedLanguage,
-                @"userSelect" : language,
-            };
-            [EZAnalyticsService logEventWithName:@"change_detected_language" parameters:dict];
         }
     }];
 

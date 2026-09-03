@@ -11,8 +11,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString *const EZBetaFeatureKey = @"EZBetaFeatureKey";
-
 static NSString *const EZIntelligentQueryModeKey = @"IntelligentQueryMode";
 
 @interface EZConstKey : NSObject

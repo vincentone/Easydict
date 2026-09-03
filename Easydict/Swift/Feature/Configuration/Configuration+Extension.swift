@@ -52,26 +52,10 @@ extension MyConfiguration {
         let key = EZConstKey.constkey("IntelligentQueryMode", windowType: windowType)
         let stringValue = "\(enabled)"
         UserDefaults.standard.set(stringValue, forKey: key)
-
-        let parameters =
-            [
-                "enabled": enabled,
-                "window_type": windowType.rawValue,
-            ] as [String: Any]
-
-        AnalyticsService.logEvent(withName: "intelligent_query_mode", parameters: parameters)
     }
 
     func intelligentQueryModeForWindowType(_ windowType: EZWindowType) -> Bool {
         let key = EZConstKey.constkey("IntelligentQueryMode", windowType: windowType)
         return UserDefaults.standard.bool(forKey: key)
-    }
-}
-
-// MARK: Window Configuration
-
-extension MyConfiguration {
-    func showInputTextField(key: WindowConfigurationKey, windowType: EZWindowType) -> Bool {
-        Defaults[windowConfigurationKey(key, windowType: windowType, defaultValue: true)]
     }
 }
