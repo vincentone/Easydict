@@ -44,12 +44,8 @@ class MyConfiguration: NSObject {
     @DefaultsWrapper(.queryFromLanguage) var fromLanguage: Language
     @DefaultsWrapper(.queryToLanguage) var toLanguage: Language
 
-    @DefaultsWrapper(.shortcutSelectTranslateWindowType) var shortcutSelectTranslateWindowType:
-        EZWindowType
     @DefaultsWrapper(.fixedWindowPosition) var fixedWindowPosition: EZShowWindowPosition
-    @DefaultsWrapper(.miniWindowPosition) var miniWindowPosition: EZShowWindowPosition
     @DefaultsWrapper(.pinWindowWhenDisplayed) var pinWindowWhenDisplayed
-    @DefaultsWrapper(.hideMainWindow) var hideMainWindow: Bool
 
     @DefaultsWrapper(.clearQueryWhenInputTranslate) var clearInput: Bool
     @DefaultsWrapper(.selectQueryTextWhenWindowActivate) var selectQueryTextWhenWindowActivate: Bool
@@ -74,7 +70,6 @@ class MyConfiguration: NSObject {
     @DefaultsWrapper(.enableBetaFeature) private(set) var beta: Bool
 
     @DefaultsWrapper(.formerFixedScreenVisibleFrame) var formerFixedScreenVisibleFrame: CGRect
-    @DefaultsWrapper(.formerMiniScreenVisibleFrame) var formerMiniScreenVisibleFrame: CGRect
 
     // Max window height percentage, e.g., 80 means 80% of the screen height
     @DefaultsWrapper(.maxWindowHeightPercentage) var maxWindowHeightPercentage: Int
@@ -130,13 +125,6 @@ class MyConfiguration: NSObject {
             }
             .store(in: &cancellables)
 
-        Defaults.publisher(.hideMainWindow, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetHideMainWindow()
-            }
-            .store(in: &cancellables)
-
         Defaults.publisher(.autoQueryPastedText, options: [])
             .removeDuplicates()
             .sink { [weak self] _ in
@@ -183,13 +171,6 @@ class MyConfiguration: NSObject {
             .removeDuplicates()
             .sink { [weak self] _ in
                 self?.didSetFixedWindowPosition()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.shortcutSelectTranslateWindowType, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetShortcutSelectTranslateWindowType()
             }
             .store(in: &cancellables)
 
@@ -262,14 +243,6 @@ extension MyConfiguration {
         logSettings(["second_language": secondLanguage])
     }
 
-    fileprivate func didSetHideMainWindow() {
-        if hideMainWindow {
-            EZWindowManager.shared().destroyMainWindow()
-        }
-
-        logSettings(["hide_main_window": hideMainWindow])
-    }
-
     fileprivate func didSetAutoQueryPastedText() {
         logSettings(["auto_query_pasted_text": autoQueryPastedText])
     }
@@ -297,10 +270,6 @@ extension MyConfiguration {
 
     fileprivate func didSetFixedWindowPosition() {
         logSettings(["show_fixed_window_position": fixedWindowPosition])
-    }
-
-    fileprivate func didSetShortcutSelectTranslateWindowType() {
-        logSettings(["show_shortcut_window_type": shortcutSelectTranslateWindowType])
     }
 
     fileprivate func didSetAllowCrashLog() {

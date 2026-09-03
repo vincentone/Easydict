@@ -85,28 +85,12 @@ static EZWindowManager *_instance;
 
 #pragma mark - Getter && Setter
 
-- (EZMainQueryWindow *)mainWindow {
-    if (!_mainWindow) {
-        _mainWindow = [EZMainQueryWindow shared];
-        _mainWindow.releasedWhenClosed = NO;
-    }
-    return _mainWindow;
-}
-
 - (EZFixedQueryWindow *)fixedWindow {
     if (!_fixedWindow) {
         _fixedWindow = [EZFixedQueryWindow shared];
         _fixedWindow.releasedWhenClosed = NO;
     }
     return _fixedWindow;
-}
-
-- (EZMiniQueryWindow *)miniWindow {
-    if (!_miniWindow) {
-        _miniWindow = [[EZMiniQueryWindow alloc] init];
-        _miniWindow.releasedWhenClosed = NO;
-    }
-    return _miniWindow;
 }
 
 - (nullable EZBaseQueryWindow *)floatingWindow {
@@ -255,48 +239,18 @@ static EZWindowManager *_instance;
 #pragma mark - Others
 
 - (nullable EZBaseQueryWindow *)windowWithType:(EZWindowType)type {
-    EZBaseQueryWindow *window = nil;
-    switch (type) {
-        case EZWindowTypeMain: {
-            window = _mainWindow;
-            break;
-        }
-        case EZWindowTypeFixed: {
-            window = self.fixedWindow;
-            break;
-        }
-        case EZWindowTypeMini: {
-            window = self.miniWindow;
-            break;
-        }
-        case EZWindowTypeNone: {
-            break;
-        }
+    if (type == EZWindowTypeFixed) {
+        return self.fixedWindow;
     }
-    return window;
+    return nil;
 }
 
 /// Return top-left point.
 - (CGPoint)floatingWindowLocationWithType:(EZWindowType)type {
-    CGPoint location = CGPointZero;
-    switch (type) {
-        case EZWindowTypeMain: {
-            location = CGPointMake(100, 500);
-            break;
-        }
-        case EZWindowTypeFixed: {
-            location = [self getFloatingWindowLocation:MyConfiguration.shared.fixedWindowPosition];
-            break;
-        }
-        case EZWindowTypeMini: {
-            location = [self getFloatingWindowLocation:MyConfiguration.shared.miniWindowPosition];
-            break;
-        }
-        case EZWindowTypeNone: {
-            break;
-        }
+    if (type == EZWindowTypeFixed) {
+        return [self getFloatingWindowLocation:MyConfiguration.shared.fixedWindowPosition];
     }
-    return location;
+    return CGPointZero;
 }
 
 
@@ -330,14 +284,6 @@ static EZWindowManager *_instance;
     [window setFrameOrigin:safeLocation];
     window.level = EZFloatingWindowLevel;
 
-    // FIXME: need to optimize. We have to remove main window temporarily, and `orderBack:` when closed floating window.
-    // But `orderBack:` will cause the query window to fail to display in stage manager mode (#385)
-
-    if ([EZMainQueryWindow isAlive]) {
-        [_mainWindow.queryViewController cancelAutoQuery];
-        [_mainWindow orderOut:nil];
-    }
-
     //    MMLogInfo(@"window frame: %@", @(window.frame));
 
     // ???: This code will cause warning: [Window] Warning: Window EZFixedQueryWindow 0x107f04db0 ordered front from a non-active application and may order beneath the active application's windows.
@@ -365,31 +311,13 @@ static EZWindowManager *_instance;
 
 - (void)updateFloatingWindowType:(EZWindowType)floatingWindowType isShowing:(BOOL)isShowing {
     NSNumber *windowType = @(floatingWindowType);
-    //    MMLogInfo(@"update windowType: %@, isShowing: %d", windowType, isShowing);
-    //    MMLogInfo(@"before floatingWindowTypeArray: %@", self.floatingWindowTypeArray);
 
     [self.floatingWindowTypeArray removeObject:windowType];
     [self.floatingWindowTypeArray insertObject:windowType atIndex:isShowing ? 0 : 1];
-
-    //    MMLogInfo(@"after floatingWindowTypeArray: %@", self.floatingWindowTypeArray);
 }
 
 - (void)updateWindowsTitlebarButtonsToolTip {
-    [_mainWindow.titleBar updateShortcutButtonsToolTip];
-    [_miniWindow.titleBar updateShortcutButtonsToolTip];
     [_fixedWindow.titleBar updateShortcutButtonsToolTip];
-}
-
-- (CGPoint)getMiniWindowLocation {
-    CGPoint position = [self getShowingMouseLocation];
-
-    // If action none, just show mini window, then show window at last position.
-    if (self.actionType == EZActionTypeNone) {
-        CGRect formerFrame = [EZLayoutManager.shared windowFrameWithType:EZWindowTypeMini];
-        position = [EZCoordinateUtils getFrameTopLeftPoint:formerFrame];
-    }
-
-    return position;
 }
 
 - (CGPoint)getShowingMouseLocation {
@@ -483,35 +411,6 @@ static EZWindowManager *_instance;
     self.lastFrontmostApplication = frontmostApplication;
 }
 
-- (void)showMainWindowIfNeeded {
-    BOOL showFlag = !MyConfiguration.shared.hideMainWindow;
-    NSApplicationActivationPolicy activationPolicy = showFlag ? NSApplicationActivationPolicyRegular : NSApplicationActivationPolicyAccessory;
-    [NSApp setActivationPolicy:activationPolicy];
-
-    if (showFlag) {
-        // If the main window does not exist, create it first, and show it center.
-        if (!_mainWindow) {
-            [self.mainWindow center];
-        }
-        [self.mainWindow makeKeyAndOrderFront:nil];
-        [self.floatingWindowTypeArray insertObject:@(EZWindowTypeMain) atIndex:0];
-
-        // TODO: We should record main window showing position, like mini window.
-        //        [self showFloatingWindowType:EZWindowTypeMain queryText:nil];
-    }
-}
-
-- (void)destroyMainWindow {
-    [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
-
-    [self.floatingWindowTypeArray removeObject:@(EZWindowTypeMain)];
-
-    if ([EZMainQueryWindow isAlive]) {
-        [EZMainQueryWindow destroySharedInstance];
-        _mainWindow = nil;
-    }
-}
-
 #pragma mark - Menu Actions, Global Shortcut
 
 - (void)inputTranslate {
@@ -519,7 +418,7 @@ static EZWindowManager *_instance;
 
     [self saveFrontmostApplication];
 
-    EZWindowType windowType = MyConfiguration.shared.shortcutSelectTranslateWindowType;
+    EZWindowType windowType = EZWindowTypeFixed;
 
     if (self.floatingWindowType == windowType && self.floatingWindow.isVisible) {
         [self closeFloatingWindow];
@@ -533,21 +432,6 @@ static EZWindowManager *_instance;
 
     self.actionType = EZActionTypeNone;
     [self showFloatingWindowType:windowType queryText:queryText];
-}
-
-/// Show mini window at last positon.
-- (void)showMiniFloatingWindow {
-    MMLogInfo(@"showMiniFloatingWindow");
-
-    EZWindowType windowType = MyConfiguration.shared.shortcutSelectTranslateWindowType;
-
-    if (self.floatingWindowType == windowType && self.floatingWindow.isVisible) {
-        [self closeFloatingWindow];
-        return;
-    }
-
-    self.actionType = EZActionTypeNone;
-    [self showFloatingWindowType:windowType queryText:nil];
 }
 
 /// Translate text from pasteboard.
@@ -625,26 +509,10 @@ static EZWindowManager *_instance;
     [self closeFloatingWindow:self.floatingWindowType];
 }
 
-/**
- Close floating window if not pinned or main window.
- Main window is basically equivalent to a pinned floating window.
- */
-- (void)closeFloatingWindowIfNotPinnedOrMain {
-    [self closeFloatingWindowIfNotPinned:self.floatingWindowType exceptWindowType:EZWindowTypeMain];
-}
-
 - (void)closeFloatingWindowIfNotPinned {
-    [self closeFloatingWindowIfNotPinned:self.floatingWindowType exceptWindowType:EZWindowTypeNone];
-}
-
-- (void)closeFloatingWindowIfNotPinnedOrMain:(EZWindowType)windowType {
-    [self closeFloatingWindowIfNotPinned:windowType exceptWindowType:EZWindowTypeMain];
-}
-
-- (void)closeFloatingWindowIfNotPinned:(EZWindowType)windowType exceptWindowType:(EZWindowType)exceptWindowType {
-    EZBaseQueryWindow *window = [self windowWithType:windowType];
-    if (!window.isPin && windowType != exceptWindowType) {
-        [self closeFloatingWindow:windowType];
+    EZBaseQueryWindow *window = [self windowWithType:self.floatingWindowType];
+    if (!window.isPin) {
+        [self closeFloatingWindow];
     }
 }
 

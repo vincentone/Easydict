@@ -311,7 +311,7 @@ struct QueryRecordRow: View {
 
     /// Replays the query stored in this record.
     private func performQuery() {
-        let windowType = Defaults[.shortcutSelectTranslateWindowType]
+        let windowType = EZWindowType.fixed
 
         // Trigger a new query with the stored text and languages
         let windowManager = EZWindowManager.shared()

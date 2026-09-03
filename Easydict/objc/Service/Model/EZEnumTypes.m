@@ -55,16 +55,10 @@ NSString *const EZDefaultTTSServiceKey = @"EZDefaultTTSServiceKey";
 }
 
 + (NSString *)windowName:(EZWindowType)type {
-    switch (type) {
-        case EZWindowTypeMain:
-            return @"main_window";
-        case EZWindowTypeFixed:
-            return @"fixed_window";
-        case EZWindowTypeMini:
-            return @"mini_window";
-        default:
-            return @"none_window";
+    if (type == EZWindowTypeFixed) {
+        return @"fixed_window";
     }
+    return @"none_window";
 }
 
 + (MMOrderedDictionary *)fixedWindowPositionDict {
@@ -73,15 +67,6 @@ NSString *const EZDefaultTTSServiceKey = @"EZDefaultTTSServiceKey";
                                                                  @(EZShowWindowPositionMouse), NSLocalizedString(@"fixed_window_position_mouse", nil),
                                                                  @(EZShowWindowPositionFormer), NSLocalizedString(@"fixed_window_position_former", nil),
                                                                  @(EZShowWindowPositionCenter), NSLocalizedString(@"fixed_window_position_center", nil),
-                                                                 nil];
-
-    return dict;
-}
-
-+ (MMOrderedDictionary *)translateWindowTypeDict {
-    MMOrderedDictionary *dict = [[MMOrderedDictionary alloc] initWithKeysAndObjects:
-                                                                 @(EZWindowTypeMini), NSLocalizedString(@"mini_window", nil),
-                                                                 @(EZWindowTypeFixed), NSLocalizedString(@"fixed_window", nil),
                                                                  nil];
 
     return dict;

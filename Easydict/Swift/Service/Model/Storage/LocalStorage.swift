@@ -84,7 +84,7 @@ final class LocalStorage: NSObject {
 
     func availableServiceTypeIDs(windowType: EZWindowType) -> [String] {
         let addedServiceTypeIds = allServiceTypes(windowType)
-        let savedServiceTypeIds = [EZWindowType.fixed, .main, .mini]
+        let savedServiceTypeIds = [EZWindowType.fixed]
             .flatMap { allServiceTypes($0) }
         let allServiceTypeIds = QueryServiceFactory.shared.allServiceTypeIDs + savedServiceTypeIds
         var seenTypeIds = Set<String>()
@@ -400,7 +400,7 @@ final class LocalStorage: NSObject {
 
     /// Ensures all known services have stored defaults for each window type.
     private func setup() {
-        let allWindowTypes: [EZWindowType] = [.mini, .fixed, .main]
+        let allWindowTypes: [EZWindowType] = [.fixed]
 
         for windowType in allWindowTypes {
             let serviceTypeIds = allServiceTypes(windowType)

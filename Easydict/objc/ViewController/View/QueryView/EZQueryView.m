@@ -339,11 +339,7 @@ static const NSTimeInterval EZAutoQueryWhenTextChangedDelay = 0.8;
 
 - (void)setAssociatedWindowType:(EZWindowType)windowType {
     [super setAssociatedWindowType:windowType];
-    
-    if (windowType == EZWindowTypeMini) {
-        self.textView.customParagraphSpacing = FLT_MIN; // minimum positive float value.
-    }
-    
+
     [self updateCustomLayout];
 }
 

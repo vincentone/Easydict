@@ -14,7 +14,7 @@ import Foundation
 extension EZWindowType: Defaults.Serializable {}
 
 extension EZWindowType {
-    public static let availableOptions: [EZWindowType] = [.mini, .fixed]
+    public static let availableOptions: [EZWindowType] = [.fixed]
 }
 
 // MARK: - EZWindowType + CustomLocalizedStringResourceConvertible
@@ -24,14 +24,8 @@ extension EZWindowType: CustomLocalizedStringResourceConvertible {
         switch self {
         case .fixed:
             "fixed_window"
-        case .main:
-            "main_window"
-        case .mini:
-            "mini_window"
         case .none:
             "none_window"
-        @unknown default:
-            "unknown_option"
         }
     }
 }

@@ -37,7 +37,6 @@ extension Defaults.Keys {
         "EZConfiguration_kPronunciationKey",
         default: EnglishPronunciation.us
     )
-    static let hideMainWindow = Key<Bool>("EZConfiguration_kHideMainWindowKey", default: true)
     static let autoQueryPastedText = Key<Bool>(
         "EZConfiguration_kAutoQueryPastedTextKey", default: false
     )
@@ -63,14 +62,6 @@ extension Defaults.Keys {
     static let fixedWindowPosition = Key<EZShowWindowPosition>(
         "EZConfiguration_kShowFixedWindowPositionKey",
         default: .right
-    )
-    static let miniWindowPosition = Key<EZShowWindowPosition>(
-        "EZConfiguration_kShowMiniWindowPositionKey",
-        default: .mouse
-    )
-    static let shortcutSelectTranslateWindowType = Key<EZWindowType>(
-        "EZConfiguration_kShortcutSelectTranslateWindowTypeKey",
-        default: .fixed
     )
     static let pinWindowWhenDisplayed = Key<Bool>(
         "EZConfiguration_kPinWindowWhenDisplayed", default: false
@@ -123,11 +114,6 @@ extension Defaults.Keys {
     /// Cannot use NSScreen, so we use CGRect to record the screen visible frame for EZShowWindowPositionFormer
     static var formerFixedScreenVisibleFrame = Key<CGRect>(
         "EZConfiguration_kScreenVisibleFrameKey", default: .zero
-    )
-
-    static var formerMiniScreenVisibleFrame = Key<CGRect>(
-        "EZConfiguration_kFormerMiniScreenVisibleFrameKey",
-        default: .zero
     )
 
     // MARK: - Window Height Limit
@@ -255,7 +241,6 @@ class ShortcutWrapper<T: KeyCombo> {
 extension Defaults.Keys {
     // Global
     static let inputShortcut = Key<KeyCombo?>("EZInputShortcutKey_keyHolder")
-    static let showMiniWindowShortcut = Key<KeyCombo?>("EZShowMiniShortcutKey_keyHolder")
     static let pasteboardTranslateShortcut = Key<KeyCombo?>(
         "EZPasteboardTranslateShortcutKey_keyHolder"
     )

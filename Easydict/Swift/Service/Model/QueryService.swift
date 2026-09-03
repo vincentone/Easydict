@@ -50,7 +50,7 @@ open class QueryService: NSObject {
     open var enabled: Bool = true
 
     open var queryType: EZQueryTextType = []
-    open var windowType: EZWindowType = .main
+    open var windowType: EZWindowType = .fixed
 
     open var autoCopyTranslatedTextBlock: ((QueryResult, Error?) -> ())?
 

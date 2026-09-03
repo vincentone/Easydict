@@ -49,29 +49,17 @@ static EZLayoutManager *_instance;
     self.minimumWindowSize = CGSizeMake(360, 40);
 
     MyConfiguration *configuration = [MyConfiguration shared];
-    
-    self.miniWindowFrame = [configuration windowFrameWithType:EZWindowTypeMini];
-    if (CGRectEqualToRect(self.miniWindowFrame, CGRectZero)) {
-        self.miniWindowFrame = [self defaultWindowFrameWithType:EZWindowTypeMini];
-        [configuration setWindowFrame:self.miniWindowFrame windowType:EZWindowTypeMini];
-    }
-    
+
     self.fixedWindowFrame = [configuration windowFrameWithType:EZWindowTypeFixed];
     if (CGRectEqualToRect(self.fixedWindowFrame, CGRectZero)) {
         self.fixedWindowFrame = [self defaultWindowFrameWithType:EZWindowTypeFixed];
         [configuration setWindowFrame:self.fixedWindowFrame windowType:EZWindowTypeFixed];
     }
-    
-    self.mainWindowFrame = [configuration windowFrameWithType:EZWindowTypeMain];
-    if (CGRectEqualToRect(self.mainWindowFrame, CGRectZero)) {
-        self.mainWindowFrame = [self defaultWindowFrameWithType:EZWindowTypeMain];
-        [configuration setWindowFrame:self.mainWindowFrame windowType:EZWindowTypeMain];
-    }
 }
 
 - (void)setScreen:(NSScreen *)screen {
     _screen = screen;
-    
+
     [self setupMaximumWindowSize:screen];
 }
 
@@ -81,16 +69,7 @@ static EZLayoutManager *_instance;
 }
 
 - (CGSize)minimumWindowSize:(EZWindowType)type {
-    switch (type) {
-        case EZWindowTypeMain:
-            return self.minimumWindowSize;
-        case EZWindowTypeFixed:
-            return self.minimumWindowSize;
-        case EZWindowTypeMini:
-            return self.minimumWindowSize;
-        default:
-            return self.minimumWindowSize;
-    }
+    return self.minimumWindowSize;
 }
 
 - (CGSize)maximumWindowSize:(EZWindowType)type {
@@ -120,16 +99,7 @@ static EZLayoutManager *_instance;
         return 0;
     }
 
-    switch (type) {
-        case EZWindowTypeMain:
-            return 75; // three line
-        case EZWindowTypeFixed:
-            return 65; // > two line
-        case EZWindowTypeMini:
-            return 54; // two line.
-        default:
-            return 54; // two line
-    }
+    return 65; // > two line
 }
 
 - (CGFloat)inputViewMaxHeight:(EZWindowType)type {
@@ -137,71 +107,29 @@ static EZLayoutManager *_instance;
         return 0;
     }
 
-    switch (type) {
-        case EZWindowTypeMain:
-            return NSScreen.mainScreen.frame.size.height * 0.3;
-        case EZWindowTypeFixed:
-            return NSScreen.mainScreen.frame.size.height * 0.3;
-        case EZWindowTypeMini:
-            return 75; // 3 line
-        default:
-            return 75;
-    }
+    return NSScreen.mainScreen.frame.size.height * 0.3;
 }
 
 - (CGRect)windowFrameWithType:(EZWindowType)type {
-    switch (type) {
-        case EZWindowTypeMain: {
-            return self.mainWindowFrame;
-        }
-        case EZWindowTypeFixed: {
-            return self.fixedWindowFrame;
-        }
-        case EZWindowTypeMini: {
-            return self.miniWindowFrame;
-        }
-        default: {
-            return CGRectZero;
-        }
+    if (type == EZWindowTypeFixed) {
+        return self.fixedWindowFrame;
     }
+    return CGRectZero;
 }
 
 - (CGRect)defaultWindowFrameWithType:(EZWindowType)type {
     CGSize visibleFrameSize = NSScreen.mainScreen.visibleFrame.size;
     CGPoint centerPoint = NSMakePoint(visibleFrameSize.width / 2, visibleFrameSize.height / 2);
     CGFloat rateableWidth = 1727.0 / NSScreen.mainScreen.frame.size.width;
-    CGFloat mainWindowWidth = 500 * rateableWidth;
-    CGFloat miniWindowWidth = 420 * rateableWidth; // My MacBook screen ratio
     CGFloat fixedWindowWidth = 420 * rateableWidth;
-    CGRect frame = CGRectZero;
-    
-    switch (type) {
-        case EZWindowTypeMain: {
-            frame = CGRectMake(centerPoint.x,
-                               centerPoint.y,
-                               mainWindowWidth,
-                               self.minimumWindowSize.height);
-            break;
-        }
-        case EZWindowTypeFixed: {
-            frame = CGRectMake(centerPoint.x,
-                               centerPoint.y,
-                               fixedWindowWidth,
-                               self.minimumWindowSize.height);
-            break;
-        }
-        case EZWindowTypeMini: {
-            frame = CGRectMake(centerPoint.x,
-                               centerPoint.y,
-                               miniWindowWidth,
-                               self.minimumWindowSize.height);
-            break;
-        }
-        default: {
-            return CGRectZero;
-        }
+
+    if (type == EZWindowTypeFixed) {
+        return CGRectMake(centerPoint.x,
+                          centerPoint.y,
+                          fixedWindowWidth,
+                          self.minimumWindowSize.height);
     }
-    return frame;
+    return CGRectZero;
 }
 
 - (CGRect)windowFrame:(EZBaseQueryWindow *)window {
@@ -216,35 +144,17 @@ static EZLayoutManager *_instance;
     // Record floating window frame
     [MyConfiguration.shared setWindowFrame:windowFrame windowType:windowType];
 
-    switch (windowType) {
-        case EZWindowTypeMain:
-            self.mainWindowFrame = windowFrame;
-            break;
-        case EZWindowTypeFixed: {
-            self.fixedWindowFrame = windowFrame;
+    if (windowType == EZWindowTypeFixed) {
+        self.fixedWindowFrame = windowFrame;
 
-            // Record screenVisibleFrame when fixedWindowPosition is EZShowWindowPositionFormer
-            if (MyConfiguration.shared.fixedWindowPosition == EZShowWindowPositionFormer) {
-                CGPoint fixedWindowCenter = NSMakePoint(NSMidX(windowFrame), NSMidY(windowFrame));
+        // Record screenVisibleFrame when fixedWindowPosition is EZShowWindowPositionFormer
+        if (MyConfiguration.shared.fixedWindowPosition == EZShowWindowPositionFormer) {
+            CGPoint fixedWindowCenter = NSMakePoint(NSMidX(windowFrame), NSMidY(windowFrame));
 
-                // Update lastPoint to update current active screen
-                EZWindowManager.shared.lastPoint = fixedWindowCenter;
-                MyConfiguration.shared.formerFixedScreenVisibleFrame = self.screen.visibleFrame;
-            }
-            break;
+            // Update lastPoint to update current active screen
+            EZWindowManager.shared.lastPoint = fixedWindowCenter;
+            MyConfiguration.shared.formerFixedScreenVisibleFrame = self.screen.visibleFrame;
         }
-        case EZWindowTypeMini:
-            self.miniWindowFrame = window.frame;
-
-            if (MyConfiguration.shared.miniWindowPosition == EZShowWindowPositionFormer) {
-                CGPoint fixedWindowCenter = NSMakePoint(NSMidX(windowFrame), NSMidY(windowFrame));
-
-                EZWindowManager.shared.lastPoint = fixedWindowCenter;
-                MyConfiguration.shared.formerMiniScreenVisibleFrame = self.screen.visibleFrame;
-            }
-            break;
-        default:
-            break;
     }
 }
 
@@ -254,8 +164,6 @@ static EZLayoutManager *_instance;
 
 - (void)updateScreen:(NSScreen *)screen {
     _screen = screen;
-
-//    MMLogInfo(@"update screen: %@", @(screen.visibleFrame));
 
     [self setupMaximumWindowSize:screen];
 }

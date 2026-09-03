@@ -128,7 +128,6 @@ extension KeyHolderWrapper {
         private var shortcutTypeToDefaultsKey: [ShortcutAction: DefaultsKeyWrapper] {
             [
                 .inputTranslate: DefaultsKeyWrapper(.inputShortcut),
-                .showMiniWindow: DefaultsKeyWrapper(.showMiniWindowShortcut),
                 .pasteboardTranslate: DefaultsKeyWrapper(.pasteboardTranslateShortcut),
 
                 // In App shortcuts

@@ -17,7 +17,7 @@ final class QueryServiceConfiguration: NSObject, Codable {
         type: ServiceType,
         enabled: Bool = true,
         enabledQuery: Bool = true,
-        windowType: EZWindowType = .main
+        windowType: EZWindowType = .fixed
     ) {
         self.uuid = uuid
         self.type = type
@@ -34,13 +34,14 @@ final class QueryServiceConfiguration: NSObject, Codable {
         let decodedType = try container.decodeIfPresent(String.self, forKey: .type) ?? ServiceType.youdao
             .rawValue
         let decodedUUID = try container.decodeIfPresent(String.self, forKey: .uuid) ?? ""
-        let windowTypeValue = try container.decodeIfPresent(Int.self, forKey: .windowType) ?? EZWindowType.main.rawValue
+        let windowTypeValue = try container.decodeIfPresent(Int.self, forKey: .windowType) ?? EZWindowType.fixed
+            .rawValue
 
         self.uuid = decodedUUID
         self.type = ServiceType(rawValue: decodedType)
         self.enabled = try container.decodeIfPresent(Bool.self, forKey: .enabled) ?? true
         self.enabledQuery = try container.decodeIfPresent(Bool.self, forKey: .enabledQuery) ?? true
-        self.windowType = EZWindowType(rawValue: windowTypeValue) ?? .main
+        self.windowType = EZWindowType(rawValue: windowTypeValue) ?? .fixed
         super.init()
     }
 

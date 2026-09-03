@@ -18,10 +18,6 @@ struct ServiceTab: View {
     var body: some View {
         HSplitView {
             VStack(spacing: 16) {
-                WindowTypePicker(windowType: $viewModel.windowType)
-                    .padding(.horizontal, 12)
-                    .padding(.top)
-
                 VStack(alignment: .leading, spacing: 8) {
                     List(
                         selection: Binding(
@@ -53,9 +49,6 @@ struct ServiceTab: View {
                 .layoutPriority(1)
         }
         .environmentObject(viewModel)
-        .onChange(of: viewModel.windowType) { _ in
-            viewModel.handleWindowTypeChange()
-        }
     }
 
     // MARK: Private
@@ -79,8 +72,7 @@ enum ServiceTabSelection: Hashable {
 class ServiceTabViewModel: ObservableObject {
     // MARK: Lifecycle
 
-    init(windowType: EZWindowType = .fixed) {
-        self.windowType = windowType
+    init() {
         self.serviceItems = Self.loadServiceItems(windowType)
         self.availableServiceItems = Self.loadAvailableServiceItems(windowType)
     }
@@ -93,7 +85,8 @@ class ServiceTabViewModel: ObservableObject {
 
     @Published private(set) var selectedService: QueryService?
 
-    @Published var windowType: EZWindowType
+    /// Services are configured for the single floating (fixed) window.
+    let windowType: EZWindowType = .fixed
 
     @Published private(set) var selectedItems: Set<ServiceTabSelection> = [
         .windowConfiguration,
@@ -102,12 +95,6 @@ class ServiceTabViewModel: ObservableObject {
     var canRemoveSelectedServices: Bool {
         let selectedCount = selectedServiceItems.count
         return selectedCount > 0 && selectedCount < serviceItems.count
-    }
-
-    /// Refresh services when the window type changes.
-    func handleWindowTypeChange() {
-        setSelection([.windowConfiguration])
-        updateServices()
     }
 
     func updateServices() {
@@ -358,23 +345,4 @@ private struct ServiceDetailView: View {
     // MARK: Private
 
     @EnvironmentObject private var viewModel: ServiceTabViewModel
-}
-
-// MARK: - WindowTypePicker
-
-private struct WindowTypePicker: View {
-    @Binding var windowType: EZWindowType
-
-    var body: some View {
-        Picker(selection: $windowType) {
-            ForEach([EZWindowType]([.fixed, .mini, .main]), id: \.rawValue) { windowType in
-                Text(windowType.localizedStringResource)
-                    .tag(windowType)
-            }
-        } label: {
-            EmptyView()
-        }
-        .labelsHidden()
-        .pickerStyle(.segmented)
-    }
 }

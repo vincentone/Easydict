@@ -17,7 +17,6 @@ import SFSafeSymbols
 public enum ShortcutAction: String, Identifiable, CaseIterable {
     // Global shortcuts
     case inputTranslate
-    case showMiniWindow
     case pasteboardTranslate
 
     // In App shortcuts
@@ -43,7 +42,6 @@ extension ShortcutAction {
     /// All global shortcut actions (system-wide hotkeys)
     static let globalActions: [ShortcutAction] = [
         .inputTranslate,
-        .showMiniWindow,
         .pasteboardTranslate,
     ]
 
@@ -109,12 +107,6 @@ extension ShortcutAction {
                 icon: .docOnClipboard,
                 defaultsKey: .pasteboardTranslateShortcut,
                 action: { windowManager.pasteboardTranslate(.fixed) }
-            ),
-            .showMiniWindow: .init(
-                titleKey: "menu_show_mini_window",
-                icon: .dockRectangle,
-                defaultsKey: .showMiniWindowShortcut,
-                action: { windowManager.showMiniFloatingWindow() }
             ),
 
             // In App shortcuts

@@ -212,8 +212,6 @@
 		03CA1CF62EDE08C0001908D0 /* NSObject+DarkMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA1CF42EDE08C0001908D0 /* NSObject+DarkMode.swift */; };
 		03CD01592D24E17C0079D0CB /* YoudaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CD01572D24E17C0079D0CB /* YoudaoService.swift */; };
 		03CF88632B137F650030C199 /* Array+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CF88622B137F650030C199 /* Array+Convenience.swift */; };
-		03D0434E292886D200E7559E /* EZMiniQueryWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D0434D292886D200E7559E /* EZMiniQueryWindow.m */; };
-		03D043522928935300E7559E /* EZMainQueryWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D043512928935300E7559E /* EZMainQueryWindow.m */; };
 		03D043562928940500E7559E /* EZBaseQueryWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D043552928940500E7559E /* EZBaseQueryWindow.m */; };
 		03D0435A2928C4C800E7559E /* EZWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D043592928C4C800E7559E /* EZWindowManager.m */; };
 		03D0F0112F00000100ABCDEF /* QueryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D0F0012F00000100ABCDEF /* QueryService.swift */; };
@@ -644,10 +642,6 @@
 		03CC6C092B21B0DC0049ED29 /* Info-debug.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-debug.plist"; sourceTree = "<group>"; };
 		03CD01572D24E17C0079D0CB /* YoudaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoudaoService.swift; sourceTree = "<group>"; };
 		03CF88622B137F650030C199 /* Array+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Convenience.swift"; sourceTree = "<group>"; };
-		03D0434C292886D200E7559E /* EZMiniQueryWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EZMiniQueryWindow.h; sourceTree = "<group>"; };
-		03D0434D292886D200E7559E /* EZMiniQueryWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EZMiniQueryWindow.m; sourceTree = "<group>"; };
-		03D043502928935300E7559E /* EZMainQueryWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EZMainQueryWindow.h; sourceTree = "<group>"; };
-		03D043512928935300E7559E /* EZMainQueryWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EZMainQueryWindow.m; sourceTree = "<group>"; };
 		03D043542928940500E7559E /* EZBaseQueryWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EZBaseQueryWindow.h; sourceTree = "<group>"; };
 		03D043552928940500E7559E /* EZBaseQueryWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EZBaseQueryWindow.m; sourceTree = "<group>"; };
 		03D043582928C4C800E7559E /* EZWindowManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EZWindowManager.h; sourceTree = "<group>"; };
@@ -1469,9 +1463,7 @@
 			children = (
 				03D043572928C49000E7559E /* WindowManager */,
 				03D04353292893A700E7559E /* BaseQueryWindow */,
-				03D0434F2928934300E7559E /* MainQueryWindow */,
 				03D0434B2928857C00E7559E /* FixedQueryWindow */,
-				03D0434A292884B900E7559E /* MiniQueryWindow */,
 			);
 			path = Window;
 			sourceTree = "<group>";
@@ -1864,15 +1856,6 @@
 			path = Array;
 			sourceTree = "<group>";
 		};
-		03D0434A292884B900E7559E /* MiniQueryWindow */ = {
-			isa = PBXGroup;
-			children = (
-				03D0434C292886D200E7559E /* EZMiniQueryWindow.h */,
-				03D0434D292886D200E7559E /* EZMiniQueryWindow.m */,
-			);
-			path = MiniQueryWindow;
-			sourceTree = "<group>";
-		};
 		03D0434B2928857C00E7559E /* FixedQueryWindow */ = {
 			isa = PBXGroup;
 			children = (
@@ -1880,15 +1863,6 @@
 				03B0225229231FA6001C7E63 /* EZFixedQueryWindow.m */,
 			);
 			path = FixedQueryWindow;
-			sourceTree = "<group>";
-		};
-		03D0434F2928934300E7559E /* MainQueryWindow */ = {
-			isa = PBXGroup;
-			children = (
-				03D043502928935300E7559E /* EZMainQueryWindow.h */,
-				03D043512928935300E7559E /* EZMainQueryWindow.m */,
-			);
-			path = MainQueryWindow;
 			sourceTree = "<group>";
 		};
 		03D04353292893A700E7559E /* BaseQueryWindow */ = {
@@ -2884,7 +2858,6 @@
 				03F19D7C2E08FB060046C6F2 /* AppleLanguageMapper.swift in Sources */,
 				03F086F52DB21EC200268DF0 /* Double+String.swift in Sources */,
 				039CC910292F86F40037B91E /* NSImage+EZResize.m in Sources */,
-				03D0434E292886D200E7559E /* EZMiniQueryWindow.m in Sources */,
 				03B0230429231FA6001C7E63 /* EZHoverButton.m in Sources */,
 				03BD2825294875AE00F5891A /* EZMyLabel.m in Sources */,
 				03B0233029231FA6001C7E63 /* MMCrashUncaughtExceptionHandler.m in Sources */,
@@ -3002,7 +2975,6 @@
 				03E759FE2ED75F5600E1741E /* NSPasteboard+Extension.swift in Sources */,
 				6ADED1552BAE8809004A15BE /* NSBundle+Localization.m in Sources */,
 				03B0232829231FA6001C7E63 /* NSTextView+Height.m in Sources */,
-				03D043522928935300E7559E /* EZMainQueryWindow.m in Sources */,
 				6A8C988F2BAC88B500DB835A /* I18nHelper.swift in Sources */,
 				03D5C4CC2DA21EAD0054D0D4 /* MetadataExtractor.swift in Sources */,
 				032AAA5B2C456F04007996A1 /* routes.swift in Sources */,

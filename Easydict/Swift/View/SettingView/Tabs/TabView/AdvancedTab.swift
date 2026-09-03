@@ -128,20 +128,6 @@ struct AdvancedTab: View {
             // Windows management
             Section {
                 Picker(
-                    selection: $shortcutSelectTranslateWindowType,
-                    label: AdvancedTabItemView(
-                        color: .green,
-                        icon: .keyboardFill,
-                        labelText: "setting.advance.window.shortcut_select_translate_window_type"
-                    )
-                ) {
-                    ForEach(EZWindowType.availableOptions, id: \.rawValue) { option in
-                        Text(option.localizedStringResource)
-                            .tag(option)
-                    }
-                }
-
-                Picker(
                     selection: $fixedWindowPosition,
                     label: AdvancedTabItemView(
                         color: .orange,
@@ -155,33 +141,11 @@ struct AdvancedTab: View {
                     }
                 }
 
-                Picker(
-                    selection: $miniWindowPosition,
-                    label: AdvancedTabItemView(
-                        color: .purple,
-                        icon: .macwindow,
-                        labelText: "setting.advance.window.mini_window_position"
-                    )
-                ) {
-                    ForEach(EZShowWindowPosition.allCases, id: \.rawValue) { option in
-                        Text(option.localizedStringResource)
-                            .tag(option)
-                    }
-                }
-
                 Toggle(isOn: $pinWindowWhenDisplayed) {
                     AdvancedTabItemView(
                         color: .red,
                         icon: .pinFill,
                         labelText: "setting.advance.pin_window_when_showing"
-                    )
-                }
-
-                Toggle(isOn: $hideMainWindow) {
-                    AdvancedTabItemView(
-                        color: .mint,
-                        icon: .eyeSlashFill,
-                        labelText: "setting.advance.hide_main_window"
                     )
                 }
 
@@ -255,10 +219,7 @@ struct AdvancedTab: View {
 
     // Windows management
     @Default(.fixedWindowPosition) private var fixedWindowPosition
-    @Default(.miniWindowPosition) private var miniWindowPosition
-    @Default(.shortcutSelectTranslateWindowType) private var shortcutSelectTranslateWindowType
     @Default(.pinWindowWhenDisplayed) private var pinWindowWhenDisplayed
-    @Default(.hideMainWindow) private var hideMainWindow
 
     @Default(.enableHTTPServer) private var enableHTTPServer
     @Default(.httpPort) private var httpPort

@@ -19,22 +19,18 @@
 @implementation EZBaseQueryWindow
 
 - (instancetype)initWithWindowType:(EZWindowType)type {
+    // Floating query window should not activate the app (menu bar app behavior).
     NSWindowStyleMask style = NSWindowStyleMaskTitled | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskClosable;
-    BOOL usesNonactivatingPanel = type != EZWindowTypeMain;
-    if (usesNonactivatingPanel) {
-        style |= NSWindowStyleMaskNonactivatingPanel;
-    }
+    style |= NSWindowStyleMaskNonactivatingPanel;
 
     CGRect frame = [EZLayoutManager.shared windowFrameWithType:type];
 
     if (self = [super initWithContentRect:frame styleMask:style backing:NSBackingStoreBuffered defer:YES]) {
         self.windowType = type;
 
-        self.floatingPanel = usesNonactivatingPanel;
+        self.floatingPanel = YES;
         self.hidesOnDeactivate = NO;
-        if (usesNonactivatingPanel) {
-            self.collectionBehavior |= NSWindowCollectionBehaviorTransient | NSWindowCollectionBehaviorIgnoresCycle;
-        }
+        self.collectionBehavior |= NSWindowCollectionBehaviorTransient | NSWindowCollectionBehaviorIgnoresCycle;
         self.movableByWindowBackground = YES;
         self.level = NSNormalWindowLevel;
         self.titlebarAppearsTransparent = YES;
@@ -137,8 +133,8 @@
 - (void)windowDidResignKey:(NSNotification *)notification {
     //    MMLogInfo(@"windowDidResignKey: %@", self);
     
-    // Close floating window when losing focus if it's not pinned or main window.
-    [EZWindowManager.shared closeFloatingWindowIfNotPinned:self.windowType exceptWindowType:EZWindowTypeMain];
+    // Close floating window when losing focus if it's not pinned.
+    [EZWindowManager.shared closeFloatingWindowIfNotPinned];
 }
 
 - (void)windowDidResize:(NSNotification *)aNotification {

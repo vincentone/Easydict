@@ -69,7 +69,7 @@
 
 - (void)showFloatingWindowAndAutoQueryText:(NSString *)text {
     EZWindowManager *windowManager = [EZWindowManager shared];
-    EZWindowType windowType = MyConfiguration.shared.shortcutSelectTranslateWindowType;
+    EZWindowType windowType = EZWindowTypeFixed;
 
     [windowManager showFloatingWindowType:windowType
                                 queryText:[text  ns_trim]

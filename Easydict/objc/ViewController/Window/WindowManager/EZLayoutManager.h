@@ -16,9 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Avoid window manager and base window recycling retain.
 @interface EZLayoutManager : NSObject
 
-@property (nonatomic, assign) CGRect miniWindowFrame;
 @property (nonatomic, assign) CGRect fixedWindowFrame;
-@property (nonatomic, assign) CGRect mainWindowFrame;
 
 /// The screen where the last mouse click occurred, updated by EZWindowManager's lastPoint.
 @property (nonatomic, strong, readonly) NSScreen *screen;

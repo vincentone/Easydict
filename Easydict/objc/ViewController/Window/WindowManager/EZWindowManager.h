@@ -8,17 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "EZFixedQueryWindow.h"
-#import "EZMainQueryWindow.h"
-#import "EZMiniQueryWindow.h"
 #import "EZLayoutManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EZWindowManager : NSObject
 
-@property (nonatomic, strong, nullable) EZMainQueryWindow *mainWindow;
 @property (nonatomic, strong, nullable) EZFixedQueryWindow *fixedWindow;
-@property (nonatomic, strong, nullable) EZMiniQueryWindow *miniWindow;
 
 @property (nonatomic, strong) NSMutableArray *floatingWindowTypeArray;
 @property (nonatomic, assign) EZWindowType floatingWindowType;
@@ -41,7 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Menu Actions, Global Shorcut
 
 - (void)inputTranslate;
-- (void)showMiniFloatingWindow;
 - (void)pasteboardTranslate:(EZWindowType)windowType;
 
 #pragma mark - Application Shorcut
@@ -84,11 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)closeFloatingWindow;
 - (void)closeFloatingWindow:(EZWindowType)windowType;
-- (void)closeFloatingWindowIfNotPinnedOrMain;
-- (void)closeFloatingWindowIfNotPinned:(EZWindowType)windowType exceptWindowType:(EZWindowType)exceptWindowType;
-
-- (void)destroyMainWindow;
-- (void)showMainWindowIfNeeded;
+- (void)closeFloatingWindowIfNotPinned;
 
 - (void)activeLastFrontmostApplication;
 

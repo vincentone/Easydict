@@ -55,7 +55,7 @@ protocol ServiceConfigRemovable {
 
 extension QueryService: ServiceConfigRemovable {
     func remove() {
-        for winType in [EZWindowType.fixed, EZWindowType.main, EZWindowType.mini] {
+        for winType in [EZWindowType.fixed] {
             LocalStorage.shared().removeServiceType(
                 serviceTypeWithUniqueIdentifier(),
                 windowType: winType,

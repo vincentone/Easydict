@@ -23,8 +23,9 @@
 
     [ShortcutManager.shared setupShortcut];
 
-    [EZWindowManager.shared showMainWindowIfNeeded];
-    
+    // Menu bar app: never show a regular main window.
+    [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
+
     [self registerRouters];
     
     [DarkModeManager.shared updateDarkMode:MyConfiguration.shared.appearance];
@@ -41,9 +42,6 @@
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {
-    // Fix https://github.com/tisfeng/Easydict/issues/447
-    [EZWindowManager.shared showMainWindowIfNeeded];
-    
     return YES;
 }
 
