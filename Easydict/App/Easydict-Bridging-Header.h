@@ -18,7 +18,6 @@
 #import "EZAudioPlayer.h"
 
 #import "EZWebViewManager.h"
-#import "EZOCRResult.h"
 #import "EZWindowPatch.h"
 
 #import "EZLabel.h"

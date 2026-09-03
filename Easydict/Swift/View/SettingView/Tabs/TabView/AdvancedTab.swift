@@ -125,37 +125,6 @@ struct AdvancedTab: View {
                 }
             }
 
-            // OCR settings section
-            Section {
-                Toggle(isOn: $enableYoudaoOCR) {
-                    AdvancedTabItemView(
-                        color: .blue,
-                        icon: .circleRectangleFilledPatternDiagonalline,
-                        labelText: "setting.advance.enable_youdao_ocr",
-                        subtitleText: "setting.advance.enable_youdao_ocr_desc"
-                    )
-                }
-                Toggle(isOn: $enableOCRTextNormalization) {
-                    AdvancedTabItemView(
-                        color: .green,
-                        icon: .docViewfinder,
-                        labelText: "setting.advance.enable_ocr_text_normalization",
-                        subtitleText: "setting.advance.enable_ocr_text_normalization_desc"
-                    )
-                }
-
-                Toggle(isOn: $isScreenshotTipLayerHidden) {
-                    AdvancedTabItemView(
-                        color: .purple,
-                        icon: .lightbulbFill,
-                        labelText: "setting.advance.hide_screenshot_tip_layer",
-                        subtitleText: "setting.advance.hide_screenshot_tip_layer_desc"
-                    )
-                }
-            } header: {
-                Text("setting.advance.header.ocr_settings")
-            }
-
             // Windows management
             Section {
                 Picker(
@@ -282,10 +251,7 @@ struct AdvancedTab: View {
     @Default(.defaultTTSServiceType) private var defaultTTSServiceType
     @Default(.preferYoudaoTTSForEnglishWord) private var preferYoudaoTTSForEnglishWord
     @Default(.disableTipsView) private var disableTipsView
-    @Default(.enableYoudaoOCR) private var enableYoudaoOCR
     @Default(.minClassicalChineseTextDetectLength) private var minClassicalChineseTextDetectLength
-    @Default(.enableOCRTextNormalization) private var enableOCRTextNormalization
-    @Default(.isScreenshotTipLayerHidden) private var isScreenshotTipLayerHidden
 
     // Windows management
     @Default(.fixedWindowPosition) private var fixedWindowPosition

@@ -18,12 +18,6 @@ import Testing
 enum TestSuites {
     // MARK: - Test Organization Documentation
 
-    /// OCR Text Processing Tests
-    /// - Location: OCRTextProcessingTests.swift, OCRPunctuationTests.swift
-    /// - Tags: .ocr + .unit (功能领域 + 测试类型)
-    /// - Purpose: Tests for OCR text normalization and processing
-    /// - 含义：这是关于OCR功能的单元测试
-
     /// Apple Services Tests
     /// - Location: AppleServiceTests.swift
     /// - Tags: .apple + .integration (功能领域 + 测试类型)
@@ -56,8 +50,6 @@ enum TestSuites {
     ///
     /// 实际使用场景：
     /// 1. 只想运行所有单元测试：筛选 .unit 标签
-    /// 2. 只想运行OCR相关测试：筛选 .ocr 标签
-    /// 3. 只想运行OCR的单元测试：筛选 .ocr + .unit 组合
     /// 4. 运行所有集成测试：筛选 .integration 标签
     ///
     /// 测试类型说明：

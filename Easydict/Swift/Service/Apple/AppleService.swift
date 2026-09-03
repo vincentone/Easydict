@@ -8,13 +8,12 @@
 
 import Foundation
 import NaturalLanguage
-import Vision
 
 // MARK: - AppleService
 
-/// Internal system-capability service providing Apple Vision OCR and on-device
-/// language detection. It is intentionally not registered in the query service
-/// factory and is never shown to the user as a translation source.
+/// Internal system-capability service providing on-device language detection.
+/// It is intentionally not registered in the query service factory and is never
+/// shown to the user as a translation source.
 @objc(EZAppleService)
 public class AppleService: QueryService {
     // MARK: Public
@@ -53,28 +52,6 @@ public class AppleService: QueryService {
         completionHandler(detectTextSync(text), nil)
     }
 
-    /// Perform OCR using Apple's Vision-based engine.
-    public override func ocr(
-        _ image: NSImage,
-        from: Language,
-        to: Language
-    ) async throws
-        -> EZOCRResult? {
-        _ = to
-        return try await withCheckedThrowingContinuation { continuation in
-            ocrEnginee.recognizeText(
-                image: image,
-                language: from
-            ) { result, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume(returning: result)
-                }
-            }
-        }
-    }
-
     @objc
     public func detectTextSync(_ text: String) -> Language {
         languageDetector.detectLanguage(text: text)
@@ -92,7 +69,6 @@ public class AppleService: QueryService {
 
     // MARK: Private
 
-    private let ocrEnginee = AppleOCREngine()
     private let languageMapper = AppleLanguageMapper.shared
     private let languageDetector = AppleLanguageDetector(enableDebugLog: true)
 }

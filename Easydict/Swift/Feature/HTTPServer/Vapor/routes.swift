@@ -45,28 +45,6 @@ func routes(_ app: Application) throws {
         return response
     }
 
-    /// OCR image data up to 10MB. https://docs.vapor.codes/basics/routing/
-    app.on(.POST, "ocr", body: .collect(maxSize: "10mb")) { req async throws -> OCRResponse in
-        let request = try req.content.decode(OCRRequest.self)
-
-        let queryModel = QueryModel()
-        queryModel.ocrImage = NSImage(data: request.imageData)
-
-        var from = Language.auto
-        if let sourceLanguage = request.sourceLanguage {
-            from = Language.language(fromCode: sourceLanguage)
-        }
-        queryModel.userSourceLanguage = from
-
-        let detectManager = DetectManager(model: queryModel)
-        let result = try await detectManager.ocr()
-
-        return OCRResponse(
-            ocrText: result.mergedText,
-            sourceLanguage: result.from.code
-        )
-    }
-
     /// Detect language
     app.post("detect") { req async throws -> DetectResponse in
         let request = try req.content.decode(DetectRequest.self)

@@ -17,15 +17,8 @@ import SFSafeSymbols
 public enum ShortcutAction: String, Identifiable, CaseIterable {
     // Global shortcuts
     case inputTranslate
-    case snipTranslate
     case showMiniWindow
     case pasteboardTranslate
-    case silentScreenshotOCR
-
-    // OCR specific shortcuts
-    case screenshotOCR
-    case pasteboardOCR
-    case showOCRWindow
 
     // In App shortcuts
     case clearInput
@@ -50,13 +43,8 @@ extension ShortcutAction {
     /// All global shortcut actions (system-wide hotkeys)
     static let globalActions: [ShortcutAction] = [
         .inputTranslate,
-        .snipTranslate,
         .showMiniWindow,
         .pasteboardTranslate,
-        .silentScreenshotOCR,
-        .screenshotOCR,
-        .pasteboardOCR,
-        .showOCRWindow,
     ]
 
     /// All app-specific shortcut actions (only active when app is focused)
@@ -116,18 +104,6 @@ extension ShortcutAction {
                 defaultsKey: .inputShortcut,
                 action: { windowManager.inputTranslate() }
             ),
-            .snipTranslate: .init(
-                titleKey: "menu_screenshot_Translate",
-                icon: .cameraViewfinder,
-                defaultsKey: .snipShortcut,
-                action: { windowManager.snipTranslate() }
-            ),
-            .silentScreenshotOCR: .init(
-                titleKey: "menu_silent_screenshot_OCR",
-                icon: .cameraMeteringSpot,
-                defaultsKey: .silentScreenshotOCRShortcut,
-                action: { windowManager.silentScreenshotOCR() }
-            ),
             .pasteboardTranslate: .init(
                 titleKey: "menu_pasteboard_translate",
                 icon: .docOnClipboard,
@@ -139,26 +115,6 @@ extension ShortcutAction {
                 icon: .dockRectangle,
                 defaultsKey: .showMiniWindowShortcut,
                 action: { windowManager.showMiniFloatingWindow() }
-            ),
-
-            // OCR specific shortcuts
-            .screenshotOCR: .init(
-                titleKey: "menu_screenshot_OCR",
-                icon: .cameraMeteringMultispot,
-                defaultsKey: .screenshotOCRShortcut,
-                action: { windowManager.screenshotOCR() }
-            ),
-            .pasteboardOCR: .init(
-                titleKey: "menu_pasteboard_OCR",
-                icon: .listClipboard,
-                defaultsKey: .pasteboardOCRShortcut,
-                action: { AppleOCREngine().pasteboardOCR() }
-            ),
-            .showOCRWindow: .init(
-                titleKey: "menu_show_ocr_window",
-                icon: .textAndCommandMacwindow,
-                defaultsKey: .showOCRWindowShortcut,
-                action: { OCRWindowManager.shared.showWindow() }
             ),
 
             // In App shortcuts

@@ -20,11 +20,7 @@ extension ShortcutManager {
 
     private func setDefaultGlobalShortcutKeys() {
         Defaults[.inputShortcut] = KeyCombo(key: .a, cocoaModifiers: .option)
-        Defaults[.snipShortcut] = KeyCombo(key: .s, cocoaModifiers: .option)
         Defaults[.showMiniWindowShortcut] = KeyCombo(key: .f, cocoaModifiers: .option)
-        Defaults[.silentScreenshotOCRShortcut] = KeyCombo(
-            key: .s, cocoaModifiers: [.option, .shift]
-        )
     }
 
     private func setDefaultAppShortcutKeys() {

@@ -632,3 +632,53 @@ extension [String: NSNumber] {
         return "\n" + sorttedString
     }
 }
+
+// MARK: - Word Composition Helpers
+
+extension String {
+    /// Splits text into word components: Chinese characters count as individual
+    /// words, while non-Chinese sequences group until a separator is encountered.
+    var wordComponents: [String] {
+        var separatorSet = CharacterSet.whitespacesAndNewlines
+        separatorSet.formUnion(.punctuationCharacters)
+        separatorSet.remove(charactersIn: "@#/•\"-.")
+
+        var components: [String] = []
+        var currentWord = ""
+
+        for char in self {
+            let str = String(char)
+            guard let scalar = str.unicodeScalars.first else { continue }
+
+            if separatorSet.contains(scalar) {
+                if !currentWord.isEmpty {
+                    components.append(currentWord)
+                    currentWord = ""
+                }
+                continue
+            }
+
+            if str.isChineseTextByRegex {
+                if !currentWord.isEmpty {
+                    components.append(currentWord)
+                    currentWord = ""
+                }
+                components.append(str)
+            } else {
+                currentWord.append(char)
+            }
+        }
+
+        if !currentWord.isEmpty {
+            components.append(currentWord)
+        }
+
+        return components
+    }
+
+    /// Count the number of English words in the text string.
+    var englishWordCount: Int {
+        let englishWords = wordComponents.filter { $0.removingNonLetters().isEnglishText }
+        return englishWords.count
+    }
+}

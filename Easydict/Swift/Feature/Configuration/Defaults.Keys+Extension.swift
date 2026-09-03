@@ -38,14 +38,12 @@ extension Defaults.Keys {
         default: EnglishPronunciation.us
     )
     static let hideMainWindow = Key<Bool>("EZConfiguration_kHideMainWindowKey", default: true)
-    static let autoQueryOCRText = Key<Bool>("EZConfiguration_kAutoQueryOCTTextKey", default: true)
     static let autoQueryPastedText = Key<Bool>(
         "EZConfiguration_kAutoQueryPastedTextKey", default: false
     )
     static let autoQueryWhenTextChanged = Key<Bool>(
         "EZConfiguration_kAutoQueryWhenTextChangedKey", default: false
     )
-    static let autoCopyOCRText = Key<Bool>("EZConfiguration_kAutoCopyOCRTextKey", default: false)
     static let autoCopyFirstTranslatedText = Key<Bool>(
         "EZConfiguration_kAutoCopyFirstTranslatedTextKey",
         default: false
@@ -112,17 +110,10 @@ extension Defaults.Keys {
 
     static let enableBetaFeature = Key<Bool>("EZBetaFeatureKey", default: false)
     static var disableTipsView = Key<Bool>("disableTipsViewKey", default: false)
-    static var enableYoudaoOCR = Key<Bool>("enableYoudaoOCR", default: false)
     static var enableHTTPServer = Key<Bool>("enableHTTPServer", default: false)
     static var httpPort = Key<String>("httpPort", default: "8080")
 
-    static var enableOCRTextNormalization = Key<Bool>(
-        "enableOCRTextNormalization", default: false
-    )
     /// Controls whether the screenshot tip layer is hidden during capture.
-    static var isScreenshotTipLayerHidden = Key<Bool>(
-        "isScreenshotTipLayerHidden", default: false
-    )
 
     static var minClassicalChineseTextDetectLength = Key<String>(
         "minClassicalChineseTextDetectLength",
@@ -263,18 +254,11 @@ class ShortcutWrapper<T: KeyCombo> {
 /// shortcut
 extension Defaults.Keys {
     // Global
-    static let snipShortcut = Key<KeyCombo?>("EZSnipShortcutKey_keyHolder")
     static let inputShortcut = Key<KeyCombo?>("EZInputShortcutKey_keyHolder")
-    // Note: This key value is not suitable for renaming, because it is used in old versions.
-    static let silentScreenshotOCRShortcut = Key<KeyCombo?>("EZScreenshotOCRShortcutKey_keyHolder")
     static let showMiniWindowShortcut = Key<KeyCombo?>("EZShowMiniShortcutKey_keyHolder")
     static let pasteboardTranslateShortcut = Key<KeyCombo?>(
         "EZPasteboardTranslateShortcutKey_keyHolder"
     )
-
-    static let screenshotOCRShortcut = Key<KeyCombo?>("EZScreenshotOCRShortcutKey2_keyHolder")
-    static let pasteboardOCRShortcut = Key<KeyCombo?>("EZPasteboardOCRShortcutKey_keyHolder")
-    static let showOCRWindowShortcut = Key<KeyCombo?>("EZShowOCRWindowShortcutKey_keyHolder")
 
     // App
     static let clearInputShortcut = Key<KeyCombo?>("EZClearInputShortcutKey_keyHolder")

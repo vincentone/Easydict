@@ -57,14 +57,12 @@ class MyConfiguration: NSObject {
     @DefaultsWrapper(.automaticWordSegmentation) var automaticWordSegmentation: Bool
     @DefaultsWrapper(.replaceNewlineWithSpace) var replaceNewlineWithSpace: Bool
 
-    @DefaultsWrapper(.autoQueryOCRText) var autoQueryOCRText: Bool
     @DefaultsWrapper(.autoQueryPastedText) var autoQueryPastedText: Bool
     @DefaultsWrapper(.autoQueryWhenTextChanged) var autoQueryWhenTextChanged: Bool
     @DefaultsWrapper(.autoPlayAudio) var autoPlayAudio: Bool
     @DefaultsWrapper(.pronunciation) var pronunciation: EnglishPronunciation
     @DefaultsWrapper(.preferYoudaoTTSForEnglishWord) var preferYoudaoTTSForEnglishWord: Bool
 
-    @DefaultsWrapper(.autoCopyOCRText) var autoCopyOCRText: Bool
     @DefaultsWrapper(.autoCopyFirstTranslatedText) var autoCopyFirstTranslatedText: Bool
 
     @DefaultsWrapper(.appearanceType) var appearance: AppearanceType
@@ -74,10 +72,7 @@ class MyConfiguration: NSObject {
     // Advanced Tab
     @DefaultsWrapper(.disableTipsView) var disableTipsView: Bool
     @DefaultsWrapper(.enableBetaFeature) private(set) var beta: Bool
-    @DefaultsWrapper(.enableYoudaoOCR) var enableYoudaoOCR: Bool
 
-    @DefaultsWrapper(.enableOCRTextNormalization) var enableOCRTextNormalization: Bool
-    @DefaultsWrapper(.isScreenshotTipLayerHidden) var isScreenshotTipLayerHidden: Bool
     @DefaultsWrapper(.formerFixedScreenVisibleFrame) var formerFixedScreenVisibleFrame: CGRect
     @DefaultsWrapper(.formerMiniScreenVisibleFrame) var formerMiniScreenVisibleFrame: CGRect
 
@@ -142,13 +137,6 @@ class MyConfiguration: NSObject {
             }
             .store(in: &cancellables)
 
-        Defaults.publisher(.autoQueryOCRText, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetAutoQueryOCRText()
-            }
-            .store(in: &cancellables)
-
         Defaults.publisher(.autoQueryPastedText, options: [])
             .removeDuplicates()
             .sink { [weak self] _ in
@@ -167,13 +155,6 @@ class MyConfiguration: NSObject {
             .removeDuplicates()
             .sink { [weak self] _ in
                 self?.didSetPronunciation()
-            }
-            .store(in: &cancellables)
-
-        Defaults.publisher(.autoCopyOCRText, options: [])
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.didSetAutoCopyOCRText()
             }
             .store(in: &cancellables)
 
@@ -289,10 +270,6 @@ extension MyConfiguration {
         logSettings(["hide_main_window": hideMainWindow])
     }
 
-    fileprivate func didSetAutoQueryOCRText() {
-        logSettings(["auto_query_ocr_text": autoQueryOCRText])
-    }
-
     fileprivate func didSetAutoQueryPastedText() {
         logSettings(["auto_query_pasted_text": autoQueryPastedText])
     }
@@ -303,10 +280,6 @@ extension MyConfiguration {
 
     fileprivate func didSetPronunciation() {
         logSettings(["english_pronunciation": pronunciation])
-    }
-
-    fileprivate func didSetAutoCopyOCRText() {
-        logSettings(["auto_copy_ocr_text": autoCopyOCRText])
     }
 
     fileprivate func didSetAutoCopyFirstTranslatedText() {

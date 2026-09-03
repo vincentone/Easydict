@@ -73,20 +73,6 @@ struct TranslationResponse: Content {
     var dictionaryEntry: DictionaryEntry?
 }
 
-// MARK: - OCRRequest
-
-struct OCRRequest: Content {
-    var imageData: Data
-    var sourceLanguage: String?
-}
-
-// MARK: - OCRResponse
-
-struct OCRResponse: Content {
-    var ocrText: String
-    var sourceLanguage: String
-}
-
 // MARK: - DetectRequest
 
 struct DetectRequest: Content {

@@ -37,7 +37,6 @@ struct GeneralTab: View {
             }
 
             Section {
-                Toggle("auto_query_ocr_text", isOn: $autoQueryOCRText)
                 Toggle("auto_query_pasted_text", isOn: $autoQueryPastedText)
                 Toggle("auto_query_when_text_changed", isOn: $autoQueryWhenTextChanged)
                 Toggle("setting.general.voice.auto_play_word_audio", isOn: $autoPlayAudio)
@@ -55,7 +54,6 @@ struct GeneralTab: View {
             }
 
             Section {
-                Toggle("auto_copy_ocr_text", isOn: $autoCopyOCRText)
                 Toggle("auto_copy_first_translated_text", isOn: $autoCopyFirstTranslatedText)
             } header: {
                 Text("setting.general.auto_copy.header")
@@ -177,14 +175,12 @@ struct GeneralTab: View {
     @Default(.selectQueryTextWhenWindowActivate) private var selectQueryTextWhenWindowActivate
 
     // Auto query
-    @Default(.autoQueryOCRText) private var autoQueryOCRText
     @Default(.autoQueryPastedText) private var autoQueryPastedText
     @Default(.autoQueryWhenTextChanged) private var autoQueryWhenTextChanged
     @Default(.autoPlayAudio) private var autoPlayAudio
     @Default(.pronunciation) private var pronunciation
 
     // Auto copy
-    @Default(.autoCopyOCRText) private var autoCopyOCRText
     @Default(.autoCopyFirstTranslatedText) private var autoCopyFirstTranslatedText
 
     @Default(.appearanceType) private var appearanceType

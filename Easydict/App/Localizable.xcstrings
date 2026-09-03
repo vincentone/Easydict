@@ -36,9 +36,6 @@
         }
       }
     },
-    "%lld": {
-      "shouldTranslate": false
-    },
     "Alignment Error": {
       "comment": "Error description",
       "localizations": {
@@ -1182,6 +1179,7 @@
       }
     },
     "auto_check_update ": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -1257,86 +1255,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "自動拷貝第一個翻譯文本"
-          }
-        }
-      }
-    },
-    "auto_copy_ocr_text": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Auto copy OCR text after OCR"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Copiar automáticamente texto OCR después de OCR"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR 後にテキストを自動コピー"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Automaticky skopírovať OCR text po rozpoznaní"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "自动复制截图 OCR 结果"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR 完成後自動拷貝 OCR 文本"
-          }
-        }
-      }
-    },
-    "auto_query_ocr_text": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Auto query after OCR"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Consultar automáticamente después de OCR"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR 後に自動クエリ"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Automatické prekladanie po OCR"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "图片 OCR 后自动查询"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR 完成後自動查詢"
           }
         }
       }
@@ -1462,6 +1380,7 @@
       }
     },
     "check_updates": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2025,6 +1944,7 @@
       }
     },
     "disabled_title": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3524,6 +3444,7 @@
       }
     },
     "lastest_version %@": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3644,6 +3565,7 @@
       }
     },
     "markdown.toggle.tooltip.off": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3684,6 +3606,7 @@
       }
     },
     "markdown.toggle.tooltip.on": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3804,47 +3727,6 @@
         }
       }
     },
-    "menu_pasteboard_OCR": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pasteboard OCR"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR del portapapeles"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "クリップボード OCR"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR schránky"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "剪贴板 OCR"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "剪貼簿 OCR"
-          }
-        }
-      }
-    },
     "menu_pasteboard_translate": {
       "extractionState": "manual",
       "localizations": {
@@ -3886,88 +3768,6 @@
         }
       }
     },
-    "menu_screenshot_OCR": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Screenshot OCR"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR de captura de pantalla"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "スクリーンショット OCR"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR snímka obrazovky"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "截图 OCR"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "螢幕截圖 OCR"
-          }
-        }
-      }
-    },
-    "menu_screenshot_Translate": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Screenshot Translate"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Traducir captura de pantalla"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "スクリーンショット翻訳"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Preklad snímky obrazovky"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "截图翻译"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "螢幕截圖翻譯"
-          }
-        }
-      }
-    },
     "menu_show_mini_window": {
       "extractionState": "manual",
       "localizations": {
@@ -4005,88 +3805,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "顯示迷你視窗"
-          }
-        }
-      }
-    },
-    "menu_show_ocr_window": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show OCR Window"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ventana de Show OCR"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR ウィンドウを表示"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zobraziť OCR okno"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "显示 OCR 窗口"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "顯示 OCR 視窗"
-          }
-        }
-      }
-    },
-    "menu_silent_screenshot_OCR": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Silent Screenshot OCR"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR de captura silenciosa"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "サイレントスクリーンショット OCR"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tichý OCR snímok obrazovky"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "静默截图 OCR"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "靜默螢幕截圖 OCR"
           }
         }
       }
@@ -4402,46 +4120,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "無視窗"
-          }
-        }
-      }
-    },
-    "ocr_result_is_empty": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR result is empty.\n⚠️ Please manually select language and try again."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "El resultado de OCR está vacío.\n⚠️ Por favor, selecciona manualmente el idioma e inténtalo de nuevo."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR の結果が空です。\n⚠️ 手動で言語を選択して再試行してください。"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Výsledok OCR je prázdny.\n⚠️ Prosím, manuálne vyber jazyk a skús to znova."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR 结果为空。\n⚠️ 请手动选择识别语言再次尝试。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR 結果為空白。\n⚠️ 請手動選擇語言並再試一次。"
           }
         }
       }
@@ -5255,6 +4933,7 @@
       }
     },
     "replace_text": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -5983,6 +5662,7 @@
       }
     },
     "setting.advance.click_icon_query_info": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -6183,166 +5863,6 @@
         }
       }
     },
-    "setting.advance.enable_ocr_text_normalization": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enable OCR Text Format Optimization"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Habilitar optimización de formato de texto OCR"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR テキスト形式の最適化を有効化"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zapnúť formátovanie textu OCR"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "启用 OCR 文本格式优化"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "啟用 OCR 文本格式優化"
-          }
-        }
-      }
-    },
-    "setting.advance.enable_ocr_text_normalization_desc": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The original OCR recognized text format may be incorrect. Enabling this option will optimize the recognized text format."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "El formato del texto reconocido por OCR original puede ser incorrecto. Habilitar esta opción optimizará el formato del texto reconocido."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR で認識された元のテキスト形式が正しくない場合があります。このオプションを有効にすると、認識されたテキスト形式を最適化します。"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pôvodný formát rozpoznaného textu OCR môže byť nesprávny. Zapnutím tejto možnosti sa optimalizuje formát rozpoznaného textu."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR 原始识别文本格式可能有误，开启该选项后，将会对文本进行格式优化处理。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR 原始識別文本格式可能有誤，開啟該選項後，將會對文本進行格式優化處理。"
-          }
-        }
-      }
-    },
-    "setting.advance.enable_youdao_ocr": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Youdao OCR recognition"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reconocimiento OCR de Youdao"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Youdao OCR 認識"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Youdao OCR rozpoznávanie"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "有道 OCR 识别"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "有道 OCR 辨識"
-          }
-        }
-      }
-    },
-    "setting.advance.enable_youdao_ocr_desc": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fallback to Youdao OCR if the default OCR fails"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Usar OCR de Youdao si el OCR por defecto falla"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "デフォルトの OCR が失敗した場合、Youdao OCR にフォールバックします"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Použiť Youdao OCR ako zálohu, ak zlyhá predvolený OCR"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "当默认OCR识别失败时，自动使用有道OCR"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "當預設 OCR 識別失敗時，自動使用有道 OCR"
-          }
-        }
-      }
-    },
     "setting.advance.footer.query_text_processing_desc": {
       "localizations": {
         "en": {
@@ -6384,6 +5904,7 @@
       }
     },
     "setting.advance.force_get_selected_text_options.menu_bar_action_copy_first": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -6424,6 +5945,7 @@
       }
     },
     "setting.advance.force_get_selected_text_options.simulated_shortcut_copy_first": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -6543,46 +6065,6 @@
         }
       }
     },
-    "setting.advance.header.ocr_settings": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR Settings"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Configuración de OCR"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR 設定"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nastavenia OCR"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR 设置"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OCR 設定"
-          }
-        }
-      }
-    },
     "setting.advance.header.query_text_processing": {
       "localizations": {
         "en": {
@@ -6624,6 +6106,7 @@
       }
     },
     "setting.advance.header.text_selection_and_replacement": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -6699,86 +6182,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "啟動時隱藏主視窗"
-          }
-        }
-      }
-    },
-    "setting.advance.hide_screenshot_tip_layer": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hide Screenshot Tips"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ocultar consejos de captura de pantalla"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "スクリーンショットのヒントを非表示"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skryť tipy pri snímke"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "隐藏截图提示"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "隱藏截圖提示"
-          }
-        }
-      }
-    },
-    "setting.advance.hide_screenshot_tip_layer_desc": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hide the tip view when starting screenshot capture."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ocultar la vista de consejos al iniciar la captura de pantalla."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "スクリーンショットのキャプチャ開始時にヒント表示を非表示にします。"
-          }
-        },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skryť tipy pri spustení snímania obrazovky."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "开始截图时隐藏提示视图。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "開始截圖時隱藏提示檢視。"
           }
         }
       }
