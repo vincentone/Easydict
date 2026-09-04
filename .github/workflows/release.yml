@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name for the release (e.g. v2.23.0)'
+        required: true
+        default: 'v2.23.0'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build and Release macOS App
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build Easydict Archive
+        run: |
+          xcodebuild archive \
+            -workspace Easydict.xcworkspace \
+            -scheme Easydict \
+            -configuration Release \
+            -destination 'generic/platform=macOS' \
+            -archivePath build/Easydict.xcarchive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Package Artifacts (ZIP & DMG)
+        run: |
+          mkdir -p artifacts
+          APP_PATH="build/Easydict.xcarchive/Products/Applications/Easydict.app"
+
+          # 1. Package ZIP (preserve symlinks and permissions)
+          ditto -c -k --keepParent "$APP_PATH" "artifacts/Easydict.zip"
+
+          # 2. Package DMG
+          hdiutil create -volname "Easydict" -srcfolder "$APP_PATH" -ov -format UDZO "artifacts/Easydict.dmg"
+
+          # 3. Generate SHA256 Checksums
+          cd artifacts
+          shasum -a 256 Easydict.zip Easydict.dmg > sha256sums.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
+          files: |
+            artifacts/Easydict.dmg
+            artifacts/Easydict.zip
+            artifacts/sha256sums.txt
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
