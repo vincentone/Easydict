@@ -20,8 +20,8 @@
 ### 验证
 
 - `git diff --check`：无多余空白字符。
-- `python3 -c "import yaml; yaml.safe_load(open('.github/workflows/release.yml'))"`：YAML 语法解析验证通过。
-- 本地预先验证 `xcodebuild archive` 参数组合，确保构建与导出命令在无签名环境下完全可用。
+- `ruby -e 'require "yaml"; YAML.load_file(".github/workflows/release.yml")'`：YAML 语法解析验证通过。
+- 本地预先验证 `xcodebuild archive` 参数组合，通过 `EASYDICT_RELEASE_PACKAGING=YES` 跳过格式化/Lint 脚本并使用 `CODE_SIGN_IDENTITY="-"` 适配 CocoaPods 脚本，避免云端 exit code 74 失败。
 
 ### 受影响文件
 

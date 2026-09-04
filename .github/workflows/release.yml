@@ -27,15 +27,17 @@ jobs:
 
       - name: Build Easydict Archive
         run: |
+          mkdir -p build artifacts
           xcodebuild archive \
             -workspace Easydict.xcworkspace \
             -scheme Easydict \
             -configuration Release \
             -destination 'generic/platform=macOS' \
             -archivePath build/Easydict.xcarchive \
-            CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
+            EASYDICT_RELEASE_PACKAGING=YES
 
       - name: Package Artifacts (ZIP & DMG)
         run: |
