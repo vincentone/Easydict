@@ -21,7 +21,7 @@
 
 - `git diff --check`：无多余空白字符。
 - `ruby -e 'require "yaml"; YAML.load_file(".github/workflows/release.yml")'`：YAML 语法解析验证通过。
-- 本地预先验证 `xcodebuild archive` 参数组合，通过 `EASYDICT_RELEASE_PACKAGING=YES` 跳过格式化/Lint 脚本并使用 `CODE_SIGN_IDENTITY="-"` 适配 CocoaPods 脚本，避免云端 exit code 74 失败。
+- 本地预先验证 `xcodebuild archive` 参数组合，通过 `CODE_SIGNING_ALLOWED=NO` 和 `CODE_SIGNING_REQUIRED=NO` 彻底免除证书与签名检查，配合 `EASYDICT_RELEASE_PACKAGING=YES` 跳过格式化/Lint 脚本，并增加失败时自动输出日志片段，避免云端 exit code 74 失败。
 
 ### 受影响文件
 

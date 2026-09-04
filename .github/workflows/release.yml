@@ -28,16 +28,23 @@ jobs:
       - name: Build Easydict Archive
         run: |
           mkdir -p build artifacts
+          set -o pipefail
           xcodebuild archive \
             -workspace Easydict.xcworkspace \
             -scheme Easydict \
             -configuration Release \
             -destination 'generic/platform=macOS' \
             -archivePath build/Easydict.xcarchive \
-            CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
-            EASYDICT_RELEASE_PACKAGING=YES
+            EASYDICT_RELEASE_PACKAGING=YES \
+            2>&1 | tee xcodebuild.log
+
+      - name: Show Build Errors on Failure
+        if: failure()
+        run: |
+          echo "=== Last 200 lines of xcodebuild log ==="
+          tail -n 200 xcodebuild.log || true
 
       - name: Package Artifacts (ZIP & DMG)
         run: |
