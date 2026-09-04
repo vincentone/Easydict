@@ -17,13 +17,29 @@ permissions:
 jobs:
   build-and-release:
     name: Build and Release macOS App
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Select Xcode Version
+        run: |
+          echo "=== Available Xcode versions ==="
+          ls -d /Applications/Xcode* || true
+          XCODE_APP=$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -n 1)
+          if [ -n "$XCODE_APP" ]; then
+            echo "Selecting $XCODE_APP"
+            sudo xcode-select -s "$XCODE_APP"
+          elif [ -d "/Applications/Xcode.app" ]; then
+            echo "Selecting /Applications/Xcode.app"
+            sudo xcode-select -s /Applications/Xcode.app
+          fi
+          echo "=== Active Xcode Version ==="
+          xcodebuild -version
+          xcrun swift --version
 
       - name: Build Easydict Archive
         run: |
@@ -43,13 +59,25 @@ jobs:
       - name: Show Build Errors on Failure
         if: failure()
         run: |
+          echo "=== Error lines from xcodebuild log ==="
+          grep -i -C 3 -E "(error:|fatal error:)" xcodebuild.log || true
           echo "=== Last 200 lines of xcodebuild log ==="
           tail -n 200 xcodebuild.log || true
 
       - name: Package Artifacts (ZIP & DMG)
         run: |
           mkdir -p artifacts
-          APP_PATH="build/Easydict.xcarchive/Products/Applications/Easydict.app"
+          APP_PATH=$(find build/Easydict.xcarchive/Products -name "Easydict.app" -type d | head -n 1)
+          if [ -z "$APP_PATH" ] || [ ! -d "$APP_PATH" ]; then
+            echo "Error: Easydict.app not found in archive!"
+            find build/Easydict.xcarchive -maxdepth 4 || true
+            exit 1
+          fi
+          echo "Found app at: $APP_PATH"
+
+          # Ad-hoc sign so it satisfies macOS Apple Silicon code signing requirement
+          echo "Applying ad-hoc code signature..."
+          codesign --force --deep -s - "$APP_PATH"
 
           # 1. Package ZIP (preserve symlinks and permissions)
           ditto -c -k --keepParent "$APP_PATH" "artifacts/Easydict.zip"
