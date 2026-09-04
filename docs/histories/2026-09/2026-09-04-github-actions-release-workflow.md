@@ -30,3 +30,32 @@
 
 - 新增：`.github/workflows/release.yml`
 - 新增：`docs/histories/2026-09/2026-09-04-github-actions-release-workflow.md`
+
+## 2026-09-04 | 任务：修复发布包应用图标缺失问题
+
+### 用户请求
+
+为什么打包出来的没有图标啊 / 修复一下。
+
+### 变更
+
+- `Easydict.xcodeproj/project.pbxproj`：
+  - 将 `Debug` 与 `Release` 构建配置中的 `ASSETCATALOG_COMPILER_APPICON_NAME` 从未定义的 `"Easydict-26"` 恢复为 `"white-black-icon"`。
+  - 清理之前误残留的 `Easydict-26.icon` 文件引用、分组项和 Resources 资源阶段条目。
+- 删除遗留的 `Easydict/App/Icons/Easydict-26.icon` 未使用目录。
+
+### 设计意图
+
+使 Xcode 的 Asset Catalog 编译器（`actool`）能够正确匹配 `Easydict/App/Assets.xcassets/white-black-icon.appiconset` 资源，在归档构建时生成 `white-black-icon.icns` 并向 `Info.plist` 注入 `CFBundleIconFile`，彻底解决打包产物在 macOS Finder 和 Dock 中图标为空的问题。
+
+### 验证
+
+- `plutil -lint Easydict.xcodeproj/project.pbxproj`：语法结构验证为 OK。
+- 本地使用 `xcrun actool` 测试对比验证：`--app-icon white-black-icon` 能正确生成 `.icns` 文件与包含 `CFBundleIconFile` 的 plist，而 `Easydict-26` 会跳过生成。
+- `git diff --check`：无语法或空白格式问题。
+
+### 受影响文件
+
+- 修改：`Easydict.xcodeproj/project.pbxproj`
+- 删除：`Easydict/App/Icons/Easydict-26.icon`
+- 修改：`docs/histories/2026-09/2026-09-04-github-actions-release-workflow.md`
