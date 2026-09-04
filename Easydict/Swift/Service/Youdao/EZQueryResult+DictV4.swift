@@ -163,13 +163,48 @@ extension QueryResult {
             }
         }
 
+        // Handle bilingual sentences
+        if let blngSentsPart = model.blngSentsPart, let sentencePairs = blngSentsPart.sentencePair {
+            var sentences: [EZTranslateSentence] = []
+            let audioBaseURL = "https://dict.youdao.com/dictvoice?audio="
+
+            for pair in sentencePairs {
+                let rawSentence = pair.sentence ?? pair.sentenceEng ?? ""
+                let cleanSentence = rawSentence.replacingOccurrences(
+                    of: "<[^>]+>",
+                    with: "",
+                    options: .regularExpression
+                ).trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !cleanSentence.isEmpty else { continue }
+
+                let translation = pair.sentenceTranslation?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+
+                let sentenceObj = EZTranslateSentence()
+                sentenceObj.sentence = cleanSentence
+                sentenceObj.translation = translation
+                sentenceObj.source = pair.source
+
+                if let speech = pair.sentenceSpeech, !speech.isEmpty {
+                    sentenceObj.speechURL = "\(audioBaseURL)\(speech)"
+                } else if let speech = pair.sentenceTranslationSpeech, !speech.isEmpty {
+                    sentenceObj.speechURL = "\(audioBaseURL)\(speech)"
+                }
+
+                sentences.append(sentenceObj)
+            }
+
+            if !sentences.isEmpty {
+                wordResult.sentences = sentences
+            }
+        }
+
         // fanyi
         if let fanyi = model.fanyi, let translation = fanyi.tran {
             translatedResults = [translation]
         }
 
-        // Set word result only if it has parts or simple words
-        if wordResult.parts != nil || wordResult.simpleWords != nil {
+        // Set word result only if it has parts, simple words, or sentences
+        if wordResult.parts != nil || wordResult.simpleWords != nil || wordResult.sentences != nil {
             self.wordResult = wordResult
         }
     }

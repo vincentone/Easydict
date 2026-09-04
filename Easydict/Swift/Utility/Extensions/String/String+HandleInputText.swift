@@ -29,31 +29,77 @@ extension String {
 
     /// Remove comment block symbols (/* */) and join texts intelligently
     func removingCommentBlockSymbols() -> String {
-        (self as NSString).removeCommentBlockSymbols() as String
+        if allLineStartsWithCommentSymbol() {
+            return removeCommentSymbolPrefixAndJoinTexts(self)
+        }
+        return removeCommentBlockSymbolsInline()
     }
 
     /// Check if all lines start with comment symbols (#, //, *)
     func allLineStartsWithCommentSymbol() -> Bool {
-        (self as NSString).allLineStartsWithCommentSymbol()
+        components(separatedBy: .newlines).allSatisfy { startsWithCommentSymbol($0) }
     }
 
     /// Segment English text to words
     func segmentWords() -> String {
-        (self as NSString).segmentWords() as String
+        var queryText = self
+
+        // If text is a single English word, don't split it
+        if isSingleWord {
+            let isEnglishWord = containsEnglishDictionaryEntry(queryText)
+            if !isEnglishWord {
+                // If text has quotes, like 'UIKit', we don't split it.
+                if hasQuotesPair {
+                    queryText = tryRemovingQuotes
+                } else {
+                    queryText = splitCodeText()
+                }
+            }
+        }
+
+        return queryText
     }
 
     /// Handle input text, trimming whitespace and newlines.
-    func handleInputText() -> NSString {
-        (self as NSString).ns_trim as NSString
+    func handleInputText() -> String {
+        trim()
     }
 
     // MARK: Private Methods
 
     private static let commentSymbolPrefixPattern = #"^\s*(//+|#+|\*+)"#
 
+    /// Check if the system dictionary has an entry for the English word
+    private func containsEnglishDictionaryEntry(_ word: String) -> Bool {
+        guard let dictName = TTTDictionary.languageToDictionaryNameMap
+            .object(forKey: Language.english.rawValue as NSString) as? String
+        else {
+            return false
+        }
+
+        let dictionary = TTTDictionary(named: dictName)
+        let entries = dictionary.entries(forSearchTerm: word)
+
+        let normalizedWord = word.foldedString()
+        for entry in entries {
+            let normalizedHeadword = entry.headword.foldedString()
+
+            // Filter results like "-log", "log-" when querying "log".
+            let remainedText = normalizedHeadword.replacingOccurrences(of: normalizedWord, with: "")
+            if remainedText == "-" {
+                continue
+            }
+
+            if normalizedWord.caseInsensitiveCompare(normalizedHeadword) == .orderedSame {
+                return true
+            }
+        }
+        return false
+    }
+
     /// Remove comment block symbols inline (/* ... */)
-    private func removeCommentBlockSymbolsInline() -> NSString {
-        var mutableSelf = self as String
+    private func removeCommentBlockSymbolsInline() -> String {
+        var mutableSelf = self
 
         let pattern = #"/\*+(.*?)\*+/"#
         guard let regex = try? NSRegularExpression(
@@ -82,7 +128,7 @@ extension String {
             mutableSelf.replaceSubrange(fullRange, with: modifiedText)
         }
 
-        return mutableSelf as NSString
+        return mutableSelf
     }
 
     /// Remove comment symbols and join texts with intelligent spacing

@@ -20,39 +20,13 @@ NSString *const EZIntelligentQueryTextTypeKey = @"IntelligentQueryTextType";
 
 #pragma mark - EZActionType
 NSString *const EZActionTypeNone = @"none";
-NSString *const EZActionTypeAutoSelectQuery = @"auto_select_query";
 NSString *const EZActionTypeShortcutQuery = @"shortcut_query";
 NSString *const EZActionTypeInputQuery = @"input_query";
 NSString *const EZActionTypeInvokeQuery = @"invoke_query";
 NSString *const EZActionTypePasteboardTranslate = @"pasteboard_translate";
 
-#pragma mark - EZSelectTextType
-NSString *const EZSelectTextTypeAccessibility = @"accessibility_select_text";
-NSString *const EZSelectTextTypeSimulatedKey = @"simulate_key_select_text";
-NSString *const EZSelectTextTypeAppleScript = @"applescript_select_text";
-NSString *const EZSelectTextTypeMenuBarActionCopy = @"menu_bar_action_copy_select_text";
-
-NSString *const EZDefaultTTSServiceKey = @"EZDefaultTTSServiceKey";
-
 
 @implementation EZEnumTypes
-
-+ (NSString *)stringValueOfTriggerType:(EZTriggerType)triggerType {
-    switch (triggerType) {
-        case EZTriggerTypeNone:
-            return @"none";
-        case EZTriggerTypeDoubleClick:
-            return @"double_click";
-        case EZTriggerTypeTripleClick:
-            return @"triple_click";
-        case EZTriggerTypeDragged:
-            return @"dragged";
-        case EZTriggerTypeShift:
-            return @"shift";
-        case EZTriggerTypeSelectAllShortcut:
-            return @"select_all_shortcut";
-    }
-}
 
 + (NSString *)windowName:(EZWindowType)type {
     if (type == EZWindowTypeFixed) {

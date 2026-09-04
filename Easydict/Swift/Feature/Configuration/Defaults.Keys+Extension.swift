@@ -47,10 +47,6 @@ extension Defaults.Keys {
         "EZConfiguration_kAutoCopyFirstTranslatedTextKey",
         default: false
     )
-    static let defaultTTSServiceType = Key<TTSServiceType>(
-        "EZConfiguration_kDefaultTTSServiceTypeKey",
-        default: TTSServiceType.youdao
-    )
     /// When enabled, English words are spoken via Youdao TTS regardless of the
     /// configured default TTS service. Defaults to `true` to preserve the long
     /// standing behavior of using Youdao's high quality dictionary recordings.
@@ -66,9 +62,6 @@ extension Defaults.Keys {
     static let pinWindowWhenDisplayed = Key<Bool>(
         "EZConfiguration_kPinWindowWhenDisplayed", default: false
     )
-
-    static let allowCrashLog = Key<Bool>("EZConfiguration_kAllowCrashLogKey", default: true)
-    static let allowAnalytics = Key<Bool>("EZConfiguration_kAllowAnalyticsKey", default: true)
 
     static let clearQueryWhenInputTranslate = Key<Bool>(
         "EZConfiguration_kClearInputKey", default: false
@@ -225,9 +218,6 @@ class ShortcutWrapper<T: KeyCombo> {
 extension Defaults.Keys {
     // Global
     static let inputShortcut = Key<KeyCombo?>("EZInputShortcutKey_keyHolder")
-    static let pasteboardTranslateShortcut = Key<KeyCombo?>(
-        "EZPasteboardTranslateShortcutKey_keyHolder"
-    )
 
     // App
     static let clearInputShortcut = Key<KeyCombo?>("EZClearInputShortcutKey_keyHolder")

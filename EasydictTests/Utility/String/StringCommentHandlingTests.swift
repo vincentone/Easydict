@@ -46,38 +46,4 @@ struct StringCommentHandlingTests {
         #expect(result.contains("with multiple lines"))
         #expect(!result.contains("//"))
     }
-
-    // MARK: - Comment Prefix Removal
-
-    @Test("Comment prefix removal")
-    func commentPrefixRemoval() {
-        let testCases = [
-            ("// Comment", "Comment"),
-            ("# Hash comment", "Hash comment"),
-            ("* Asterisk comment", "Asterisk comment"),
-            ("    // Indented comment", "Indented comment"),
-            ("Normal text", "Normal text"),
-        ]
-
-        for (input, expected) in testCases {
-            #expect(input.removeCommentSymbolPrefix() == expected, "Failed for input: \(input)")
-        }
-    }
-
-    // MARK: - Inline Comment Removal
-
-    @Test("Inline comment removal")
-    func inlineCommentRemoval() {
-        let testCases = [
-            ("// Comment at start", "Comment at start"),
-            ("Comment at end //", "Comment at end"),
-            ("Comment // in // middle", "Comment in middle"),
-            ("# Hash comment", "Hash comment"),
-            ("Normal text", "Normal text"),
-        ]
-
-        for (input, expected) in testCases {
-            #expect(input.removeCommentSymbols() == expected, "Failed for input: \(input)")
-        }
-    }
 }

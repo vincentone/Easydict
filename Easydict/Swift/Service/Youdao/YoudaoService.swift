@@ -31,19 +31,6 @@ class YoudaoService: QueryService {
         ]
     }
 
-    // TODO: refactor QueryService, move these keys to QueryService
-    var translationKey: Defaults.Key<String> {
-        stringDefaultsKey(.translation, defaultValue: "1")
-    }
-
-    var sentenceKey: Defaults.Key<String> {
-        stringDefaultsKey(.sentence, defaultValue: "1")
-    }
-
-    var dictionaryKey: Defaults.Key<String> {
-        stringDefaultsKey(.dictionary, defaultValue: "1")
-    }
-
     override func serviceType() -> ServiceType {
         .youdao
     }
@@ -77,25 +64,8 @@ class YoudaoService: QueryService {
         MyConfiguration.shared.intelligentQueryTextTypeForServiceType(serviceType())
     }
 
-    // TODO: add configuration UI
     override func supportedQueryType() -> EZQueryTextType {
-        var typeOptions: EZQueryTextType = []
-
-        let isTranslationEnabled = Defaults[translationKey].boolValue
-        let isSentenceEnabled = Defaults[sentenceKey].boolValue
-        let isDictionaryEnabled = Defaults[dictionaryKey].boolValue
-
-        if isTranslationEnabled {
-            typeOptions.insert(.translation)
-        }
-        if isSentenceEnabled {
-            typeOptions.insert(.sentence)
-        }
-        if isDictionaryEnabled {
-            typeOptions.insert(.dictionary)
-        }
-
-        return typeOptions
+        [.translation, .sentence, .dictionary]
     }
 
     // TODO: refactor QueryService, replace supportLanguagesDictionary with languagesDictionary

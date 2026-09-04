@@ -49,9 +49,6 @@ open class QueryModel: NSObject, NSCopying {
     /// Normalized query text derived from the input text.
     private(set) var queryText: String = ""
 
-    /// Selection type for text capture.
-    var selectTextType: EZSelectTextType = .accessibility
-
     /// User selected target language.
     var userTargetLanguage: Language = .auto
 
@@ -92,7 +89,7 @@ open class QueryModel: NSObject, NSCopying {
             if newValue != inputTextStorage {
                 audioURL = nil
                 needDetectLanguage = true
-                queryText = newValue.handlingInputText()
+                queryText = newValue.handleInputText()
             }
 
             inputTextStorage = newValue

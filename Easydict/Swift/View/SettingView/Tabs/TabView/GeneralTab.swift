@@ -218,6 +218,11 @@ struct GeneralTab: View {
     @Default(.selectedMenuBarIcon) private var selectedMenuBarIcon
     @Default(.fontSizeOptionIndex) private var fontSizeOptionIndex
 
+    // Window management
+    @Default(.fixedWindowPosition) private var fixedWindowPosition
+    @Default(.pinWindowWhenDisplayed) private var pinWindowWhenDisplayed
+    @Default(.maxWindowHeightPercentage) private var maxWindowHeightPercentageValue
+
     private var shortcutsHaveSetuped: Bool {
         Defaults[.inputShortcut] != nil
     }

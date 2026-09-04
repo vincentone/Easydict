@@ -37,6 +37,16 @@ final class LocalStorage: NSObject {
         set { userDefaults.set(newValue, forKey: Constants.queryCountKey) }
     }
 
+    @objc(shared)
+    static func shared() -> LocalStorage {
+        if let instance = sharedInstance {
+            return instance
+        }
+        let instance = LocalStorage()
+        sharedInstance = instance
+        return instance
+    }
+
     /// Resets all stored data (used by the reset URL scheme).
     static func destroySharedInstance() {
         sharedInstance = nil

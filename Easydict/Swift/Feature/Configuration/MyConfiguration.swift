@@ -69,8 +69,6 @@ class MyConfiguration: NSObject {
     @ShortcutWrapper(.pinShortcut) var pinShortcutString: String
 
     let fontSizes: [CGFloat] = [1, 1.1, 1.2, 1.3, 1.4]
-    var disabledAutoSelect: Bool = false
-    var isRecordingSelectTextShortcutKey: Bool = false
     var cancellables: Set<AnyCancellable> = []
 
     var fontSizeRatio: CGFloat {

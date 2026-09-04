@@ -49,40 +49,17 @@ typedef NS_ENUM(NSUInteger, EZServiceUsageStatus) {
 
 typedef NSString *EZActionType NS_STRING_ENUM NS_SWIFT_NAME(ActionType);
 FOUNDATION_EXPORT EZActionType const EZActionTypeNone;
-FOUNDATION_EXPORT EZActionType const EZActionTypeAutoSelectQuery;
 FOUNDATION_EXPORT EZActionType const EZActionTypeShortcutQuery;
 FOUNDATION_EXPORT EZActionType const EZActionTypeInputQuery;
 FOUNDATION_EXPORT EZActionType const EZActionTypeInvokeQuery;
 FOUNDATION_EXPORT EZActionType const EZActionTypePasteboardTranslate;
 
 
-typedef NSString *EZSelectTextType NS_STRING_ENUM;
-FOUNDATION_EXPORT EZSelectTextType const EZSelectTextTypeAccessibility;
-FOUNDATION_EXPORT EZSelectTextType const EZSelectTextTypeSimulatedKey; // Cmd+C
-FOUNDATION_EXPORT EZSelectTextType const EZSelectTextTypeAppleScript;
-FOUNDATION_EXPORT EZSelectTextType const EZSelectTextTypeMenuBarActionCopy;
-
-
-/// Action trigger type
-typedef NS_OPTIONS(NSUInteger, EZTriggerType) {
-    EZTriggerTypeNone = 0,
-    EZTriggerTypeDoubleClick = 1 << 0,
-    EZTriggerTypeTripleClick = 1 << 1,
-    EZTriggerTypeDragged = 1 << 2,
-    EZTriggerTypeShift = 1 << 3,
-    EZTriggerTypeSelectAllShortcut = 1 << 4, // Cmd+A in editable text contexts.
-};
-
-
 @interface EZEnumTypes : NSObject
-
-+ (NSString *)stringValueOfTriggerType:(EZTriggerType)triggerType;
 
 + (NSString *)windowName:(EZWindowType)type;
 
 + (MMOrderedDictionary *)fixedWindowPositionDict;
-
-+ (MMOrderedDictionary *)translateWindowTypeDict;
 
 @end
 

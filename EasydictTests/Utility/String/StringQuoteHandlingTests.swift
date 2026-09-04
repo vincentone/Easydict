@@ -57,7 +57,7 @@ struct StringQuoteHandlingTests {
         ]
 
         for (input, expected) in testCases {
-            #expect(input.tryToRemoveQuotes() == expected, "Failed for input: \(input)")
+            #expect(input.tryRemovingQuotes == expected, "Failed for input: \(input)")
         }
     }
 }

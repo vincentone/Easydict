@@ -133,7 +133,7 @@ extension String {
 
     /// Check if the text is English word with maximum length constraint
     func isEnglishWordWithMaxLength(_ maxLength: Int) -> Bool {
-        let text = tryToRemoveQuotes()
+        let text = tryRemovingQuotes
         guard text.count <= maxLength else { return false }
 
         let pattern = "^[a-zA-Z]+$"
@@ -150,7 +150,7 @@ extension String {
 
     /// Check if the text is a single word
     var isWord: Bool {
-        let text = tryToRemoveQuotes()
+        let text = tryRemovingQuotes
         guard text.count <= Self.englishWordMaxLength else { return false }
         return wordCount == 1
     }
@@ -162,14 +162,14 @@ extension String {
 
     /// Check if the text is Chinese word
     var isChineseWord: Bool {
-        let text = tryToRemoveQuotes()
+        let text = tryRemovingQuotes
         guard text.count <= 4 else { return false }
         return isChineseText
     }
 
     /// Check if the text is Chinese phrase
     var isChinesePhrase: Bool {
-        let text = tryToRemoveQuotes()
+        let text = tryRemovingQuotes
         guard text.count <= 5 else { return false }
         return isChineseText
     }

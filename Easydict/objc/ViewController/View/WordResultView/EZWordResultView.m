@@ -726,6 +726,15 @@ static NSString *const kMDictEntryURIScheme = @"mdict-entry";
             lastView = meanLabel;
         }];
 
+        // 双语例句
+        if (wordResult.sentences.count) {
+            lastView = [self createSectionViewForSentences:wordResult.sentences
+                                                 textColor:typeTextColor
+                                              typeTextFont:typeTextFont
+                                                    height:&height
+                                                  lastView:lastView];
+        }
+
         if (wordResult.etymology.length) {
             __block CGFloat exceptedWidth = 0;
 
@@ -813,7 +822,7 @@ static NSString *const kMDictEntryURIScheme = @"mdict-entry";
         // For some special case, copied text language is not the queryTargetLanguage, like 龘, Youdao translate.
         EZLanguage language = [EZAppleService.shared detectTextSync:text];
 
-        EZQueryService *defaultTTSService = [[YoudaoService alloc] init];
+        EZQueryService *defaultTTSService = [[EZYoudaoService alloc] init];
 
         // Determine accent based on user preference if language is English
         NSString *accentToUse = nil;
@@ -991,6 +1000,137 @@ static NSString *const kMDictEntryURIScheme = @"mdict-entry";
         CGSize wrapViewSize = [wrapView intrinsicContentSize];
         *height += wrapViewSize.height;
         rtnView = wrapView;
+    }];
+
+    return rtnView;
+}
+
+- (NSView *)createSectionViewForSentences:(NSArray<EZTranslateSentence *> *)sentences
+                                textColor:(NSColor *)typeTextColor
+                             typeTextFont:(NSFont *)typeTextFont
+                                   height:(CGFloat *)height
+                                 lastView:(NSView *)lastView {
+    if (sentences.count == 0) {
+        return lastView;
+    }
+
+    __block NSView *rtnView = lastView;
+    EZLabel *sectionTitleLabel = [[EZLabel alloc] init];
+    [self addSubview:sectionTitleLabel];
+    sectionTitleLabel.font = typeTextFont;
+    sectionTitleLabel.textForegroundColor = typeTextColor;
+    sectionTitleLabel.text = NSLocalizedString(@"bilingual_sentences", nil);
+    [sectionTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(kHorizontalMargin_8);
+        if (rtnView) {
+            CGFloat topPadding = kVerticalMargin_12;
+            make.top.equalTo(rtnView.mas_bottom).offset(topPadding);
+            *height += topPadding;
+        } else {
+            make.top.offset(kVerticalPadding_6);
+            *height += kVerticalPadding_6;
+        }
+
+        CGSize labelSize = [sectionTitleLabel oneLineSize];
+        make.size.mas_equalTo(labelSize).priorityHigh();
+        *height += labelSize.height;
+    }];
+    sectionTitleLabel.mas_key = @"bilingualSentencesTitle";
+    rtnView = sectionTitleLabel;
+
+    static const NSUInteger kMaxBilingualSentenceCount = 4;
+    NSArray<EZTranslateSentence *> *showingSentences = [sentences trimToMaxCount:kMaxBilingualSentenceCount];
+
+    CGFloat audioButtonSize = 20.0;
+    CGFloat leftOffset = kHorizontalMargin_8;
+    CGFloat buttonTextSpacing = 4.0;
+    CGFloat rightMargin = kHorizontalMargin_8;
+    CGFloat expectedWidth = leftOffset + audioButtonSize + buttonTextSpacing + rightMargin;
+
+    mm_weakify(self);
+    [showingSentences enumerateObjectsUsingBlock:^(EZTranslateSentence *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
+        mm_strongify(self);
+        if (obj.sentence.length == 0) {
+            return;
+        }
+
+        EZAudioButton *audioButton = [[EZAudioButton alloc] init];
+        [self addSubview:audioButton];
+        EZAudioPlayer *audioPlayer = [[EZAudioPlayer alloc] init];
+        audioButton.audioPlayer = audioPlayer;
+
+        NSString *playText = obj.sentence;
+        NSString *speechURL = obj.speechURL;
+        [audioButton setPlayAudioBlock:^{
+            mm_strongify(self);
+            EZLanguage lang = [EZAppleService.shared detectTextSync:playText];
+            [audioPlayer playTextAudio:playText
+                              language:lang
+                                accent:nil
+                              audioURL:speechURL
+                     designatedService:self.service];
+        }];
+
+        EZLabel *sentenceLabel = [[EZLabel alloc] init];
+        [self addSubview:sentenceLabel];
+        sentenceLabel.font = [NSFont systemFontOfSize:14 * self.fontSizeRatio];
+        sentenceLabel.text = obj.sentence;
+        sentenceLabel.delegate = self;
+
+        [audioButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.offset(leftOffset);
+            make.top.equalTo(sentenceLabel).offset(1);
+            make.size.mas_equalTo(CGSizeMake(audioButtonSize, audioButtonSize));
+        }];
+        audioButton.mas_key = @"audioButton_bilingualSentences";
+
+        [sentenceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(audioButton.mas_right).offset(buttonTextSpacing);
+            make.right.equalTo(self).offset(-rightMargin);
+
+            if (rtnView) {
+                CGFloat topPadding = (idx == 0) ? kVerticalPadding_6 : kVerticalMargin_12;
+                make.top.equalTo(rtnView.mas_bottom).offset(topPadding);
+                *height += topPadding;
+            } else {
+                make.top.offset(kVerticalPadding_6);
+                *height += kVerticalPadding_6;
+            }
+
+            CGSize labelSize = [self labelSize:sentenceLabel exceptedWidth:expectedWidth];
+            make.size.mas_equalTo(labelSize).priorityHigh();
+            *height += labelSize.height;
+        }];
+        sentenceLabel.mas_key = @"sentenceLabel_bilingualSentences";
+        rtnView = sentenceLabel;
+
+        if (obj.translation.length > 0) {
+            EZLabel *translationLabel = [[EZLabel alloc] init];
+            [self addSubview:translationLabel];
+            translationLabel.font = [NSFont systemFontOfSize:13 * self.fontSizeRatio];
+            translationLabel.textForegroundColor = typeTextColor;
+            NSString *transText = obj.translation;
+            if (obj.source.length > 0) {
+                transText = [NSString stringWithFormat:@"%@  %@", transText, obj.source];
+            }
+            translationLabel.text = transText;
+            translationLabel.delegate = self;
+
+            [translationLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(sentenceLabel);
+                make.right.equalTo(self).offset(-rightMargin);
+
+                CGFloat topPadding = 3.0;
+                make.top.equalTo(rtnView.mas_bottom).offset(topPadding);
+                *height += topPadding;
+
+                CGSize labelSize = [self labelSize:translationLabel exceptedWidth:expectedWidth];
+                make.size.mas_equalTo(labelSize).priorityHigh();
+                *height += labelSize.height;
+            }];
+            translationLabel.mas_key = @"translationLabel_bilingualSentences";
+            rtnView = translationLabel;
+        }
     }];
 
     return rtnView;

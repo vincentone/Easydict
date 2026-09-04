@@ -110,7 +110,7 @@ static NSString *const kItemWhereFroms = @"com.apple.metadata:kMDItemWhereFroms"
 
 - (EZQueryService *)defaultTTSService {
     if (!_defaultTTSService) {
-        _defaultTTSService = [[YoudaoService alloc] init];
+        _defaultTTSService = [[EZYoudaoService alloc] init];
         _defaultTTSService.audioPlayer = self;
     }
     return _defaultTTSService;

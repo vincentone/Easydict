@@ -74,12 +74,6 @@ open class QueryService: NSObject {
         get { storedEnabledQuery }
         set {
             storedEnabledQuery = newValue
-            LocalStorage.shared().setEnabledQuery(
-                newValue,
-                serviceType: serviceType(),
-                serviceId: uuid,
-                windowType: windowType
-            )
         }
     }
 
@@ -439,14 +433,6 @@ open class QueryService: NSObject {
         false
     }
 
-    open func isDuplicatable() -> Bool {
-        false
-    }
-
-    open func isDeletable(_ windowType: EZWindowType) -> Bool {
-        true
-    }
-
     /// Detect the language of the given text.
     @nonobjc
     open func detectText(_ text: String) async throws -> Language {
@@ -584,10 +570,9 @@ open class QueryService: NSObject {
         _ = fromLanguage
         _ = toLanguage
 
-        // Free quota check for services requiring private API key.
+        // Check for services requiring private API key.
         if apiKeyRequirement().needsUserProvidedKey,
-           !hasPrivateAPIKey(),
-           !LocalStorage.shared().hasFreeQuotaLeft(self) {
+           !hasPrivateAPIKey() {
             let error = QueryError.error(
                 type: .api,
                 message: nil,

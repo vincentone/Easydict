@@ -138,6 +138,17 @@ class EZTranslateSimpleWord: NSObject {
     private var cachedMeansText: String?
 }
 
+// MARK: - EZTranslateSentence
+
+/// Represents a bilingual example sentence.
+@objcMembers
+class EZTranslateSentence: NSObject {
+    var sentence: String = ""
+    var translation: String = ""
+    var source: String?
+    var speechURL: String?
+}
+
 // MARK: - EZTranslateWordResult
 
 /// Contains detailed word translation data returned by dictionary services.
@@ -152,6 +163,7 @@ class EZTranslateWordResult: NSObject {
     var synonyms: [EZTranslatePart]?
     var antonyms: [EZTranslatePart]?
     var collocation: [EZTranslatePart]?
+    var sentences: [EZTranslateSentence]?
 }
 
 // MARK: - QueryResult

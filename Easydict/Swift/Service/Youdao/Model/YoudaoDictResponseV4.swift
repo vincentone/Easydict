@@ -91,6 +91,7 @@ struct YoudaoDictResponseV4: Codable {
             case alignedWords = "aligned-words"
             case source, url
             case sentenceSpeech = "sentence-speech"
+            case sentenceTranslationSpeech = "sentence-translation-speech"
         }
 
         let sentence, sentenceEng, sentenceTranslation, speechSize: String?
@@ -98,6 +99,7 @@ struct YoudaoDictResponseV4: Codable {
         let source: String?
         let url: String?
         let sentenceSpeech: String?
+        let sentenceTranslationSpeech: String?
     }
 
     // MARK: - AlignedWords

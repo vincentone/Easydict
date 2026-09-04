@@ -66,17 +66,14 @@ extension KeyHolderWrapper {
         @Binding var confictAlterMessage: ShortcutConfictAlertMessage
 
         func recordViewShouldBeginRecording(_: KeyHolder.RecordView) -> Bool {
-            MyConfiguration.shared.isRecordingSelectTextShortcutKey = true
-            return true
+            true
         }
 
         func recordView(_: KeyHolder.RecordView, canRecordKeyCombo _: Magnet.KeyCombo) -> Bool {
             true
         }
 
-        func recordViewDidEndRecording(_: RecordView) {
-            MyConfiguration.shared.isRecordingSelectTextShortcutKey = false
-        }
+        func recordViewDidEndRecording(_: RecordView) {}
 
         func recordView(_ recordView: RecordView, didChangeKeyCombo keyCombo: KeyCombo?) {
             if let key = keyCombo {

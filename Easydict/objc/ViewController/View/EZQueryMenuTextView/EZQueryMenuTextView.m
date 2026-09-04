@@ -8,7 +8,6 @@
 
 #import "EZQueryMenuTextView.h"
 #import "EZWindowManager.h"
-#import "EZCoordinateUtils.h"
 
 
 @interface EZQueryMenuTextView ()
@@ -46,45 +45,9 @@
 }
 
 - (void)queryInApp:(id)sender {
-    EZWindowType anotherWindowType;
     EZActionType actionType = EZActionTypeInvokeQuery;
-
     EZWindowManager *windowManager = [EZWindowManager shared];
-    EZWindowType floatingWindowType = windowManager.floatingWindowType;
-
-    if (floatingWindowType != EZWindowTypeFixed) {
-        anotherWindowType = EZWindowTypeFixed;
-    } else {
-        anotherWindowType = EZWindowTypeFixed;
-    }
-
-    if (anotherWindowType != floatingWindowType) {
-        // Note that floating window will be closed if not pinned when losing focus.
-        EZBaseQueryWindow *floatingWindow = windowManager.floatingWindow;
-        floatingWindow.pin = YES;
-
-        EZBaseQueryWindow *anotherFloatingWindow = [windowManager windowWithType:anotherWindowType];
-        if (anotherFloatingWindow.isPin) {
-            // Focus query view controller, make sure floating window type is current query window.
-            [windowManager orderFrontWindowAndFocusInputTextView:anotherFloatingWindow];
-            EZBaseQueryViewController *anotherQueryViewController = anotherFloatingWindow.queryViewController;
-            [anotherQueryViewController startQueryText:self.queryText actionType:actionType];
-        } else {
-            NSScreen *screen = EZLayoutManager.shared.screen;
-            // Top left of current screen.
-            CGPoint point = CGPointMake(0, screen.frame.size.height);
-            CGPoint absolutePoint = [EZCoordinateUtils getTopLeftPoint:point inScreen:screen];
-
-            [windowManager showFloatingWindowType:anotherWindowType
-                                        queryText:self.queryText
-                                       actionType:actionType
-                                          atPoint:absolutePoint
-                                completionHandler:nil];
-        }
-    } else {
-        [windowManager.floatingWindow.queryViewController startQueryText:self.queryText actionType:actionType];
-    }
-
+    [windowManager.floatingWindow.queryViewController startQueryText:self.queryText actionType:actionType];
 }
 
 - (nullable NSString *)selectedText {
