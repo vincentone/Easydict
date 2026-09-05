@@ -11,6 +11,10 @@
 #import "EZWindowManager.h"
 #import "NSImage+EZResize.h"
 
+#if __has_include(<AppKit/NSGlassEffectView.h>)
+#import <AppKit/NSGlassEffectView.h>
+#endif
+
 
 @interface EZBaseQueryWindow () <NSWindowDelegate, NSToolbarDelegate>
 
@@ -36,25 +40,24 @@
         self.titlebarAppearsTransparent = YES;
         self.titleVisibility = NSWindowTitleHidden;
         self.delegate = self;
-        
-        // !!!: must set backgroundColor
-        [self executeLight:^(NSWindow *window) {
-            window.backgroundColor = [NSColor ez_mainViewBgLightColor];
-        } dark:^(NSWindow *window) {
-            window.backgroundColor = [NSColor ez_mainViewBgDarkColor];
-        }];
-        
+
+        self.opaque = NO;
+        self.backgroundColor = [NSColor clearColor];
+        self.hasShadow = YES;
+
         [self setupUI];
     }
     return self;
 }
 
 - (void)setupUI {
+    NSView *themeView = self.contentView.superview;
+    [self setupGlassEffectInView:themeView];
+
     // On Xcode 16 and before, the titleView is the subviews[1] object
     // On Xcode 26, the titleView is the subviews[2] object
     // But they are all the lastObject of the subviews array.
     // So we use lastObject to get the titleView.
-    NSView *themeView = self.contentView.superview;
     NSView *titleView = themeView.subviews.lastObject;
     
     self.titleBar = [[EZTitlebar alloc] initWithFrame:CGRectMake(0, 0, self.width, 30)];
@@ -62,6 +65,35 @@
     [self.titleBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(titleView);
     }];
+}
+
+- (void)setupGlassEffectInView:(NSView *)containerView {
+    if (self.glassBackgroundView) {
+        return;
+    }
+
+#if __has_include(<AppKit/NSGlassEffectView.h>)
+    if (@available(macOS 26.0, *)) {
+        NSGlassEffectView *glassView = [[NSGlassEffectView alloc] initWithFrame:containerView.bounds];
+        glassView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+        glassView.cornerRadius = 16.0;
+        glassView.style = NSGlassEffectViewStyleRegular;
+        [containerView addSubview:glassView positioned:NSWindowBelow relativeTo:nil];
+        self.glassBackgroundView = glassView;
+        return;
+    }
+#endif
+
+    NSVisualEffectView *visualEffectView = [[NSVisualEffectView alloc] initWithFrame:containerView.bounds];
+    visualEffectView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    visualEffectView.material = NSVisualEffectMaterialPopover;
+    visualEffectView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
+    visualEffectView.state = NSVisualEffectStateActive;
+    visualEffectView.wantsLayer = YES;
+    visualEffectView.layer.cornerRadius = 16.0;
+    visualEffectView.layer.masksToBounds = YES;
+    [containerView addSubview:visualEffectView positioned:NSWindowBelow relativeTo:nil];
+    self.glassBackgroundView = visualEffectView;
 }
 
 

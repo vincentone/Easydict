@@ -10,6 +10,17 @@
 
 @implementation EZTableRowView
 
+- (instancetype)initWithFrame:(NSRect)frameRect {
+    if (self = [super initWithFrame:frameRect]) {
+        self.backgroundColor = [NSColor clearColor];
+    }
+    return self;
+}
+
+- (void)drawBackgroundInRect:(NSRect)dirtyRect {
+    // Keep row background clear to let the liquid glass effect show through
+}
+
 - (void)drawRect:(NSRect)dirtyRect {
     [super drawRect:dirtyRect];
     

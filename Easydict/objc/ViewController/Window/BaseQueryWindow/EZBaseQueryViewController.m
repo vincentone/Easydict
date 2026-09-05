@@ -107,13 +107,8 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     CGRect frame = [[EZLayoutManager shared] windowFrameWithType:self.windowType];
     self.view = [[NSView alloc] initWithFrame:frame];
     self.view.wantsLayer = YES;
-    self.view.layer.cornerRadius = EZCornerRadius_8;
-    self.view.layer.masksToBounds = YES;
-    [self.view executeLight:^(NSView *_Nonnull x) {
-        x.layer.backgroundColor = [NSColor ez_mainViewBgLightColor].CGColor;
-    } dark:^(NSView *_Nonnull x) {
-        x.layer.backgroundColor = [NSColor ez_mainViewBgDarkColor].CGColor;
-    }];
+    self.view.layer.masksToBounds = NO;
+    self.view.layer.backgroundColor = [NSColor clearColor].CGColor;
 }
 
 
@@ -282,12 +277,9 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
         _scrollView = scrollView;
 
         scrollView.wantsLayer = YES;
-        scrollView.layer.cornerRadius = EZCornerRadius_8;
-        [scrollView executeLight:^(NSScrollView *scrollView) {
-            scrollView.backgroundColor = [NSColor ez_mainViewBgLightColor];
-        } dark:^(NSScrollView *scrollView) {
-            scrollView.backgroundColor = [NSColor ez_mainViewBgDarkColor];
-        }];
+        scrollView.drawsBackground = NO;
+        scrollView.backgroundColor = [NSColor clearColor];
+        scrollView.contentView.drawsBackground = NO;
 
         [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.view).offset(0);
@@ -314,12 +306,7 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
         _tableView = tableView;
         tableView.wantsLayer = YES;
         tableView.layer.drawsAsynchronously = YES;
-
-        [tableView executeLight:^(NSTableView *tableView) {
-            tableView.backgroundColor = [NSColor ez_mainViewBgLightColor];
-        } dark:^(NSTableView *tableView) {
-            tableView.backgroundColor = [NSColor ez_mainViewBgDarkColor];
-        }];
+        tableView.backgroundColor = [NSColor clearColor];
 
         tableView.style = NSTableViewStylePlain;
 
@@ -1507,6 +1494,7 @@ static BOOL ez_frame_equal_with_tolerance(CGRect lhs, CGRect rhs, CGFloat tolera
     //    [self.window setFrame:safeFrame display:NO animate:animateFlag];
     self.isUpdatingWindowFrameInternally = YES;
     [window setFrame:safeFrame display:YES];
+    [window invalidateShadow];
     [self restoreFirstResponderIfWindowIsKey];
     dispatch_async(dispatch_get_main_queue(), ^{
         self.isUpdatingWindowFrameInternally = NO;
