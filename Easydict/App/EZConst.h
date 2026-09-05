@@ -13,6 +13,9 @@ static CGFloat const EZHorizontalCellSpacing_10 = 10;
 static CGFloat const EZVerticalCellSpacing_7 = 7;
 
 static CGFloat const EZCornerRadius_8 = 8;
+static CGFloat const EZCornerRadius_12 = 12;
+static CGFloat const EZCornerRadius_18 = 18;
+static CGFloat const EZCornerRadius_22 = 22;
 
 static CGFloat const EZTitlebarHeight_28 = 28;
 

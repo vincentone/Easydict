@@ -10,6 +10,7 @@
 #import "EZSelectLanguageButton.h"
 #import "NSColor+MyColors.h"
 #import "EZHoverButton.h"
+#import "NSView+EZGlassCard.h"
 
 
 @interface EZSelectLanguageCell ()
@@ -41,21 +42,27 @@
 
 - (void)setup {
     self.wantsLayer = YES;
-    self.layer.cornerRadius = EZCornerRadius_8;
-    
+
     NSView *languageBarView = [[NSView alloc] initWithFrame:self.bounds];
     [self addSubview:languageBarView];
     self.languageBarView = languageBarView;
     languageBarView.wantsLayer = YES;
-    languageBarView.layer.cornerRadius = EZCornerRadius_8;
-    languageBarView.layer.borderWidth = 0.5;
-    [languageBarView executeLight:^(NSView *barView) {
-        barView.layer.backgroundColor = [NSColor ez_glassTopBarBgLightColor].CGColor;
-        barView.layer.borderColor = [NSColor ez_glassBorderLightColor].CGColor;
-    } dark:^(NSView *barView) {
-        barView.layer.backgroundColor = [NSColor ez_glassTopBarBgDarkColor].CGColor;
-        barView.layer.borderColor = [NSColor ez_glassBorderDarkColor].CGColor;
-    }];
+
+    // macOS 26+ draws a clear Liquid Glass bar; older systems fall back to
+    // the translucent CALayer bar.
+    NSView *glassView = [languageBarView ez_addGlassBackgroundWithStyle:EZGlassStyleClear cornerRadius:EZCornerRadius_12];
+    if (!glassView) {
+        self.layer.cornerRadius = EZCornerRadius_8;
+        languageBarView.layer.cornerRadius = EZCornerRadius_8;
+        languageBarView.layer.borderWidth = 0.5;
+        [languageBarView executeLight:^(NSView *barView) {
+            barView.layer.backgroundColor = [NSColor ez_glassTopBarBgLightColor].CGColor;
+            barView.layer.borderColor = [NSColor ez_glassBorderLightColor].CGColor;
+        } dark:^(NSView *barView) {
+            barView.layer.backgroundColor = [NSColor ez_glassTopBarBgDarkColor].CGColor;
+            barView.layer.borderColor = [NSColor ez_glassBorderDarkColor].CGColor;
+        }];
+    }
     languageBarView.mas_key = @"languageBarView";
     
     

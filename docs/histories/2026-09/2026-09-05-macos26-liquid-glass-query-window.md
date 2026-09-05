@@ -59,3 +59,50 @@
 - `Easydict/objc/ViewController/View/WordResultView/EZWebViewManager.m`
 - `Easydict/objc/ViewController/Cell/EZTableRowView.m`
 - `docs/histories/2026-09/2026-09-05-macos26-liquid-glass-query-window.md`
+
+---
+
+## 2026-09-06 | 第二轮：内层文字卡片升级为第二层真玻璃（对齐 ai-usage-menubar）
+
+### 用户请求
+
+参考 vincentone/ai-usage-menubar 的双层玻璃结构（系统 `NSPopover` 液态玻璃 + 每个 section 卡片 `.glassEffect(.regular, in: .rect(cornerRadius: 18))`，卡片包在 `GlassEffectContainer(spacing: 10)` 中），把浮动弹框内层文字背景改成一样的真玻璃。
+
+### 变更
+
+- `EZConst.h`: 新增 `EZCornerRadius_12` / `EZCornerRadius_18` / `EZCornerRadius_22`。
+- 新增 `NSView+EZGlassCard` 分类：`ez_addGlassBackgroundWithStyle:cornerRadius:` 封装 `#if __has_include(<AppKit/NSGlassEffectView.h>)` 与 `@available(macOS 26.0, *)` 双重保护，创建 `NSGlassEffectView` 铺满自身并以 `positioned:NSWindowBelow` + Masonry 四边约束置于内容底层；条件不满足返回 `nil` 供调用方回退。头文件以自定义 `EZGlassStyle` 枚举镜像系统 `NSGlassEffectViewStyle` 原始值，保证旧 SDK 可编译。
+- `EZBaseQueryWindow`：macOS 26 分支窗口玻璃底板圆角 16 → 22；`NSVisualEffectView` 回退分支保持 16 不变。
+- `EZQueryView`：输入框卡片在 macOS 26+ 改为 Regular 玻璃卡片（圆角 18），不再设置 layer 半透明底色与 0.5px 描边；旧系统保留原有半透明 CALayer 卡片。
+- `EZResultView`：结果卡片同上（Regular 玻璃、圆角 18）；`topBarView` 在玻璃模式下去掉半透明底色条，改为底部 0.5pt 分隔线（沿用 `ez_glassBorder*` 颜色），点击手势与布局锚点不变；旧系统保留原有样式。
+- `EZSelectLanguageCell`：语言栏在 macOS 26+ 改为 Clear 玻璃（`NSGlassEffectViewStyleClear`，圆角 12）；旧系统保留半透明描边样式。
+- `Easydict.xcodeproj/project.pbxproj`：注册新分类文件到 Easydict target。
+
+### 设计意图
+
+1. **双层真玻璃**：对齐参考应用——窗口底板玻璃之上，每张文字卡片再嵌一层真实 `NSGlassEffectView`（AppKit 版 `.glassEffect(.regular)`），形成层间折射与边缘高光，替代此前"半透明色块模拟浮岛"的做法。
+2. **内容直接坐玻璃**：结果卡顶栏不再垫色条，仅保留 0.5pt 分隔线；语言栏用 Clear 玻璃制造层次差。
+3. **向下兼容**：低版本系统完整保留第一轮半透明 CALayer 方案；`EZGlassStyle` 枚举隔离 SDK 差异。
+
+### 明确不做
+
+- 不引入 `NSGlassEffectContainerView`（AppKit 版 `GlassEffectContainer`）：卡片分散于 tableView 各 row，重构滚动层级风险大且仅为渲染合并优化。
+- 不动 `EZWordResultView`、tag/model 小按钮、WebView 透明逻辑、`intercellSpacing` 与旧系统回退样式。
+
+### 验证
+
+- `git diff --check`：通过。
+- `xcodebuild build`（Easydict scheme，外部临时 DerivedData）：构建成功。
+- 运行 debug 版目测：URL scheme（`easydict://query?text=`）唤出浮动窗口，浅色模式下输入框卡片、Clear 语言栏、结果卡片与 topBar 0.5pt 分隔线均正确渲染，窗口底板圆角 22 生效；切换系统深色模式后重新查询，全套卡片稳定为深色玻璃 + 浅色文字，无回归。验证后已恢复系统浅色外观。已知非缺陷：系统外观切换瞬间 WebView 词典内容存在过渡态混排，重新查询后恢复稳定。
+
+### 受影响文件（第二轮）
+
+- `Easydict/App/EZConst.h`
+- `Easydict/objc/Utility/EZCategory/NSView+EZGlassCard/NSView+EZGlassCard.h`（新增）
+- `Easydict/objc/Utility/EZCategory/NSView+EZGlassCard/NSView+EZGlassCard.m`（新增）
+- `Easydict.xcodeproj/project.pbxproj`
+- `Easydict/objc/ViewController/Window/BaseQueryWindow/EZBaseQueryWindow.m`
+- `Easydict/objc/ViewController/View/QueryView/EZQueryView.m`
+- `Easydict/objc/ViewController/View/ResultView/EZResultView.m`
+- `Easydict/objc/ViewController/Cell/EZSelectLanguageCell.m`
+- `docs/histories/2026-09/2026-09-05-macos26-liquid-glass-query-window.md`

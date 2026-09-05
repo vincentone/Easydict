@@ -72,7 +72,7 @@
     if (@available(macOS 26.0, *)) {
         NSGlassEffectView *glassView = [[NSGlassEffectView alloc] initWithFrame:containerView.bounds];
         glassView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-        glassView.cornerRadius = 16.0;
+        glassView.cornerRadius = EZCornerRadius_22;
         glassView.style = NSGlassEffectViewStyleRegular;
         [containerView addSubview:glassView positioned:NSWindowBelow relativeTo:nil];
         self.glassBackgroundView = glassView;

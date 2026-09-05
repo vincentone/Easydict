@@ -12,6 +12,7 @@
 #import "NSImage+EZSymbolmage.h"
 #import "NSObject+EZDarkMode.h"
 #import "NSObject+EZWindowType.h"
+#import "NSView+EZGlassCard.h"
 
 
 @interface EZResultView ()
@@ -40,27 +41,51 @@
 
 - (void)setup {
     self.wantsLayer = YES;
-    self.layer.cornerRadius = EZCornerRadius_8;
-    self.layer.borderWidth = 0.5;
-    [self.layer executeLight:^(CALayer *layer) {
-        layer.backgroundColor = [NSColor ez_glassCardBgLightColor].CGColor;
-        layer.borderColor = [NSColor ez_glassBorderLightColor].CGColor;
-    } dark:^(CALayer *layer) {
-        layer.backgroundColor = [NSColor ez_glassCardBgDarkColor].CGColor;
-        layer.borderColor = [NSColor ez_glassBorderDarkColor].CGColor;
-    }];
-    
+
+    // macOS 26+ draws a real nested Liquid Glass card; older systems fall
+    // back to the translucent CALayer card.
+    NSView *glassView = [self ez_addGlassBackgroundWithStyle:EZGlassStyleRegular cornerRadius:EZCornerRadius_18];
+    BOOL useGlassCard = (glassView != nil);
+    if (!useGlassCard) {
+        self.layer.cornerRadius = EZCornerRadius_8;
+        self.layer.borderWidth = 0.5;
+        [self.layer executeLight:^(CALayer *layer) {
+            layer.backgroundColor = [NSColor ez_glassCardBgLightColor].CGColor;
+            layer.borderColor = [NSColor ez_glassBorderLightColor].CGColor;
+        } dark:^(CALayer *layer) {
+            layer.backgroundColor = [NSColor ez_glassCardBgDarkColor].CGColor;
+            layer.borderColor = [NSColor ez_glassBorderDarkColor].CGColor;
+        }];
+    }
+
     mm_weakify(self);
-    
+
     self.topBarView = [NSView mm_make:^(NSView *_Nonnull view) {
         mm_strongify(self);
         [self addSubview:view];
         view.wantsLayer = YES;
-        [view.layer executeLight:^(CALayer *layer) {
-            layer.backgroundColor = [NSColor ez_glassTopBarBgLightColor].CGColor;
-        } dark:^(CALayer *layer) {
-            layer.backgroundColor = [NSColor ez_glassTopBarBgDarkColor].CGColor;
-        }];
+        if (useGlassCard) {
+            // Content sits directly on the glass; only a hairline separator
+            // under the top bar, like the reference Liquid Glass cards.
+            NSView *separatorView = [[NSView alloc] initWithFrame:view.bounds];
+            separatorView.wantsLayer = YES;
+            [view addSubview:separatorView];
+            [separatorView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.bottom.equalTo(view);
+                make.height.mas_equalTo(0.5);
+            }];
+            [separatorView.layer executeLight:^(CALayer *layer) {
+                layer.backgroundColor = [NSColor ez_glassBorderLightColor].CGColor;
+            } dark:^(CALayer *layer) {
+                layer.backgroundColor = [NSColor ez_glassBorderDarkColor].CGColor;
+            }];
+        } else {
+            [view.layer executeLight:^(CALayer *layer) {
+                layer.backgroundColor = [NSColor ez_glassTopBarBgLightColor].CGColor;
+            } dark:^(CALayer *layer) {
+                layer.backgroundColor = [NSColor ez_glassTopBarBgDarkColor].CGColor;
+            }];
+        }
     }];
     self.topBarView.mas_key = @"topBarView";
     
