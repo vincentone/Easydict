@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@class MMOrderedDictionary;
-
 NS_ASSUME_NONNULL_BEGIN
 
 /// Window type
@@ -49,19 +47,9 @@ typedef NS_ENUM(NSUInteger, EZServiceUsageStatus) {
 
 typedef NSString *EZActionType NS_STRING_ENUM NS_SWIFT_NAME(ActionType);
 FOUNDATION_EXPORT EZActionType const EZActionTypeNone;
-FOUNDATION_EXPORT EZActionType const EZActionTypeShortcutQuery;
 FOUNDATION_EXPORT EZActionType const EZActionTypeInputQuery;
 FOUNDATION_EXPORT EZActionType const EZActionTypeInvokeQuery;
 FOUNDATION_EXPORT EZActionType const EZActionTypePasteboardTranslate;
-
-
-@interface EZEnumTypes : NSObject
-
-+ (NSString *)windowName:(EZWindowType)type;
-
-+ (MMOrderedDictionary *)fixedWindowPositionDict;
-
-@end
 
 
 NS_ASSUME_NONNULL_END

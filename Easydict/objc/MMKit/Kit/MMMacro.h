@@ -8,5 +8,3 @@
 
 #define mm_weakify(...) @weakify(__VA_ARGS__)
 #define mm_strongify(...) @strongify(__VA_ARGS__)
-
-#define mm_ignoreUnusedVariableWarning(var) (void)(var);
