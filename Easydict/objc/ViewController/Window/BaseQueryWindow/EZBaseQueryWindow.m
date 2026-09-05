@@ -54,16 +54,12 @@
     NSView *themeView = self.contentView.superview;
     [self setupGlassEffectInView:themeView];
 
-    // On Xcode 16 and before, the titleView is the subviews[1] object
-    // On Xcode 26, the titleView is the subviews[2] object
-    // But they are all the lastObject of the subviews array.
-    // So we use lastObject to get the titleView.
-    NSView *titleView = themeView.subviews.lastObject;
-    
-    self.titleBar = [[EZTitlebar alloc] initWithFrame:CGRectMake(0, 0, self.width, 30)];
-    [titleView addSubview:self.titleBar];
+    self.titleBar = [[EZTitlebar alloc] initWithFrame:CGRectMake(0, 0, self.width, EZTitlebarHeight_28)];
+    self.titleBar.wantsLayer = YES;
+    [themeView addSubview:self.titleBar positioned:NSWindowAbove relativeTo:nil];
     [self.titleBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(titleView);
+        make.top.left.right.equalTo(themeView);
+        make.height.mas_equalTo(EZTitlebarHeight_28);
     }];
 }
 

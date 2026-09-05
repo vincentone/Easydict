@@ -39,6 +39,7 @@ typedef NS_ENUM(NSInteger, EZTitlebarButtonType) {
 }
 
 - (void)setup {
+    self.wantsLayer = YES;
     self.buttonWidth = 24;
     self.buttonSize = CGSizeMake(self.buttonWidth, self.buttonWidth);
 
