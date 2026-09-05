@@ -20,10 +20,21 @@
   - `updateWindowHeightWithLock:`: 动态调整窗口几何尺寸后显式调用 `[window invalidateShadow]`，保证阴影轮廓实时更新。
 - `EZTableRowView`:
   - 确保行背景为透明，重写 `drawBackgroundInRect:` 为空实现，避免 AppKit 绘制默认纯色底色。
+- `NSColor+MyColors`:
+  - 增加微透磨砂浮岛卡片配色：`ez_glassCardBgLightColor`（48% 白）、`ez_glassCardBgDarkColor`（36% 黑）、`ez_glassTopBarBgLightColor`（25% 白）、`ez_glassTopBarBgDarkColor`（20% 黑）、`ez_glassBorderLightColor`（60% 白描边）、`ez_glassBorderDarkColor`（12% 白描边）。
+- `EZQueryView` & `EZTextView`:
+  - 输入框卡片切换为 `ez_glassCardBgLightColor` / `ez_glassCardBgDarkColor`，并配置 0.5px 微光描边。
+  - `scrollView`、`textView` 与 `placeholderTextField` 背景统一置透（`drawsBackground = NO; backgroundColor = clearColor;`），让底层液态玻璃自然透入文字背景。
+- `EZSelectLanguageCell`:
+  - 语言栏切换为半透明 `ez_glassTopBarBgLightColor` / `ez_glassTopBarBgDarkColor`，配置 0.5px 微光描边。
+- `EZResultView` & `EZWordResultView`:
+  - 结果卡片背景切换为 `ez_glassCardBgLightColor` / `ez_glassCardBgDarkColor`，配置 0.5px 微光描边；顶部工具栏切换为 `ez_glassTopBarBgLightColor` / `ez_glassTopBarBgDarkColor`。
+  - 词典结果视图 `EZWordResultView` 背景置为 `clearColor`，消除二次遮盖；`tagScrollView` 及标签容器背景置透。
+  - `EZWebViewManager`：配置 `_webView.drawsBackground = NO`，JS 注入 body 背景为 `transparent`，支持 WebKit 页面全景玻璃透出。
 
 ### 设计意图
 
-1. **分层视觉设计**：浮动窗底板采用 macOS 26 原生 Liquid Glass 材质，标题栏区域与卡片边距自然融入背景；内部查词输入框（`EZQueryView`）与词典结果卡片（`EZResultView`）保留独立卡片底色与层级，确保查词文本与 WKWebView 渲染具备高对比度与字形清晰度。
+1. **全景液态玻璃与磨砂浮岛分层**：浮动窗底板采用 macOS 26 原生 Liquid Glass 材质；内部输入框与结果卡片打破原本生硬的实色色块阻隔，采用半透明微透材质与 0.5px 微光描边，既让底层液态玻璃的折射、流动与桌面高光自然透入文字区域，又通过适度衬底阻断壁纸高频杂讯，保持查词文字与翻译排版的极致清晰度。
 2. **向下兼容与构建安全**：保持 Deployment Target 14.1/13.0，使用宏预编译与运行时版本判断双重保护，保证低版本 Xcode 与旧 macOS 环境均能安全编译与平稳降级运行。
 3. **顶层稳定锚定**：摆脱对 AppKit 私有窗框子视图索引的脆弱依赖，避免系统在引入玻璃视图或隐藏系统三色按钮时重构内部容器导致自定义组件丢失。
 
@@ -34,9 +45,17 @@
 
 ### 受影响文件
 
+- `Easydict/objc/Utility/EZCategory/NSColor+MyColors/NSColor+MyColors.h`
+- `Easydict/objc/Utility/EZCategory/NSColor+MyColors/NSColor+MyColors.m`
 - `Easydict/objc/ViewController/Window/BaseQueryWindow/EZBaseQueryWindow.h`
 - `Easydict/objc/ViewController/Window/BaseQueryWindow/EZBaseQueryWindow.m`
 - `Easydict/objc/ViewController/Window/BaseQueryWindow/EZBaseQueryViewController.m`
 - `Easydict/objc/ViewController/View/Titlebar/EZTitlebar.m`
+- `Easydict/objc/ViewController/View/QueryView/EZQueryView.m`
+- `Easydict/objc/ViewController/View/TextView/EZTextView.m`
+- `Easydict/objc/ViewController/Cell/EZSelectLanguageCell.m`
+- `Easydict/objc/ViewController/View/ResultView/EZResultView.m`
+- `Easydict/objc/ViewController/View/WordResultView/EZWordResultView.m`
+- `Easydict/objc/ViewController/View/WordResultView/EZWebViewManager.m`
 - `Easydict/objc/ViewController/Cell/EZTableRowView.m`
 - `docs/histories/2026-09/2026-09-05-macos26-liquid-glass-query-window.md`

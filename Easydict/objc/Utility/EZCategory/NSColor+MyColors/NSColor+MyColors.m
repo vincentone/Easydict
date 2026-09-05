@@ -98,4 +98,28 @@
     return [NSColor mm_colorWithHexString:@"#28292A"];
 }
 
+// Glass card translucent background color
++ (NSColor *)ez_glassCardBgLightColor {
+    return [NSColor colorWithWhite:1.0 alpha:0.48];
+}
++ (NSColor *)ez_glassCardBgDarkColor {
+    return [NSColor colorWithWhite:0.0 alpha:0.36];
+}
+
+// Glass top bar translucent background color
++ (NSColor *)ez_glassTopBarBgLightColor {
+    return [NSColor colorWithWhite:1.0 alpha:0.25];
+}
++ (NSColor *)ez_glassTopBarBgDarkColor {
+    return [NSColor colorWithWhite:0.0 alpha:0.20];
+}
+
+// Glass card border color
++ (NSColor *)ez_glassBorderLightColor {
+    return [NSColor colorWithWhite:1.0 alpha:0.60];
+}
++ (NSColor *)ez_glassBorderDarkColor {
+    return [NSColor colorWithWhite:1.0 alpha:0.12];
+}
+
 @end

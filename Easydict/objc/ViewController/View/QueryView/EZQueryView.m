@@ -64,15 +64,20 @@ static const NSTimeInterval EZAutoQueryWhenTextChangedDelay = 0.8;
 - (void)setup {
     self.wantsLayer = YES;
     self.layer.cornerRadius = EZCornerRadius_8;
-    [self.layer executeLight:^(id _Nonnull x) {
-        [x setBackgroundColor:[NSColor ez_queryViewBgLightColor].CGColor];
-    } dark:^(id _Nonnull x) {
-        [x setBackgroundColor:[NSColor ez_queryViewBgDarkColor].CGColor];
+    self.layer.borderWidth = 0.5;
+    [self.layer executeLight:^(CALayer *layer) {
+        layer.backgroundColor = [NSColor ez_glassCardBgLightColor].CGColor;
+        layer.borderColor = [NSColor ez_glassBorderLightColor].CGColor;
+    } dark:^(CALayer *layer) {
+        layer.backgroundColor = [NSColor ez_glassCardBgDarkColor].CGColor;
+        layer.borderColor = [NSColor ez_glassBorderDarkColor].CGColor;
     }];
-    
+
     NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:self.bounds];
     self.scrollView = scrollView;
     [self addSubview:scrollView];
+    scrollView.drawsBackground = NO;
+    scrollView.backgroundColor = [NSColor clearColor];
     scrollView.hasVerticalScroller = YES;
     scrollView.hasHorizontalScroller = NO;
     scrollView.autohidesScrollers = YES;

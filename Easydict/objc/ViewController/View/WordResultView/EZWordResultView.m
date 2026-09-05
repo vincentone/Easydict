@@ -73,11 +73,7 @@ static NSString *const kMDictEntryURIScheme = @"mdict-entry";
         self.wantsLayer = YES;
         self.layer.cornerRadius = EZCornerRadius_8;
         self.fontSizeRatio = MyConfiguration.shared.fontSizeRatio;
-        [self.layer executeLight:^(CALayer *layer) {
-            layer.backgroundColor = [NSColor ez_resultViewBgLightColor].CGColor;
-        } dark:^(CALayer *layer) {
-            layer.backgroundColor = [NSColor ez_resultViewBgDarkColor].CGColor;
-        }];
+        self.layer.backgroundColor = [NSColor clearColor].CGColor;
     }
     return self;
 }
@@ -402,14 +398,12 @@ static NSString *const kMDictEntryURIScheme = @"mdict-entry";
                     tagContentView = [[NSView alloc] init];
                     [tagScrollView addSubview:tagContentView];
                     tagContentView.wantsLayer = YES;
-                    [tagContentView.layer executeLight:^(CALayer *layer) {
-                        layer.backgroundColor = [NSColor ez_resultViewBgLightColor].CGColor;
-                    } dark:^(CALayer *layer) {
-                        layer.backgroundColor = [NSColor ez_resultViewBgDarkColor].CGColor;
-                    }];
+                    tagContentView.layer.backgroundColor = [NSColor clearColor].CGColor;
 
                     tagContentView.height = newSize.height;
                     tagScrollView.documentView = tagContentView;
+                    tagScrollView.drawsBackground = NO;
+                    tagScrollView.backgroundColor = [NSColor clearColor];
                     tagScrollView.horizontalScrollElasticity = NSScrollElasticityNone;
                     tagScrollView.verticalScrollElasticity = NSScrollElasticityNone;
                     tagScrollView.hasHorizontalScroller = NO;
@@ -1403,7 +1397,7 @@ static NSString *const kMDictEntryURIScheme = @"mdict-entry";
     NSString *darkBackgroundColorString = [NSColor mm_hexStringFromColor:[NSColor ez_resultViewBgDarkColor]];
 
     NSString *textColorString = isDark ? darkTextColorString : lightTextColorString;
-    NSString *backgroundColorString = isDark ? darkBackgroundColorString : lightBackgroundColorString;
+    NSString *backgroundColorString = @"transparent";
 
     NSString *updateBodyColorJSCode = [self jsCodeOfUpdateBodyTextColor:textColorString backgroundColor:backgroundColorString];
     NSString *updateIframeColorJSCode = [self jsCodeOfUpdateAllIframeTextColor:textColorString backgroundColor:backgroundColorString];

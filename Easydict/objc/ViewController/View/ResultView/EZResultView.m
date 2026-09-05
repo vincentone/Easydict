@@ -41,10 +41,13 @@
 - (void)setup {
     self.wantsLayer = YES;
     self.layer.cornerRadius = EZCornerRadius_8;
+    self.layer.borderWidth = 0.5;
     [self.layer executeLight:^(CALayer *layer) {
-        layer.backgroundColor = [NSColor ez_resultViewBgLightColor].CGColor;
+        layer.backgroundColor = [NSColor ez_glassCardBgLightColor].CGColor;
+        layer.borderColor = [NSColor ez_glassBorderLightColor].CGColor;
     } dark:^(CALayer *layer) {
-        layer.backgroundColor = [NSColor ez_resultViewBgDarkColor].CGColor;
+        layer.backgroundColor = [NSColor ez_glassCardBgDarkColor].CGColor;
+        layer.borderColor = [NSColor ez_glassBorderDarkColor].CGColor;
     }];
     
     mm_weakify(self);
@@ -54,9 +57,9 @@
         [self addSubview:view];
         view.wantsLayer = YES;
         [view.layer executeLight:^(CALayer *layer) {
-            layer.backgroundColor = [NSColor ez_titleBarBgLightColor].CGColor;
+            layer.backgroundColor = [NSColor ez_glassTopBarBgLightColor].CGColor;
         } dark:^(CALayer *layer) {
-            layer.backgroundColor = [NSColor ez_titleBarBgDarkColor].CGColor;
+            layer.backgroundColor = [NSColor ez_glassTopBarBgDarkColor].CGColor;
         }];
     }];
     self.topBarView.mas_key = @"topBarView";

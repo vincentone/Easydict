@@ -55,6 +55,18 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSColor *)ez_tableRowViewBgLightColor;
 + (NSColor *)ez_tableRowViewBgDarkColor;
 
+// Glass card translucent background color
++ (NSColor *)ez_glassCardBgLightColor;
++ (NSColor *)ez_glassCardBgDarkColor;
+
+// Glass top bar translucent background color
++ (NSColor *)ez_glassTopBarBgLightColor;
++ (NSColor *)ez_glassTopBarBgDarkColor;
+
+// Glass card border color
++ (NSColor *)ez_glassBorderLightColor;
++ (NSColor *)ez_glassBorderDarkColor;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -81,6 +81,10 @@ BOOL EZResultShouldRenderDictionaryHTML(EZQueryResult *result) {
         EZWeakScriptMessageHandler *handler = [[EZWeakScriptMessageHandler alloc] initWithTarget:self];
         [configuration.userContentController addScriptMessageHandler:handler name:kObjcHandler];
         _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:configuration];
+        [_webView setValue:@NO forKey:@"drawsBackground"];
+        if (@available(macOS 12.0, *)) {
+            _webView.underPageBackgroundColor = [NSColor clearColor];
+        }
     }
     return _webView;
 }
