@@ -1371,6 +1371,7 @@
       }
     },
     "fixed_window" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2634,6 +2635,7 @@
       }
     },
     "none_window" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
