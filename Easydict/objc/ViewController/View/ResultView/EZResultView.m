@@ -42,11 +42,10 @@
 - (void)setup {
     self.wantsLayer = YES;
 
-    // macOS 26+ draws a real nested Liquid Glass card; older systems fall
-    // back to the translucent CALayer card.
-    NSView *glassView = [self ez_addGlassBackgroundWithStyle:EZGlassStyleRegular cornerRadius:EZCornerRadius_18];
-    BOOL useGlassCard = (glassView != nil);
-    if (!useGlassCard) {
+    // macOS 26+ content sits directly on the window-level Liquid Glass;
+    // older systems fall back to the translucent CALayer card.
+    BOOL onWindowGlass = [NSView ez_liquidGlassAvailable];
+    if (!onWindowGlass) {
         self.layer.cornerRadius = EZCornerRadius_8;
         self.layer.borderWidth = 0.5;
         [self.layer executeLight:^(CALayer *layer) {
@@ -64,7 +63,7 @@
         mm_strongify(self);
         [self addSubview:view];
         view.wantsLayer = YES;
-        if (useGlassCard) {
+        if (onWindowGlass) {
             // Content sits directly on the glass; only a hairline separator
             // under the top bar, like the reference Liquid Glass cards.
             NSView *separatorView = [[NSView alloc] initWithFrame:view.bounds];

@@ -48,10 +48,9 @@
     self.languageBarView = languageBarView;
     languageBarView.wantsLayer = YES;
 
-    // macOS 26+ draws a Liquid Glass bar; older systems fall back to
-    // the translucent CALayer bar.
-    NSView *glassView = [languageBarView ez_addGlassBackgroundWithStyle:EZGlassStyleRegular cornerRadius:EZCornerRadius_12];
-    if (!glassView) {
+    // macOS 26+ the bar sits directly on the window-level Liquid Glass;
+    // older systems fall back to the translucent CALayer bar.
+    if (![NSView ez_liquidGlassAvailable]) {
         self.layer.cornerRadius = EZCornerRadius_8;
         languageBarView.layer.cornerRadius = EZCornerRadius_8;
         languageBarView.layer.borderWidth = 0.5;

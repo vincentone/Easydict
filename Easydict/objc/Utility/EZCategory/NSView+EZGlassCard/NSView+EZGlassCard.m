@@ -14,6 +14,15 @@
 
 @implementation NSView (EZGlassCard)
 
++ (BOOL)ez_liquidGlassAvailable {
+#if __has_include(<AppKit/NSGlassEffectView.h>)
+    if (@available(macOS 26.0, *)) {
+        return YES;
+    }
+#endif
+    return NO;
+}
+
 - (nullable NSView *)ez_addGlassBackgroundWithStyle:(EZGlassStyle)style
                                        cornerRadius:(CGFloat)cornerRadius {
 #if __has_include(<AppKit/NSGlassEffectView.h>)

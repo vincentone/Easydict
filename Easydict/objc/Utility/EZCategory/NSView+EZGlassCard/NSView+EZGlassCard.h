@@ -19,6 +19,9 @@ typedef NS_ENUM(NSInteger, EZGlassStyle) {
 
 @interface NSView (EZGlassCard)
 
+/// Whether the system provides the native Liquid Glass (NSGlassEffectView).
++ (BOOL)ez_liquidGlassAvailable;
+
 /// Add a full-size Liquid Glass background board underneath existing subviews.
 /// Returns nil on macOS < 26 or older SDKs, so callers can fall back to the
 /// translucent CALayer card style.

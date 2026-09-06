@@ -65,10 +65,9 @@ static const NSTimeInterval EZAutoQueryWhenTextChangedDelay = 0.8;
 - (void)setup {
     self.wantsLayer = YES;
 
-    // macOS 26+ draws a real nested Liquid Glass card; older systems fall
-    // back to the translucent CALayer card.
-    NSView *glassView = [self ez_addGlassBackgroundWithStyle:EZGlassStyleRegular cornerRadius:EZCornerRadius_18];
-    if (!glassView) {
+    // macOS 26+ content sits directly on the window-level Liquid Glass;
+    // older systems fall back to the translucent CALayer card.
+    if (![NSView ez_liquidGlassAvailable]) {
         self.layer.cornerRadius = EZCornerRadius_8;
         self.layer.borderWidth = 0.5;
         [self.layer executeLight:^(CALayer *layer) {

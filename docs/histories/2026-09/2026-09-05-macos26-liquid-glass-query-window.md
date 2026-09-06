@@ -144,3 +144,28 @@ Clear 版窗口底板太透，要求所有玻璃层统一换回 Regular。
 - `Easydict/objc/ViewController/Window/BaseQueryWindow/EZBaseQueryWindow.m`
 - `Easydict/objc/ViewController/Cell/EZSelectLanguageCell.m`
 - `docs/histories/2026-09/2026-09-05-macos26-liquid-glass-query-window.md`
+
+---
+
+## 2026-09-06 | 第五轮：只保留弹框整体一层玻璃，模块不再各自垫底
+
+### 用户请求
+
+用户反馈窗口玻璃 + 每个模块玻璃双层叠加，看起来"每个模块都多了一层背景"，要求只保留弹框整体一层背景，模块内容直接坐在玻璃上。
+
+### 变更
+
+- `NSView+EZGlassCard`：新增 `+ (BOOL)ez_liquidGlassAvailable`（封装 `__has_include` 与 `@available(macOS 26.0, *)` 双重保护）；`ez_addGlassBackgroundWithStyle:` 保留备用。
+- `EZQueryView.m`：macOS 26+ 不再垫任何卡片背景，文字直接坐在窗口玻璃上；旧系统保留半透明 CALayer 卡片回退。
+- `EZResultView.m`：同上；`topBarView` 在 26+ 保持底部 0.5pt 分隔线（旧系统半透明色条），判定条件改为 `ez_liquidGlassAvailable`。
+- `EZSelectLanguageCell.m`：macOS 26+ 语言栏不再垫背景，仅保留按钮行；旧系统保留半透明条回退。
+- 窗口底板不变（`NSGlassEffectView` Regular、圆角 22），作为弹框唯一一层玻璃背景；所有区域同为单层玻璃，顶部/底部白边深浅差消失。
+
+### 受影响文件（第五轮）
+
+- `Easydict/objc/Utility/EZCategory/NSView+EZGlassCard/NSView+EZGlassCard.h`
+- `Easydict/objc/Utility/EZCategory/NSView+EZGlassCard/NSView+EZGlassCard.m`
+- `Easydict/objc/ViewController/View/QueryView/EZQueryView.m`
+- `Easydict/objc/ViewController/View/ResultView/EZResultView.m`
+- `Easydict/objc/ViewController/Cell/EZSelectLanguageCell.m`
+- `docs/histories/2026-09/2026-09-05-macos26-liquid-glass-query-window.md`
