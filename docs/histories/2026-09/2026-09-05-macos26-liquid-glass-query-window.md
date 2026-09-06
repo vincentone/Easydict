@@ -123,3 +123,24 @@
 
 - `Easydict/objc/ViewController/Window/BaseQueryWindow/EZBaseQueryWindow.m`
 - `docs/histories/2026-09/2026-09-05-macos26-liquid-glass-query-window.md`
+
+---
+
+## 2026-09-06 | 第四轮：全部玻璃统一为 Regular
+
+### 用户请求
+
+Clear 版窗口底板太透，要求所有玻璃层统一换回 Regular。
+
+### 变更
+
+- `EZBaseQueryWindow.m`（`setupGlassEffectInView:`）：macOS 26 分支窗口底板 `glassView.style` 由 `NSGlassEffectViewStyleClear` 改回 `NSGlassEffectViewStyleRegular`；圆角 22 与低版本回退分支不动。
+- `EZSelectLanguageCell.m`：语言栏玻璃 `EZGlassStyleClear` → `EZGlassStyleRegular`（圆角 12 不变）。
+
+至此窗口底板、输入框卡片、结果卡片、语言栏四层全部为 Regular 样式；顶部图钉行与底部裸露区重新呈现单层 Regular 玻璃的浅色白边（系统玻璃浅色模式本来形态，用户知情选择）。
+
+### 受影响文件（第四轮）
+
+- `Easydict/objc/ViewController/Window/BaseQueryWindow/EZBaseQueryWindow.m`
+- `Easydict/objc/ViewController/Cell/EZSelectLanguageCell.m`
+- `docs/histories/2026-09/2026-09-05-macos26-liquid-glass-query-window.md`
