@@ -73,7 +73,7 @@
         NSGlassEffectView *glassView = [[NSGlassEffectView alloc] initWithFrame:containerView.bounds];
         glassView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
         glassView.cornerRadius = EZCornerRadius_22;
-        glassView.style = NSGlassEffectViewStyleRegular;
+        glassView.style = NSGlassEffectViewStyleClear;
         [containerView addSubview:glassView positioned:NSWindowBelow relativeTo:nil];
         self.glassBackgroundView = glassView;
         return;

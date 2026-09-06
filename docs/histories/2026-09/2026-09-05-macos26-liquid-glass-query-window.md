@@ -106,3 +106,20 @@
 - `Easydict/objc/ViewController/View/ResultView/EZResultView.m`
 - `Easydict/objc/ViewController/Cell/EZSelectLanguageCell.m`
 - `docs/histories/2026-09/2026-09-05-macos26-liquid-glass-query-window.md`
+
+---
+
+## 2026-09-06 | 第三轮：窗口背景玻璃 Regular → Clear
+
+### 用户请求
+
+用户观察到浮动弹框顶部图钉行和底部留白露出一层白色，询问实现情况。确认那是窗口级 `NSGlassEffectView`（Regular）在浅色模式的亮白霜层——中间区域被卡片玻璃二次叠加显得更深，顶部/底部裸露区只有单层玻璃所以更白。用户选择把窗口背景玻璃改透。
+
+### 变更
+
+- `EZBaseQueryWindow.m`（`setupGlassEffectInView:`）：macOS 26 分支窗口底板 `glassView.style` 由 `NSGlassEffectViewStyleRegular` 改为 `NSGlassEffectViewStyleClear`；圆角 22 与低版本 `NSVisualEffectView` 回退分支不动；卡片（Regular）与语言栏（Clear）样式不动。
+
+### 受影响文件（第三轮）
+
+- `Easydict/objc/ViewController/Window/BaseQueryWindow/EZBaseQueryWindow.m`
+- `docs/histories/2026-09/2026-09-05-macos26-liquid-glass-query-window.md`
